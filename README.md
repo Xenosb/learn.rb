@@ -41,7 +41,7 @@ through a problem with somebody with more experience.
 ## Changelog
 
 For the full changelog and current revision reference the
-[CHANGELOG file](/CHANGELOG).
+[CHANGELOG file](/CHANGELOG.md).
 
 ## Authors
 
