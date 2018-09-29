@@ -55,7 +55,7 @@ This project's lectures are licensed under the Creative Commons license with
 the following license coditions: Attribution (by), ShareAlike (sa) and
 NonComertial (nc)
 
-The code and examples of this project are licensed under the GPLv4.
+The code and examples of this project are licensed under the GPLv3.
 
 Please reference the [LICENSE file](/LICENSE) for more information.
 
