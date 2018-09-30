@@ -32,17 +32,17 @@ teaching staff read the [Communication page](/chapters/_communication).
 
 ## Chapters
 
-1. [Git gud](/chapters/00-git_and_setup)
-2. [Ruby, Ruby, Ruby! NaNaaNaNaaNaNaaaa](/chapters/01-ruby)
-3. [Ruby on Rails](/chapters/02-ruby_on_rails)
-4. [Talking to servers](/chapters/03-talking_to_servers)
-5. [Working with a database, or how to remeber stuff](/chapters/04-the_database)
-6. [Colors and moving parts!](/chapters/05-css_and_js)
-7. [APIs](/chapters/06-apis)
-8. [Don't touch my cookies!](/chapters/07-authentication)
-9. [Freakin' email...](/chapters/08-background_jobs)
-10. [Working with others](/chapters/09-working_with_others)
-11. [What now?](/chapters/10-what_now)
+0. [Git gud](/chapters/00-git_and_setup)
+1. [Ruby, Ruby, Ruby! NaNaaNaNaaNaNaaaa](/chapters/01-ruby)
+2. [Ruby on Rails](/chapters/02-ruby_on_rails)
+3. [Talking to servers](/chapters/03-talking_to_servers)
+4. [Working with a database, or how to remeber stuff](/chapters/04-the_database)
+5. [Colors and moving parts!](/chapters/05-css_and_js)
+6. [APIs](/chapters/06-apis)
+7. [Don't touch my cookies!](/chapters/07-authentication)
+8. [Freakin' email...](/chapters/08-background_jobs)
+9.  [Working with others](/chapters/09-working_with_others)
+10. [What now?](/chapters/10-what_now)
 
 ## Changelog
 
