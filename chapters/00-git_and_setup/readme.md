@@ -11,7 +11,9 @@ Please note that this project focuses on *nix operating systems, meaning
 that Linux and Mac users will have a much easier time following it than
 Windows users. This doesn't mean that examples for Windows users won't be given
 just that some examples may not work out-of-the-box and the guide could have
-discrepancies regarding software installation.
+discrepancies regarding software installation. Some of this issues can be
+resolved by installing [Linux subsystem for Windows](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+and your favorite Linux distribution from the Microsoft store.
 
 Now, with the disclaimers out of the way, we can finally begin!
 
@@ -121,6 +123,164 @@ A text editor is like a religion to a programmer, so depending on why you ask
 you will get a different answer which one is best. My suggestion it to pick
 one that you are most comfortable with. If you end up not liking it, jsut
 switch to another one.
+
+## GIT
+
+Before we finally start discussing Ruby we'll explain git - what it is and
+how we are going to use it in this project.
+
+### What the git?
+
+*(Shameless copy from [Wikipedia](https://en.wikipedia.org/wiki/Git))*
+
+*Git is a version-control system for tracking changes in computer files and
+coordinating work on those files among multiple people. It is primarily used for
+source-code management in software development, but it can be used to keep track
+of changes in any set of files. As a distributed revision-control system, it is
+aimed at speed, data integrity, and support for distributed, non-linear
+workflows. Git was created by Linus Torvalds in 2005 for development of the
+Linux kernel, with other kernel developers contributing to its initial
+development.*
+
+*(End of shameless copy)*
+
+So it's basically a tool which helps developers, designers and any other people
+avoid having to name their files *poster_final_final_4_final* or having to
+share their data over USB stick, network disk, cloud or punchcard stack. It's
+not the only tool for versioning and you might be familiar with others such as
+svn, mercurial or tfs. Reason we opted to use git is because it is most popular
+and there is a myriad of websites which will be more than glad to host your
+code for free. You are reding this on a GitHub but might be know of GitLab,
+Bitbucket or Beanstalk.
+
+### How does it work?
+
+Let's say that you have a file which is 10.000 lines of code and you are
+modifying it multiple times every day. Storing a complete copy on every save
+would be very inefficient regarding space. Instead, idea is to keep track of
+changes. On every commit, git will look which files you have modified and
+compare which lines were added, removed or modified. You don't even have to
+submit all files every time. When you submit modifications to the repository,
+it's called a **commit**.
+
+A git commit consists of consists of 
+* an ID *(SHA-1 hash)*
+* commit date
+* authors name and email
+* description of chnages *(commit message)*
+* ID of previous commit
+* changes to files
+
+![List of recent changes](./images/git-log.png)
+
+Let's paint a picture where you are working on the same project and same file as
+Anna. She likes to commit code very often not to lose it. Imagine if you'd have
+to constantly receive updates and have the build fail because she messed
+something up. To prevent this from happeng, give you a pice of mind and for some
+other reasons, git actually works in such a way that the same file is stored in
+**3 different locations - filesystem, local repository and remote repository**.
+First one is a file that you can view, edit or delete on your file system. Once
+you've made some changes and tested that it works or you just want to make sure
+that you have your modifications saved on one aditional place, you can commit
+changes to the local repository. When you think you are done with the feature,
+you'll push the code from your local to the remote repository. At that time, git
+will check if Anna made some modifications to the files you've been working on
+and help you resolve conflicts if there were any.
+
+But to avoid solving conflicts 3 times a day, it's a good practice to use
+branches.
+
+* Describe vesions and commits
+* Describe branches and pull requests
+* Describe how we are going to use it
+
+### Your first repository, or fifthiet
+
+So let's start your journey to Ruby by creating a repository where you will
+store your project and solve homeworks. Open
+[GitHub homepage](https://github.com/) and sign in. If you don't have an account
+already, sign-up process is easy - just enter your username, email and password.
+Our suggestion would be to choose a non-embarassing username as this will be
+public info. You don't have to put a name behind your code or vice versa (in a 
+CV or on Linkedin) but in future you might wan't to do that and 
+*princesspeach98* might not be the best choice.
+
+![Creating GitHub account for princesspeach](./images/github-sign-up.png)
+
+Now, you'll create a new repository. Navigate to 'New' in the menu or just open
+[new repository page](https://github.com/new). Enter `ruby-homework` as a
+repository name and for the description you can put something like this
+`A repository I will use to solve my Ruby homework`. Set the project to be
+**public**, you have nothing to hide. Initialize it **with readme** and
+**without license and gitignore**.
+
+![Creating a repository](./images/github-create-repo.png)
+
+### Github interface overview
+
+Congratulations, now you have a repository for your homework. It might your
+first or fiftieth, we know you are excited. Take a look around the interface.
+From the top to bottom and left to right, you can see the following info.
+
+Navigation bar
+* Owner / Project name - notice it is the same as URL
+* Watchers - who is watching the project
+* Stars - who marked project with a star
+* Fork - who copied the project to contribute
+
+Tabs
+* Code - where the code is when not chugging beers in a local bar
+* Issues - your code has none at the moment, that's great but if it will have
+  some when it grows up people can report that issues here so you can have a
+  talk
+* Pull requests - incoming changes to your project, we'll cover this later
+* Projects - if you want to plan features, rollouts etc
+* Wiki - you can document your project here if you wish to do sos
+* Insights - graphs and insights in your project
+* Settings - self explanatory, we'll have to modify something soon
+
+Basic project info
+* Repository description
+* Topics - you can add tags so that your project will be easier to find
+* Commits - how many changes were made to the project. Clicking on this will
+  show you timeline what changes were made to the project, who made them and
+  when
+* Branches - *versions* of the code, will be explained shortly
+* Releases - if you have some release versions, they will be shown here
+* Contributors - people colaborating on this project
+
+![Your fresh GitHub repository](./images/github-fresh-repo.png)
+
+Now we come to repository controlls. Depending on the permisions you have on the
+project different some of these options might not be shown here.
+
+* Current branch - brach you are currently looking at. Default one is called
+  master.
+* New pull request - if you have rights you'll be able to create one
+* Create new file - don't know if anybody uses this but you can create text or
+  source file directly through web interface. If you like whiteboard interviews
+  this might be the way for you to work. Otherwise, there are better ways.
+* Upload files - same as last one. Maybe more useful for designers.
+* Find file - does exactly what it says
+* Clone or download - allows you to get the code from GitHub repository to your
+  PC
+
+Little bit more info
+* Last contributor and commit message
+* Commit ID and time - you might use ID when referencing a specific commit
+* List of files
+* Preview of README.md file - it's writen in a markdown. It's super-simple to
+  write short or even long guides how to run your code, how you can contribute
+  to the project or what it does. Modifying it will be a part of your first
+  task.
+
+OK, that's quite a lot of info. Don't even try to memorize this but play around
+and visit some of the popular repositories to see how their info looks. For
+example take a look at [Ruby](https://github.com/ruby/ruby) and
+[Rails](https://github.com/rails/rails) repositories. You'll see that they are
+made by the community, not by large enterprises governed by shareholders - for
+the many, not for the few.
+
 
 ## Ruby runtime
 
