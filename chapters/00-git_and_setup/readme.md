@@ -4,6 +4,18 @@ This is the first chapter in a series of 10 of the
 [learn.rb project](https://github.com/monorkin/learn.rb) who's goal is to teach
 people Ruby with a focus on Ruby on Rails.
 
+## Chapters
+
+1. [Introduction](#introduction)
+2. [Terminal emulator](#terminal-emulator)
+3. [Text editor](#text-editor)
+4. [Git version tracker](#git-version-tracker)
+5. [Working with Git](#working-with-git)
+6. [Ruby runtime](#ruby-runtime)
+7. [Assignment](#assignment)
+
+## Introduction
+
 The goal of this introduction chapter is to get you up and running with the
 tools that we'll need to finish this course.
 
@@ -25,7 +37,7 @@ For this course we'll need four basic tools:
 
 Let's take each tool and explain why we need it.
 
-## The terminal emulator
+## Terminal emulator
 
 Most programmers still to this day honor standards that were set in the 80's and
 70's, because of that we to this day still use terminals to interact with all
@@ -121,17 +133,10 @@ called [Ruby Mine](https://www.jetbrains.com/ruby/).
 
 A text editor is like a religion to a programmer, so depending on why you ask
 you will get a different answer which one is best. My suggestion it to pick
-one that you are most comfortable with. If you end up not liking it, jsut
+one that you are most comfortable with. If you end up not liking it, just
 switch to another one.
 
-## GIT
-
-Before we finally start discussing Ruby we'll explain git - what it is and
-how we are going to use it in this project.
-
-### What the git?
-
-*(Shameless copy from [Wikipedia](https://en.wikipedia.org/wiki/Git))*
+## GIT version tracker
 
 Git is a version-control system for tracking changes in computer files and
 coordinating work on those files among multiple people. It is primarily used for
@@ -140,17 +145,15 @@ of changes in any set of files. As a distributed revision-control system, it is
 aimed at speed, data integrity, and support for distributed, non-linear
 workflows. Git was created by Linus Torvalds in 2005 for development of the
 Linux kernel, with other kernel developers contributing to its initial
-development.
+development. - [Wikipedia](https://en.wikipedia.org/wiki/Git)*
 
-*(End of shameless copy)*
-
-So it's basically a tool which helps developers, designers and any other people
-avoid having to name their files *poster_final_final_4_final* or having to
-share their data over USB stick, network disk, cloud or punchcard stack. It's
+So it's basically git is a tool which helps developers, designers and any other
+people avoid having to name their files *poster_final_final_4_final* or having
+to share their data over USB stick, network disk, cloud or punchcard stack. It's
 not the only tool for versioning and you might be familiar with others such as
 svn, mercurial or tfs. Reason we opted to use git is because it is most popular
 and there is a myriad of websites which will be more than glad to host your
-code for free. You are reding this on a GitHub but might be know of GitLab,
+code for free. You are reding this on a GitHub but might know of GitLab,
 Bitbucket or Beanstalk.
 
 ### How does it work?
@@ -173,114 +176,119 @@ A git commit consists of consists of
 
 ![List of recent changes](./images/git-log.png)
 
-Let's paint a picture where you are working on the same project and same file as
-Anna. She likes to commit code very often not to lose it. Imagine if you'd have
-to constantly receive updates and have the build fail because she messed
-something up. To prevent this from happeng, give you a pice of mind and for some
-other reasons, git actually works in such a way that the same file is stored in
-**3 different locations - filesystem, local repository and remote repository**.
-First one is a file that you can view, edit or delete on your file system. Once
-you've made some changes and tested that it works or you just want to make sure
-that you have your modifications saved on one aditional place, you can commit
-changes to the local repository. When you think you are done with the feature,
-you'll push the code from your local to the remote repository. At that time, git
-will check if Anna made some modifications to the files you've been working on
-and help you resolve conflicts if there were any.
+Git system will store all of your files in **3 different locations - filesystem,
+local repository and remote repository**. First one is a file that you can view,
+edit or delete on your file system. Once you've made some changes and tested
+that it works or you just want to make sure that you have your modifications
+saved on one aditional place, you can commit changes to the local repository.
 
-But to avoid solving conflicts 3 times a day, it's a good practice to use
-branches.
+When you think you are done with the feature, you'll **push** the changes from
+your local to the remote repository.
 
-* Describe versions and commits
-* Describe branches and pull requests
-* Describe how we are going to use it
+To avoid solving conflicts 33 times a day, it's a good practice to use
+**feature branches**. The idea is to separate work logically in smaller tasks.
+When you want to create a new feature or fix, you create a new branch which
+detaches you from the branch you were previously on. New commits that you now 
+make will be pushed in a new branch and won't conflict with work others are
+making.
 
-### Your first repository, or fiftieth
+The name of the deafault branch you have when you create a repository
+is **master**. In many cases code in this branch is actually the code in
+production so you don't really want to push the changes that you are not sure
+that they work together. For this you use **develop** branch where you will
+integrate your features.
 
-So let's start your journey to Ruby by creating a repository where you will
-store your project and solve homeworks. Open
-[GitHub homepage](https://github.com/) and sign in. If you don't have an account
-already, sign-up process is easy - just enter your username, email and password.
-Our suggestion would be to choose a non-embarrassing username as this will be
-public info. You don't have to put a name behind your code or vice versa (in a
-CV or on LinkedIn) but in future you might want to do that and
-*princesspeach98* might not be the best choice.
+When you are sure everything works, you'll **merge** the latest code to the
+master branch.
 
-![Creating GitHub account for princesspeach](./images/github-sign-up.png)
+### A typical workflow
 
-Now, you'll create a new repository. Navigate to 'New' in the menu or just open
-[new repository page](https://github.com/new). Enter `ruby-homework` as a
-repository name and for the description you can put something like this
-`A repository I will use to solve my Ruby homework`. Set the project to be
-**public**, you have nothing to hide. Initialize it **with readme** and
-**without license and gitignore**.
+Let's say that Bobo, Cindy and Dieter are in their spare time developing a
+mobile application for checking daily menu in local cantines which allows their
+team to vote where do they want to go for a lunch. Bobo takes a task to fetch
+menu from local cantine website, Cindy implements the voting system and Dieter
+decides to fix issue that app is not working on latest OS version. As this are 
+relatively independent features, each of them will create a new branch.
+Bobo will name his *feature/add-cantine-cassandra*, Cindy will branch to
+*feature/add-polls* while Dieter will create *fix/list-display-on-android-pie*.
 
-![Creating a repository](./images/github-create-repo.png)
+Dieter does his task first and merges his work into develop branch. When done
+with her work, Cindy will first **fetch** data from remote server to see if some
+of here colleagues modified the develop branch in the meantime. If Dieters
+modification didn't affect her work git will be able to **fast-forward** and
+automatically merge her changes.
 
-### GitHub interface overview
+Bobo finally finishes his feature last and
+tries to merge but both him and Cindy modified the same function in one file. He
+will now have the task to solve the **merge conflict**. He modifies the file so
+that both features work but wants Cindy to inspect and approve the change. This
+is why he decides to create a **pull request** and add her as an **approver**.
+She will be notified of this and will able to review Bobos changes, ask for
+changes and comment his work. When she is satisfied with that she will aproove
+and now Bobo will be able to merge his work into develop. As this are all
+features for this week, Bobo now creates a new pull request from develop to
+master and adds Dieter as an approver so that he checks everything before the
+release.
 
-Congratulations, now you have a repository for your homework. It might your
-first or fiftieth, we know you are excited. Take a look around the interface.
-From the top to bottom and left to right, you can see the following info.
+![Typical GIT workflow](./images/git-typical-workflow.png)
 
-Navigation bar
-* Owner / Project name - notice it is the same as URL
-* Watchers - who is watching the project
-* Stars - who marked project with a star
-* Fork - who copied the project to contribute
+## Working with git
 
-Tabs
-* Code - where the code is when not chugging beers in a local bar
-* Issues - your code has none at the moment, that's great but if it will have
-  some when it grows up people can report that issues here so you can have a
-  talk
-* Pull requests - incoming changes to your project, we'll cover this later
-* Projects - if you want to plan features, rollouts etc
-* Wiki - you can document your project here if you wish to do sos
-* Insights - graphs and insights in your project
-* Settings - self explanatory, we'll have to modify something soon
+Although there are some popular graphical tools and integrations for git,
+command line is still most preferred by large number of people and it better
+demonstrates how git works. You can learn more about these commands if you add
+`--help` - eg. `git branch --help`.
 
-Basic project info
-* Repository description
-* Topics - you can add tags so that your project will be easier to find
-* Commits - how many changes were made to the project. Clicking on this will
-  show you timeline what changes were made to the project, who made them and
-  when
-* Branches - *versions* of the code, will be explained shortly
-* Releases - if you have some release versions, they will be shown here
-* Contributors - people colaborating on this project
+`git clone` makes a clon of the remote repository on your machine. It's usually
+the first step you will do when continuing the work on already existing
+repository.
 
-![Your fresh GitHub repository](./images/github-fresh-repo.png)
+`git init` if remote repositoy is empty (repo with readme is not empty) it will
+initialize it.
 
-Now we come to repository controls. Depending on the permissions you have on the
-project different some of these options might not be shown here.
+`git branch` allows you to list, create or delete branches
 
-* Current branch - branch you are currently looking at. Default one is called
-  master.
-* New pull request - if you have rights you'll be able to create one
-* Create new file - don't know if anybody uses this but you can create text or
-  source file directly through web interface. If you like whiteboard interviews
-  this might be the way for you to work. Otherwise, there are better ways.
-* Upload files - same as last one. Maybe more useful for designers.
-* Find file - does exactly what it says
-* Clone or download - allows you to get the code from GitHub repository to your
-  PC
+`git add` tells git to track the particular file, files or a directory.
 
-Little bit more info
-* Last contributor and commit message
-* Commit ID and time - you might use ID when referencing a specific commit
-* List of files
-* Preview of README.md file - it's written in a markdown. It's super-simple to
-  write short or even long guides how to run your code, how you can contribute
-  to the project or what it does. Modifying it will be a part of your first
-  task.
+`git commit` will analyse the tracked (staged) files and create a commit in the 
+local repository.
 
-OK, that's quite a lot of info. Don't even try to memorize this but play around
-and visit some of the popular repositories to see how their info looks. For
-example take a look at [Ruby](https://github.com/ruby/ruby) and
-[Rails](https://github.com/rails/rails) repositories. You'll see that they are
-made by the community, not by large enterprises governed by shareholders - for
-the many, not for the few.
+`git status` shows the current branch, modified, added and removed files as well
+as new files which are not tracked by git.
 
+In this example, we first created a new branch called example. Then we have
+created files file1 and file2. We have added file1 to git and commited our
+changes. After that we modified file1 and added file2. Status now shows that
+file1 was modified and file2 added, just as we expected. Commit will now save
+these changes to the local repository.
+
+![git status](./images/git-status.png)
+
+`git log` lists the latest commits in the current branch. It will also indicate
+where other branches are. To exit the view you need to press q.
+
+In this example, you'll see that we are curently 2 modifications ahead of our
+local master branch (green). Our current state is referred to *HEAD*. You'll also
+notice 2 additional references colored in red. Those are references to the
+remote repository called by default *origin*.
+
+![git log](./images/git-log-2.png)
+
+`git checkout` allows you to switch branches and align your files with local 
+repository.
+
+`git push` will push changes recorded in the local repository to the remote one.
+
+In this case you can notice that running default push failed as branch called
+example does not exist on our remote repository. By running `git push --set-upstream origin example` we tell that we want git to create one for us.
+
+![git push](./images/git-push.png)
+
+By following the link GitHub has provided in response to your push you will be
+able to create a pull request from branch example to master branch or to any
+other branch on the remote.
+
+![GitHub after push](./images/github-after-push.png)
 
 ## Ruby runtime
 
@@ -322,29 +330,50 @@ Before installing Ruby Linux users will have to install the
 `build-essentials` packet, while Mac userh have to install XCode from the
 AppStore, open it and accept the terms of use.
 
+```bash
+# On Ubuntu/Debian
+sudo apt install build-essentials
+
+# On Fedora/CentOS
+sudo dnf groupinstall "Development Tools" "Development Libraries"
+```
+
 If you are on Windows, go to
 [the RubyInstaller website](https://rubyinstaller.org/), download and run the
 installer, and just follow the on-screen instructions.
 
-If you are on Linux or Mac,
-run the following commands in succession, following any and all on-screen
-instructions:
+If you are on Linux or Mac, run the following commands in succession, following
+any and all on-screen instructions:
 
-1. `git clone https://github.com/rbenv/rbenv.git ~/.rbenv`
-2. `cd ~/.rbenv && src/configure && make -C src`
-3. `echo "$SHELL"`
-4. Depending on the last word after the last ` \ ` in the previous command
-   run the appropriate command:
-   - `bash` - `echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile &&  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc`
-   - `zsh` - `echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc`
-   - `fish` - `set -Ux fish_user_paths $HOME/.rbenv/bin $fish_user_paths`
-5. `~/.rbenv/bin/rbenv init`
-6. Close you terminal program & reopen it
-7. `mkdir -p "$(rbenv root)"/plugins`
-8. `git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build`
-9. Close you terminal program & reopen it
-10. `rbenv install 2.5.0`
-11. `rbenv global 2.5.0`
+```bash
+# Clone and make rbenv
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+cd ~/.rbenv && src/configure && make -C src
+
+# Test which shell are you running
+echo "$SHELL"
+
+# Depending on the last word after the last `\` in the previous command
+# run the appropriate command:
+# - bash
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile &&  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+# - zsh
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
+# - fish
+set -Ux fish_user_paths $HOME/.rbenv/bin $fish_user_paths
+# end if
+
+# Initialize rbenv
+~/.rbenv/bin/rbenv init
+
+# Close you terminal program & reopen it
+mkdir -p "$(rbenv root)"/plugins
+git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+
+# Close you terminal program & reopen it
+rbenv install 2.5.0
+rbenv global 2.5.0
+```
 
 Huh, that was a lot. But now we have Ruby installed! Let's test our
 installation!
@@ -365,18 +394,178 @@ directory as the `test.rb` file run the following command `ruby test.rb`.
 
 ![Expected output after the test](./images/ruby-test.png)
 
-# Assignment
+## Assignment
 
-Clone the `ruby-homework` repository you created earlier from GitHub to your
-computer. This can be done using the `git clone` command and the remote URL that
-can be found on GitHub (when clicking on the green "Clone or download" button,
-and choosing "use HTTPS" in the top right - if you see "use SSH" then just copy
-the url).
+This chapters homework includes creating your own repository on GitHub,
+modifying the readme and creating a pull request. This workflow will be used
+in the future for homework review as you will be adding members of teaching
+staff as approvers/reviewers to your pull requests.
 
-When you run the command, git will ask you for your GitHub username and
-password, this is normal, comply to the request.
+If you are already familiar with some of this steps, you can skip them.
 
-Now you have a copy of your homework repository on your computer.
+1. [Create a GitHub account](#create-a-github-account)
+2. [Create your first repository](#create-your-first-repository)
+3. [GitHub interface overview](#github-interface-overview)
+4. [Clone the repository](#clone-the-repository)
+5. [Modify the readme](#modify-the-readme)
+6. [Print in Ruby](#print-in-Ruby)
+7. [Create your first pull request](#create-your-first-pull-request)
+
+### Create a GitHub account
+
+So let's start your journey to Ruby by creating a repository where you will
+store your project and solve homeworks. Open
+[GitHub homepage](https://github.com/) and sign in.
+
+If you don't have an account already, sign-up process is easy - just enter your
+username, email and password. Our suggestion would be to choose a
+non-embarassing username as this will be public info. You don't have to put a
+name behind your code or vice versa (in a CV or on Linkedin) but in future you
+might wan't to do that and *princesspeach98* might not be the best choice.
+
+![Creating GitHub account for princesspeach](./images/github-sign-up.png)
+
+### Create your first repository
+
+Navigate to 'New' in the menu or just open
+[new repository page](https://github.com/new).
+
+Enter `ruby-homework` as a repository name and for the description you can put
+something like this `A repository I will use to solve my Ruby homework`.
+
+Set the project to be **public**, you have nothing to hide. Initialize it **with
+readme** and **without license and gitignore**.
+
+![Creating a repository](./images/github-create-repo.png)
+
+### GitHub interface overview
+
+Congratulations, now you have a repository for your homework. It might your
+first or fiftieth, we know you are excited. Take a look around the interface.
+From the top to bottom and left to right, you can see the following info.
+
+Navigation bar
+* Owner / Project name - notice it is the same as URL
+* Watchers - who is watching the project
+* Stars - who marked project with a star
+* Fork - who copied the project to contribute
+
+Tabs
+* Code - where the code is when not chugging beers in a local bar
+* Issues - your code has none at the moment, that's great but if it will have
+  some when it grows up people can report that issues here so you can have a
+  talk
+* Pull requests - incoming changes to your project that need a review
+* Projects - if you want to plan features, rollouts etc
+* Wiki - you can document your project here if you wish to do so
+* Insights - graphs and insights to your project
+* Settings - self explanatory, we'll have to modify something soon
+
+Basic project info
+* Repository description
+* Topics - you can add tags so that your project will be easier to find
+* Commits - how many changes were made to the project. Clicking on this will
+  show you timeline what changes were made to the project, who made them and
+  when
+* Branches - will show you branches remote repository knows of
+* Releases - if you have some release versions, they will be shown here
+* Contributors - people colaborating on this project
+
+![Your fresh GitHub repository](./images/github-fresh-repo.png)
+
+Now we come to repository controls. Depending on the permissions you have on the
+project different some of these options might not be shown here.
+
+* Current branch - branch you are currently looking at. Default one is called
+  master.
+* New pull request - if you have rights you'll be able to create one
+* Create new file - don't know if anybody uses this but you can create text or
+  source file directly through web interface. If you like whiteboard interviews
+  this might be the way for you to work. Otherwise, there are better ways.
+* Upload files - same as last one. Maybe more useful for designers.
+* Find file - does exactly what it says
+* Clone or download - allows you to get the code from GitHub repository to your
+  computer
+
+Little bit more info
+* Last contributor and commit message
+* Commit ID and time - you might use ID when referencing a specific commit
+* List of files
+* Preview of README.md file - it's written in a markdown. It's super-simple to
+  write short or even long guides how to run your code, how you can contribute
+  to the project or what it does. Modifying it will be a part of your first
+  task.
+
+OK, that's quite a lot of info. Don't even try to memorize this but play around
+and visit some of the popular repositories to see how their info looks. For
+example take a look at [Ruby](https://github.com/ruby/ruby) and
+[Rails](https://github.com/rails/rails) repositories. You'll see that they are
+made by the community, not by large enterprises governed by shareholders - for
+the many, not for the few.
+
+### Clone the repository
+
+After you have created your first GitHub repository and familiarized yourself
+with user interface, it has come time to clone it to your PC.
+
+Open up the terminal emulator. Make sure you have git and it is in the
+path by running `git --version`. If it gives you current version of git, it
+works and if it doesn't know what git is, you'll have to install it. On MacOS
+you should be propted to install git if last commaind fails. On Linux you need
+to run one of these commands to install git.
+
+```bash
+# On Ubuntu, Debian and similar distributions run this
+sudo apt install git
+
+# On Fedora, CentOS etc run this
+sudo dnf install git
+```
+
+Now test running `git --version` to see if this is working. In case it is, in a
+web browser navigate to the repository you have just created. Click on green
+button called `Clone or download` and copy the URL.
+
+Navigate to where you want to have your repository saved. Git will automatically 
+create a folder with the same name as your repository so you don't have to be
+afraid that new files will apear in your C: or home directory. Execute clone.
+
+```bash
+# Command should look something like this
+git clone https://github.com/Xenosb/ruby-homework.git
+```
+
+### Create your first branch
+
+To have your code reviewed by teaching staff, you will have to create pull
+requests when you are done with the homework. To be able to create pull request
+you will first need a branch. Create one and don't forget to switch to it.
+
+```bash
+# Create a new branch
+git branch feature/first-assignment
+
+# Switch to the newly created branch
+git checkout feature/first-assignment
+```
+
+### Modify the readme
+
+Using your preferred text editor, open file called `README.md`. This file will
+by default be shown on GitHub website when you show the source code. Code
+formating and styling is achieved using markdown. Take look at [GitHub post
+explaining markdown](https://guides.github.com/features/mastering-markdown/).
+
+Do the following tasks:
+- [ ] Modify readme title annotated by 1st level header `#`
+- [ ] Mention that you are following Ruby course
+      `https://github.com/monorkin/learn.rb` and add a link using `[text](URL)`
+- [ ] Add a 2nd level header with title *My favorite programming languages*
+- [ ] Add unsorted list of your favorite programming languages
+- [ ] Italic ones you have used learned at university, bold ones you haven't
+- [ ] Add image of your favorite dog breed `[Breed name](URL.png)`
+
+### Print in Ruby
 
 Open up your text editor and create an empty file in the directory where you
 cloned the homework repository. Name the file `hello_world.rb`.
@@ -384,11 +573,36 @@ cloned the homework repository. Name the file `hello_world.rb`.
 In it copy the following `puts '<message>'` and replace `<message>` with a
 heartwarming message to the world.
 
-When you are done commit your work using `git commit -m 'Hello world'` and then
-push it to the remote using `git push`.
+```bash
+git push --set-upstream origin feature/first-assignment
+```
+Check if output reported any errors
 
-You are done when you can see the file you created through the GitHub interface.
-When done, copy the URL of your GitHub repository and email it to the
-instructor.
+### Create your first pull request
 
-Happy hacking!
+First you will have to add collaborators to your project. You can do that in
+GitHub project settings on the web site of your repository. Navigate to the page
+and add `monorkin` and `Xenosb`. In future you will add other members of
+teaching staff.
+
+![Adding a collaborator](./images/github-add-collaborator.png)
+
+Return to your main page and you should see a yellowish bar and button with text 
+*Compare & pull request*. If this is no longer visible, you can click on button
+*New pull request* and specify the branches. *base* is the branch you are
+merging your *compare* branch.
+
+Add members of teaching staff as reviewers, write a title and explanation that
+make some sense - eg what have you modifed. Scroll down and see what has changed
+in the files. Removed files will be marked with red, added with green. Click
+*Create pull request*.
+
+![Creating a pull request](./images/github-create-pr.png)
+
+Now you have to wait for the review. :)
+
+See you at the next lecture when we'll talk more about Ruby. If you noticed some
+mistakes in the lecture or have some suggestions for us, feel free to contact
+us.
+
+**Happy hacking!**
