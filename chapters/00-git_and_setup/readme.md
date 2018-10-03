@@ -12,7 +12,7 @@ people Ruby with a focus on Ruby on Rails.
 3. [Ruby runtime](#ruby-runtime)
 4. [Git version tracker](#git-version-tracker)
 5. [Working with Git](#working-with-git)
-6. [Homework](#homework)
+6. [Assignment](#assignment)
 
 ## Introduction
 
@@ -32,8 +32,8 @@ Now, with the disclaimers out of the way, we can finally begin!
 For this course we'll need four basic tools:
 1. A terminal emulator
 2. A text editor
-3. The Ruby runtime
-4. Git version tracker
+3. The Git version tracker
+4. The Ruby runtime
 
 Let's take each tool and explain why we need it.
 
@@ -133,48 +133,12 @@ called [Ruby Mine](https://www.jetbrains.com/ruby/).
 
 A text editor is like a religion to a programmer, so depending on why you ask
 you will get a different answer which one is best. My suggestion it to pick
-one that you are most comfortable with. If you end up not liking it, jsut
+one that you are most comfortable with. If you end up not liking it, just
 switch to another one.
-
-## Ruby runtime
-
-Finally we get to install Ruby!
-
-So what is a runtime and why do we need it to run Ruby programs?
-There are many different kinds of programming languages, Ruby falls into the
-category of a dynamically typed - interpreted language.
-
-This means that your processor doesn't understand Ruby code directly, and Ruby
-code never gets compiled to ones and zeroes. Instead we install a piece of
-software called the virtual machine or runtime which reads our program
-line-by-line and interprets the instructions we wrote in Ruby for the processor
-to execute.
-
-The opposite of this approach is a compiled language (e.g. C or Rust)
-where we write our code first, then we give it to a compiler which translates it
-into zeroes and ones which the processor understands. The upside of this
-approach is speed. A compiled program will always be faster then an interpreted
-one. But the downside is portability, meaning a compiled program will only work
-on computers with the same processor and has to be recompiled for all other
-computers. Interpreted laguages circumvent this issue by compiling only the
-runtime for each computer, so that your program doesn't have to.
-
-At the time of writing the newest version of Ruby is 2.5.
-Ruby has many versions, to install and manage them we are going to install a
-program called `rbenv` which, as the name suggests, is a Ruby environment
-manager.
-
-Before we continue, some Linux distributions and all MacOS distributions come
-with Ruby pre-installed. You can open up a terminal and type in `ruby -v` to
-check if you have it already installed (if it errors, you don't, else you do).
-If you do, follow these instructions anyway as working with your system
-installation of Ruby may cause subtle issues.
-
-![Result of running ruby -v](./images/terminal-ruby_v.png)
 
 ## GIT version tracker
 
-*Git is a version-control system for tracking changes in computer files and
+Git is a version-control system for tracking changes in computer files and
 coordinating work on those files among multiple people. It is primarily used for
 source-code management in software development, but it can be used to keep track
 of changes in any set of files. As a distributed revision-control system, it is
@@ -202,7 +166,7 @@ compare which lines were added, removed or modified. You don't even have to
 submit all files every time. When you submit modifications to the repository,
 it's called a **commit**.
 
-A git commit consists of consists of 
+A git commit consists of consists of
 * an ID *(SHA-1 hash)*
 * commit date
 * authors name and email
@@ -326,7 +290,111 @@ other branch on the remote.
 
 ![GitHub after push](./images/github-after-push.png)
 
-## Homework
+## Ruby runtime
+
+Finally we get to install Ruby!
+
+So what is a runtime and why do we need it to run Ruby programs?
+There are many different kinds of programming languages, Ruby falls into the
+category of a dynamically typed - interpreted language.
+
+This means that your processor doesn't understand Ruby code directly, and Ruby
+code never gets compiled to ones and zeroes. Instead we install a piece of
+software called the virtual machine or runtime which reads our program
+line-by-line and interprets the instructions we wrote in Ruby for the processor
+to execute.
+
+The opposite of this approach is a compiled language (e.g. C or C++)
+where we write our code first, then we give it to a compiler which translates it
+into zeroes and ones which the processor understands. The upside of this
+approach is speed. A compiled program will always be faster then an interpreted
+one. But the downside is portability, meaning a compiled program will only work
+on computers with the same processor and has to be recompiled for all other
+computers. Interpreted languages circumvent this issue by compiling only the
+runtime for each computer, so that your program doesn't have to.
+
+At the time of writing the newest version of Ruby is 2.5.
+Ruby has many versions, to install and manage them we are going to install a
+program called `rbenv` which, as the name suggests, is a Ruby environment
+manager.
+
+Before we continue, some Linux distributions and all MacOS distributions come
+with Ruby pre-installed. You can open up a terminal and type in `ruby -v` to
+check if you have it already installed (if it errors, you don't, else you do).
+If you do, follow these instructions anyway as working with your system
+installation of Ruby may cause subtle issues.
+
+![Result of running ruby -v](./images/terminal-ruby_v.png)
+
+Before installing Ruby Linux users will have to install the
+`build-essentials` packet, while Mac userh have to install XCode from the
+AppStore, open it and accept the terms of use.
+
+```bash
+# On Ubuntu/Debian
+sudo apt install build-essentials
+
+# On Fedora/CentOS
+sudo dnf groupinstall "Development Tools" "Development Libraries"
+```
+
+If you are on Windows, go to
+[the RubyInstaller website](https://rubyinstaller.org/), download and run the
+installer, and just follow the on-screen instructions.
+
+If you are on Linux or Mac, run the following commands in succession, following
+any and all on-screen instructions:
+
+```bash
+# Clone and make rbenv
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+cd ~/.rbenv && src/configure && make -C src
+
+# Test which shell are you running
+echo "$SHELL"
+
+# Depending on the last word after the last `\` in the previous command
+# run the appropriate command:
+# - bash
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile &&  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+# - zsh
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
+# - fish
+set -Ux fish_user_paths $HOME/.rbenv/bin $fish_user_paths
+# end if
+
+# Initialize rbenv
+~/.rbenv/bin/rbenv init
+
+# Close you terminal program & reopen it
+mkdir -p "$(rbenv root)"/plugins
+git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+
+# Close you terminal program & reopen it
+rbenv install 2.5.0
+rbenv global 2.5.0
+```
+
+Huh, that was a lot. But now we have Ruby installed! Let's test our
+installation!
+
+Open up your text editor, create a new empty file and name it `test.rb` and
+save it on your Desktop. In it copy the following:
+
+```Ruby
+puts '+==================+'
+puts '| Ruby is amazing! |'
+puts '+==================+'
+```
+
+And save the file.
+
+Then find the file in your terminal (using `cd`). When you are in the same
+directory as the `test.rb` file run the following command `ruby test.rb`.
+
+![Expected output after the test](./images/ruby-test.png)
+
+## Assignment
 
 This chapters homework includes creating your own repository on GitHub,
 modifying the readme and creating a pull request. This workflow will be used
@@ -362,7 +430,8 @@ might wan't to do that and *princesspeach98* might not be the best choice.
 Navigate to 'New' in the menu or just open
 [new repository page](https://github.com/new).
 
-Enter `ruby-homework` as a repository name and for the description you can put something like this `A repository I will use to solve my Ruby homework`.
+Enter `ruby-homework` as a repository name and for the description you can put
+something like this `A repository I will use to solve my Ruby homework`.
 
 Set the project to be **public**, you have nothing to hide. Initialize it **with
 readme** and **without license and gitignore**.
@@ -404,10 +473,10 @@ Basic project info
 
 ![Your fresh GitHub repository](./images/github-fresh-repo.png)
 
-Now we come to repository controls. Depending on the permisions you have on the
+Now we come to repository controls. Depending on the permissions you have on the
 project different some of these options might not be shown here.
 
-* Current branch - brach you are currently looking at. Default one is called
+* Current branch - branch you are currently looking at. Default one is called
   master.
 * New pull request - if you have rights you'll be able to create one
 * Create new file - don't know if anybody uses this but you can create text or
@@ -422,7 +491,7 @@ Little bit more info
 * Last contributor and commit message
 * Commit ID and time - you might use ID when referencing a specific commit
 * List of files
-* Preview of README.md file - it's writen in a markdown. It's super-simple to
+* Preview of README.md file - it's written in a markdown. It's super-simple to
   write short or even long guides how to run your code, how you can contribute
   to the project or what it does. Modifying it will be a part of your first
   task.
@@ -474,10 +543,10 @@ you will first need a branch. Create one and don't forget to switch to it.
 
 ```bash
 # Create a new branch
-git branch feature/new-readme
+git branch feature/first-assignment
 
 # Switch to the newly created branch
-git checkout new-readme
+git checkout feature/first-assignment
 ```
 
 ### Modify the readme
@@ -494,19 +563,20 @@ Do the following tasks:
 - [ ] Add a 2nd level header with title *My favorite programming languages*
 - [ ] Add unsorted list of your favorite programming languages
 - [ ] Italic ones you have used learned at university, bold ones you haven't
-- [ ] Add a code block with a for-loop printing numbers 1-10 in ruby or any other 
-      language in code block
 - [ ] Add image of your favorite dog breed `[Breed name](URL.png)`
 
-Add the file to the next commit and commit the changes. Check if everything is
-ok by running git status and log. After that, push your code to the remote
-repository.
+### Print in Ruby
+
+Open up your text editor and create an empty file in the directory where you
+cloned the homework repository. Name the file `hello_world.rb`.
+
+In it copy the following `puts '<message>'` and replace `<message>` with a
+heartwarming message to the world.
 
 ```bash
-git push --set-upstream origin feature/new-readme
+git push --set-upstream origin feature/first-assignment
 ```
-
-Check if output reported any errors 
+Check if output reported any errors
 
 ### Create your first pull request
 
@@ -534,3 +604,5 @@ Now you have to wait for the review. :)
 See you at the next lecture when we'll talk more about Ruby. If you noticed some
 mistakes in the lecture or have some suggestions for us, feel free to contact
 us.
+
+**Happy hacking!**
