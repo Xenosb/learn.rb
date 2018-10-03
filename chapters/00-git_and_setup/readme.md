@@ -270,6 +270,16 @@ release.
 
 ## Working with git
 
+TODO:
+* git status
+* git log
+* git branch
+* git checkout
+* git add
+* git rm
+* git commit
+* git push
+
 ## Homework
 
 This chapters homework includes creating your own repository on GitHub,
