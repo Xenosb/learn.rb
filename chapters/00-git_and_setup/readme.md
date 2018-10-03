@@ -7,12 +7,12 @@ people Ruby with a focus on Ruby on Rails.
 ## Chapters
 
 1. [Introduction](#introduction)
-1. [Terminal emulator](#terminal-emulator)
-2. [Text editor](#text-editor)
-3. [Ruby runtime](#ruby-runtime)
+2. [Terminal emulator](#terminal-emulator)
+3. [Text editor](#text-editor)
 4. [Git version tracker](#git-version-tracker)
 5. [Working with Git](#working-with-git)
-6. [Assignment](#assignment)
+6. [Ruby runtime](#ruby-runtime)
+7. [Assignment](#assignment)
 
 ## Introduction
 
@@ -407,8 +407,8 @@ If you are already familiar with some of this steps, you can skip them.
 2. [Create your first repository](#create-your-first-repository)
 3. [GitHub interface overview](#github-interface-overview)
 4. [Clone the repository](#clone-the-repository)
-5. [Create the first branch](#create-the-first-branch)
-6. [Modify the readme](#modify-the-readme)
+5. [Modify the readme](#modify-the-readme)
+6. [Print in Ruby](#print-in-Ruby)
 7. [Create your first pull request](#create-your-first-pull-request)
 
 ### Create a GitHub account
