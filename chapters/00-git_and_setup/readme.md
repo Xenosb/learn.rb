@@ -270,15 +270,61 @@ release.
 
 ## Working with git
 
-TODO:
-* git status
-* git log
-* git branch
-* git checkout
-* git add
-* git rm
-* git commit
-* git push
+Although there are some popular graphical tools and integrations for git,
+command line is still most preferred by large number of people and it better
+demonstrates how git works. You can learn more about these commands if you add
+`--help` - eg. `git branch --help`.
+
+`git clone` makes a clon of the remote repository on your machine. It's usually
+the first step you will do when continuing the work on already existing
+repository.
+
+`git init` if remote repositoy is empty (repo with readme is not empty) it will
+initialize it.
+
+`git branch` allows you to list, create or delete branches
+
+`git add` tells git to track the particular file, files or a directory.
+
+`git commit` will analyse the tracked (staged) files and create a commit in the 
+local repository.
+
+`git status` shows the current branch, modified, added and removed files as well
+as new files which are not tracked by git.
+
+In this example, we first created a new branch called example. Then we have
+created files file1 and file2. We have added file1 to git and commited our
+changes. After that we modified file1 and added file2. Status now shows that
+file1 was modified and file2 added, just as we expected. Commit will now save
+these changes to the local repository.
+
+![git status](./images/git-status.png)
+
+`git log` lists the latest commits in the current branch. It will also indicate
+where other branches are. To exit the view you need to press q.
+
+In this example, you'll see that we are curently 2 modifications ahead of our
+local master branch (green). Our current state is referred to *HEAD*. You'll also
+notice 2 additional references colored in red. Those are references to the
+remote repository called by default *origin*.
+
+![git log](./images/git-log-2.png)
+
+`git checkout` allows you to switch branches and align your files with local 
+repository.
+
+`git push` will push changes recorded in the local repository to the remote one.
+
+In this case you can notice that running default push failed as branch called
+example does not exist on our remote repository. By running `git push --set-upstream origin example` we tell that we want git to create one for us.
+
+![git push](./images/git-push.png)
+
+By following the link GitHub has provided in response to your push you will be
+able to create a pull request from branch example to master branch or to any
+other branch on the remote.
+
+![GitHub after push](./images/github-after-push.png)
 
 ## Homework
 
