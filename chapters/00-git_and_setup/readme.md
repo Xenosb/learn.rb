@@ -4,6 +4,18 @@ This is the first chapter in a series of 10 of the
 [learn.rb project](https://github.com/monorkin/learn.rb) who's goal is to teach
 people Ruby with a focus on Ruby on Rails.
 
+## Chapters
+
+1. [Introduction](#introduction)
+1. [Terminal emulator](#terminal-emulator)
+2. [Text editor](#text-editor)
+3. [Ruby runtime](#ruby-runtime)
+4. [Git version tracker](#git-version-tracker)
+5. [Working with Git](#working-with-git)
+6. [Homework](#homework)
+
+## Introduction
+
 The goal of this introduction chapter is to get you up and running with the
 tools that we'll need to finish this course.
 
@@ -21,11 +33,11 @@ For this course we'll need four basic tools:
 1. A terminal emulator
 2. A text editor
 3. The Ruby runtime
-4. The Git version tracker
+4. Git version tracker
 
 Let's take each tool and explain why we need it.
 
-## The terminal emulator
+## Terminal emulator
 
 Most programmers still to this day honor standards that were set in the 80's and
 70's, because of that we to this day still use terminals to interact with all
@@ -124,14 +136,43 @@ you will get a different answer which one is best. My suggestion it to pick
 one that you are most comfortable with. If you end up not liking it, jsut
 switch to another one.
 
-## GIT
+## Ruby runtime
 
-Before we finally start discussing Ruby we'll explain git - what it is and
-how we are going to use it in this project.
+Finally we get to install Ruby!
 
-### What the git?
+So what is a runtime and why do we need it to run Ruby programs?
+There are many different kinds of programming languages, Ruby falls into the
+category of a dynamically typed - interpreted language.
 
-*(Shameless copy from [Wikipedia](https://en.wikipedia.org/wiki/Git))*
+This means that your processor doesn't understand Ruby code directly, and Ruby
+code never gets compiled to ones and zeroes. Instead we install a piece of
+software called the virtual machine or runtime which reads our program
+line-by-line and interprets the instructions we wrote in Ruby for the processor
+to execute.
+
+The opposite of this approach is a compiled language (e.g. C or Rust)
+where we write our code first, then we give it to a compiler which translates it
+into zeroes and ones which the processor understands. The upside of this
+approach is speed. A compiled program will always be faster then an interpreted
+one. But the downside is portability, meaning a compiled program will only work
+on computers with the same processor and has to be recompiled for all other
+computers. Interpreted laguages circumvent this issue by compiling only the
+runtime for each computer, so that your program doesn't have to.
+
+At the time of writing the newest version of Ruby is 2.5.
+Ruby has many versions, to install and manage them we are going to install a
+program called `rbenv` which, as the name suggests, is a Ruby environment
+manager.
+
+Before we continue, some Linux distributions and all MacOS distributions come
+with Ruby pre-installed. You can open up a terminal and type in `ruby -v` to
+check if you have it already installed (if it errors, you don't, else you do).
+If you do, follow these instructions anyway as working with your system
+installation of Ruby may cause subtle issues.
+
+![Result of running ruby -v](./images/terminal-ruby_v.png)
+
+## GIT version tracker
 
 *Git is a version-control system for tracking changes in computer files and
 coordinating work on those files among multiple people. It is primarily used for
@@ -140,17 +181,15 @@ of changes in any set of files. As a distributed revision-control system, it is
 aimed at speed, data integrity, and support for distributed, non-linear
 workflows. Git was created by Linus Torvalds in 2005 for development of the
 Linux kernel, with other kernel developers contributing to its initial
-development.*
+development. - [Wikipedia](https://en.wikipedia.org/wiki/Git)*
 
-*(End of shameless copy)*
-
-So it's basically a tool which helps developers, designers and any other people
-avoid having to name their files *poster_final_final_4_final* or having to
-share their data over USB stick, network disk, cloud or punchcard stack. It's
+So it's basically git is a tool which helps developers, designers and any other
+people avoid having to name their files *poster_final_final_4_final* or having
+to share their data over USB stick, network disk, cloud or punchcard stack. It's
 not the only tool for versioning and you might be familiar with others such as
 svn, mercurial or tfs. Reason we opted to use git is because it is most popular
 and there is a myriad of websites which will be more than glad to host your
-code for free. You are reding this on a GitHub but might be know of GitLab,
+code for free. You are reding this on a GitHub but might know of GitLab,
 Bitbucket or Beanstalk.
 
 ### How does it work?
@@ -173,50 +212,108 @@ A git commit consists of consists of
 
 ![List of recent changes](./images/git-log.png)
 
-Let's paint a picture where you are working on the same project and same file as
-Anna. She likes to commit code very often not to lose it. Imagine if you'd have
-to constantly receive updates and have the build fail because she messed
-something up. To prevent this from happeng, give you a pice of mind and for some
-other reasons, git actually works in such a way that the same file is stored in
-**3 different locations - filesystem, local repository and remote repository**.
-First one is a file that you can view, edit or delete on your file system. Once
-you've made some changes and tested that it works or you just want to make sure
-that you have your modifications saved on one aditional place, you can commit
-changes to the local repository. When you think you are done with the feature,
-you'll push the code from your local to the remote repository. At that time, git
-will check if Anna made some modifications to the files you've been working on
-and help you resolve conflicts if there were any.
+Git system will store all of your files in **3 different locations - filesystem,
+local repository and remote repository**. First one is a file that you can view,
+edit or delete on your file system. Once you've made some changes and tested
+that it works or you just want to make sure that you have your modifications
+saved on one aditional place, you can commit changes to the local repository.
 
-But to avoid solving conflicts 3 times a day, it's a good practice to use
-branches.
+When you think you are done with the feature, you'll **push** the changes from
+your local to the remote repository.
 
-* Describe vesions and commits
-* Describe branches and pull requests
-* Describe how we are going to use it
+To avoid solving conflicts 33 times a day, it's a good practice to use
+**feature branches**. The idea is to separate work logically in smaller tasks.
+When you want to create a new feature or fix, you create a new branch which
+detaches you from the branch you were previously on. New commits that you now 
+make will be pushed in a new branch and won't conflict with work others are
+making.
 
-### Your first repository, or fifthiet
+The name of the deafault branch you have when you create a repository
+is **master**. In many cases code in this branch is actually the code in
+production so you don't really want to push the changes that you are not sure
+that they work together. For this you use **develop** branch where you will
+integrate your features.
+
+When you are sure everything works, you'll **merge** the latest code to the
+master branch.
+
+### A typical workflow
+
+Let's say that Bobo, Cindy and Dieter are in their spare time developing a
+mobile application for checking daily menu in local cantines which allows their
+team to vote where do they want to go for a lunch. Bobo takes a task to fetch
+menu from local cantine website, Cindy implements the voting system and Dieter
+decides to fix issue that app is not working on latest OS version. As this are 
+relatively independent features, each of them will create a new branch.
+Bobo will name his *feature/add-cantine-cassandra*, Cindy will branch to
+*feature/add-polls* while Dieter will create *fix/list-display-on-android-pie*.
+
+Dieter does his task first and merges his work into develop branch. When done
+with her work, Cindy will first **fetch** data from remote server to see if some
+of here colleagues modified the develop branch in the meantime. If Dieters
+modification didn't affect her work git will be able to **fast-forward** and
+automatically merge her changes.
+
+Bobo finally finishes his feature last and
+tries to merge but both him and Cindy modified the same function in one file. He
+will now have the task to solve the **merge conflict**. He modifies the file so
+that both features work but wants Cindy to inspect and approve the change. This
+is why he decides to create a **pull request** and add her as an **approver**.
+She will be notified of this and will able to review Bobos changes, ask for
+changes and comment his work. When she is satisfied with that she will aproove
+and now Bobo will be able to merge his work into develop. As this are all
+features for this week, Bobo now creates a new pull request from develop to
+master and adds Dieter as an approver so that he checks everything before the
+release.
+
+![Typical GIT workflow](./images/git-typical-workflow.png)
+
+## Working with git
+
+## Homework
+
+This chapters homework includes creating your own repository on GitHub,
+modifying the readme and creating a pull request. This workflow will be used
+in the future for homework review as you will be adding members of teaching
+staff as approvers/reviewers to your pull requests.
+
+If you are already familiar with some of this steps, you can skip them.
+
+1. [Create a GitHub account](#create-a-github-account)
+2. [Create your first repository](#create-your-first-repository)
+3. [GitHub interface overview](#github-interface-overview)
+4. [Clone the repository](#clone-the-repository)
+5. [Create the first branch](#create-the-first-branch)
+6. [Modify the readme](#modify-the-readme)
+7. [Create your first pull request](#create-your-first-pull-request)
+
+### Create a GitHub account
 
 So let's start your journey to Ruby by creating a repository where you will
 store your project and solve homeworks. Open
-[GitHub homepage](https://github.com/) and sign in. If you don't have an account
-already, sign-up process is easy - just enter your username, email and password.
-Our suggestion would be to choose a non-embarassing username as this will be
-public info. You don't have to put a name behind your code or vice versa (in a 
-CV or on Linkedin) but in future you might wan't to do that and 
-*princesspeach98* might not be the best choice.
+[GitHub homepage](https://github.com/) and sign in.
+
+If you don't have an account already, sign-up process is easy - just enter your
+username, email and password. Our suggestion would be to choose a
+non-embarassing username as this will be public info. You don't have to put a
+name behind your code or vice versa (in a CV or on Linkedin) but in future you
+might wan't to do that and *princesspeach98* might not be the best choice.
 
 ![Creating GitHub account for princesspeach](./images/github-sign-up.png)
 
-Now, you'll create a new repository. Navigate to 'New' in the menu or just open
-[new repository page](https://github.com/new). Enter `ruby-homework` as a
-repository name and for the description you can put something like this
-`A repository I will use to solve my Ruby homework`. Set the project to be
-**public**, you have nothing to hide. Initialize it **with readme** and
-**without license and gitignore**.
+### Create your first repository
+
+Navigate to 'New' in the menu or just open
+[new repository page](https://github.com/new).
+
+Enter `ruby-homework` as a repository name and for the description you can put something like this `A repository I will use to solve my Ruby homework`.
+
+Set the project to be **public**, you have nothing to hide. Initialize it **with
+readme** and **without license and gitignore**.
 
 ![Creating a repository](./images/github-create-repo.png)
 
-### Github interface overview
+### GitHub interface overview
 
 Congratulations, now you have a repository for your homework. It might your
 first or fiftieth, we know you are excited. Take a look around the interface.
@@ -281,40 +378,10 @@ example take a look at [Ruby](https://github.com/ruby/ruby) and
 made by the community, not by large enterprises governed by shareholders - for
 the many, not for the few.
 
+### Clone the repository
 
-## Ruby runtime
+### Create the first branch
 
-Finally we get to install Ruby!
+### Modify the readme
 
-So what is a runtime and why do we need it to run Ruby programs?
-There are many different kinds of programming languages, Ruby falls into the
-category of a dynamically typed - interpreted language.
-
-This means that your processor doesn't understand Ruby code directly, and Ruby
-code never gets compiled to ones and zeroes. Instead we install a piece of
-software called the virtual machine or runtime which reads our program
-line-by-line and interprets the instructions we wrote in Ruby for the processor
-to execute.
-
-The opposite of this approach is a compiled language (e.g. C or Rust)
-where we write our code first, then we give it to a compiler which translates it
-into zeroes and ones which the processor understands. The upside of this
-approach is speed. A compiled program will always be faster then an interpreted
-one. But the downside is portability, meaning a compiled program will only work
-on computers with the same processor and has to be recompiled for all other
-computers. Interpreted laguages circumvent this issue by compiling only the
-runtime for each computer, so that your program doesn't have to.
-
-At the time of writing the newest version of Ruby is 2.5.
-Ruby has many versions, to install and manage them we are going to install a
-program called `rbenv` which, as the name suggests, is a Ruby environment
-manager.
-
-Before we continue, some Linux distributions and all MacOS distributions come
-with Ruby pre-installed. You can open up a terminal and type in `ruby -v` to
-check if you have it already installed (if it errors, you don't, else you do).
-If you do, follow these instructions anyway as working with your system
-installation of Ruby may cause subtle issues.
-
-![Result of running ruby -v](./images/terminal-ruby_v.png)
-
+### Create your first pull request
