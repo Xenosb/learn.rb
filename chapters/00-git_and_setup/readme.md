@@ -386,10 +386,10 @@ Tabs
 * Issues - your code has none at the moment, that's great but if it will have
   some when it grows up people can report that issues here so you can have a
   talk
-* Pull requests - incoming changes to your project, we'll cover this later
+* Pull requests - incoming changes to your project that need a review
 * Projects - if you want to plan features, rollouts etc
-* Wiki - you can document your project here if you wish to do sos
-* Insights - graphs and insights in your project
+* Wiki - you can document your project here if you wish to do so
+* Insights - graphs and insights to your project
 * Settings - self explanatory, we'll have to modify something soon
 
 Basic project info
@@ -398,13 +398,13 @@ Basic project info
 * Commits - how many changes were made to the project. Clicking on this will
   show you timeline what changes were made to the project, who made them and
   when
-* Branches - *versions* of the code, will be explained shortly
+* Branches - will show you branches remote repository knows of
 * Releases - if you have some release versions, they will be shown here
 * Contributors - people colaborating on this project
 
 ![Your fresh GitHub repository](./images/github-fresh-repo.png)
 
-Now we come to repository controlls. Depending on the permisions you have on the
+Now we come to repository controls. Depending on the permisions you have on the
 project different some of these options might not be shown here.
 
 * Current branch - brach you are currently looking at. Default one is called
@@ -416,7 +416,7 @@ project different some of these options might not be shown here.
 * Upload files - same as last one. Maybe more useful for designers.
 * Find file - does exactly what it says
 * Clone or download - allows you to get the code from GitHub repository to your
-  PC
+  computer
 
 Little bit more info
 * Last contributor and commit message
@@ -436,8 +436,101 @@ the many, not for the few.
 
 ### Clone the repository
 
-### Create the first branch
+After you have created your first GitHub repository and familiarized yourself
+with user interface, it has come time to clone it to your PC.
+
+Open up the terminal emulator. Make sure you have git and it is in the
+path by running `git --version`. If it gives you current version of git, it
+works and if it doesn't know what git is, you'll have to install it. On MacOS
+you should be propted to install git if last commaind fails. On Linux you need
+to run one of these commands to install git.
+
+```bash
+# On Ubuntu, Debian and similar distributions run this
+sudo apt install git
+
+# On Fedora, CentOS etc run this
+sudo dnf install git
+```
+
+Now test running `git --version` to see if this is working. In case it is, in a
+web browser navigate to the repository you have just created. Click on green
+button called `Clone or download` and copy the URL.
+
+Navigate to where you want to have your repository saved. Git will automatically 
+create a folder with the same name as your repository so you don't have to be
+afraid that new files will apear in your C: or home directory. Execute clone.
+
+```bash
+# Command should look something like this
+git clone https://github.com/Xenosb/ruby-homework.git
+```
+
+### Create your first branch
+
+To have your code reviewed by teaching staff, you will have to create pull
+requests when you are done with the homework. To be able to create pull request
+you will first need a branch. Create one and don't forget to switch to it.
+
+```bash
+# Create a new branch
+git branch feature/new-readme
+
+# Switch to the newly created branch
+git checkout new-readme
+```
 
 ### Modify the readme
 
+Using your preferred text editor, open file called `README.md`. This file will
+by default be shown on GitHub website when you show the source code. Code
+formating and styling is achieved using markdown. Take look at [GitHub post
+explaining markdown](https://guides.github.com/features/mastering-markdown/).
+
+Do the following tasks:
+- [ ] Modify readme title annotated by 1st level header `#`
+- [ ] Mention that you are following Ruby course
+      `https://github.com/monorkin/learn.rb` and add a link using `[text](URL)`
+- [ ] Add a 2nd level header with title *My favorite programming languages*
+- [ ] Add unsorted list of your favorite programming languages
+- [ ] Italic ones you have used learned at university, bold ones you haven't
+- [ ] Add a code block with a for-loop printing numbers 1-10 in ruby or any other 
+      language in code block
+- [ ] Add image of your favorite dog breed `[Breed name](URL.png)`
+
+Add the file to the next commit and commit the changes. Check if everything is
+ok by running git status and log. After that, push your code to the remote
+repository.
+
+```bash
+git push --set-upstream origin feature/new-readme
+```
+
+Check if output reported any errors 
+
 ### Create your first pull request
+
+First you will have to add collaborators to your project. You can do that in
+GitHub project settings on the web site of your repository. Navigate to the page
+and add `monorkin` and `Xenosb`. In future you will add other members of
+teaching staff.
+
+![Adding a collaborator](./images/github-add-collaborator.png)
+
+Return to your main page and you should see a yellowish bar and button with text 
+*Compare & pull request*. If this is no longer visible, you can click on button
+*New pull request* and specify the branches. *base* is the branch you are
+merging your *compare* branch.
+
+Add members of teaching staff as reviewers, write a title and explanation that
+make some sense - eg what have you modifed. Scroll down and see what has changed
+in the files. Removed files will be marked with red, added with green. Click
+*Create pull request*.
+
+![Creating a pull request](./images/github-create-pr.png)
+
+Now you have to wait for the review. :)
+
+See you at the next lecture when we'll talk more about Ruby. If you noticed some
+mistakes in the lecture or have some suggestions for us, feel free to contact
+us.
