@@ -20,8 +20,8 @@ Now, with the disclaimers out of the way, we can finally begin!
 For this course we'll need four basic tools:
 1. A terminal emulator
 2. A text editor
-3. The Ruby runtime
-4. The Git version tracker
+3. The Git version tracker
+4. The Ruby runtime
 
 Let's take each tool and explain why we need it.
 
@@ -133,14 +133,14 @@ how we are going to use it in this project.
 
 *(Shameless copy from [Wikipedia](https://en.wikipedia.org/wiki/Git))*
 
-*Git is a version-control system for tracking changes in computer files and
+Git is a version-control system for tracking changes in computer files and
 coordinating work on those files among multiple people. It is primarily used for
 source-code management in software development, but it can be used to keep track
 of changes in any set of files. As a distributed revision-control system, it is
 aimed at speed, data integrity, and support for distributed, non-linear
 workflows. Git was created by Linus Torvalds in 2005 for development of the
 Linux kernel, with other kernel developers contributing to its initial
-development.*
+development.
 
 *(End of shameless copy)*
 
@@ -163,7 +163,7 @@ compare which lines were added, removed or modified. You don't even have to
 submit all files every time. When you submit modifications to the repository,
 it's called a **commit**.
 
-A git commit consists of consists of 
+A git commit consists of consists of
 * an ID *(SHA-1 hash)*
 * commit date
 * authors name and email
@@ -190,19 +190,19 @@ and help you resolve conflicts if there were any.
 But to avoid solving conflicts 3 times a day, it's a good practice to use
 branches.
 
-* Describe vesions and commits
+* Describe versions and commits
 * Describe branches and pull requests
 * Describe how we are going to use it
 
-### Your first repository, or fifthiet
+### Your first repository, or fiftieth
 
 So let's start your journey to Ruby by creating a repository where you will
 store your project and solve homeworks. Open
 [GitHub homepage](https://github.com/) and sign in. If you don't have an account
 already, sign-up process is easy - just enter your username, email and password.
-Our suggestion would be to choose a non-embarassing username as this will be
-public info. You don't have to put a name behind your code or vice versa (in a 
-CV or on Linkedin) but in future you might wan't to do that and 
+Our suggestion would be to choose a non-embarrassing username as this will be
+public info. You don't have to put a name behind your code or vice versa (in a
+CV or on LinkedIn) but in future you might want to do that and
 *princesspeach98* might not be the best choice.
 
 ![Creating GitHub account for princesspeach](./images/github-sign-up.png)
@@ -216,7 +216,7 @@ repository name and for the description you can put something like this
 
 ![Creating a repository](./images/github-create-repo.png)
 
-### Github interface overview
+### GitHub interface overview
 
 Congratulations, now you have a repository for your homework. It might your
 first or fiftieth, we know you are excited. Take a look around the interface.
@@ -251,10 +251,10 @@ Basic project info
 
 ![Your fresh GitHub repository](./images/github-fresh-repo.png)
 
-Now we come to repository controlls. Depending on the permisions you have on the
+Now we come to repository controls. Depending on the permissions you have on the
 project different some of these options might not be shown here.
 
-* Current branch - brach you are currently looking at. Default one is called
+* Current branch - branch you are currently looking at. Default one is called
   master.
 * New pull request - if you have rights you'll be able to create one
 * Create new file - don't know if anybody uses this but you can create text or
@@ -269,7 +269,7 @@ Little bit more info
 * Last contributor and commit message
 * Commit ID and time - you might use ID when referencing a specific commit
 * List of files
-* Preview of README.md file - it's writen in a markdown. It's super-simple to
+* Preview of README.md file - it's written in a markdown. It's super-simple to
   write short or even long guides how to run your code, how you can contribute
   to the project or what it does. Modifying it will be a part of your first
   task.
@@ -296,13 +296,13 @@ software called the virtual machine or runtime which reads our program
 line-by-line and interprets the instructions we wrote in Ruby for the processor
 to execute.
 
-The opposite of this approach is a compiled language (e.g. C or Rust)
+The opposite of this approach is a compiled language (e.g. C or C++)
 where we write our code first, then we give it to a compiler which translates it
 into zeroes and ones which the processor understands. The upside of this
 approach is speed. A compiled program will always be faster then an interpreted
 one. But the downside is portability, meaning a compiled program will only work
 on computers with the same processor and has to be recompiled for all other
-computers. Interpreted laguages circumvent this issue by compiling only the
+computers. Interpreted languages circumvent this issue by compiling only the
 runtime for each computer, so that your program doesn't have to.
 
 At the time of writing the newest version of Ruby is 2.5.
@@ -318,3 +318,77 @@ installation of Ruby may cause subtle issues.
 
 ![Result of running ruby -v](./images/terminal-ruby_v.png)
 
+Before installing Ruby Linux users will have to install the
+`build-essentials` packet, while Mac userh have to install XCode from the
+AppStore, open it and accept the terms of use.
+
+If you are on Windows, go to
+[the RubyInstaller website](https://rubyinstaller.org/), download and run the
+installer, and just follow the on-screen instructions.
+
+If you are on Linux or Mac,
+run the following commands in succession, following any and all on-screen
+instructions:
+
+1. `git clone https://github.com/rbenv/rbenv.git ~/.rbenv`
+2. `cd ~/.rbenv && src/configure && make -C src`
+3. `echo "$SHELL"`
+4. Depending on the last word after the last ` \ ` in the previous command
+   run the appropriate command:
+   - `bash` - `echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile &&  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc`
+   - `zsh` - `echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc`
+   - `fish` - `set -Ux fish_user_paths $HOME/.rbenv/bin $fish_user_paths`
+5. `~/.rbenv/bin/rbenv init`
+6. Close you terminal program & reopen it
+7. `mkdir -p "$(rbenv root)"/plugins`
+8. `git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build`
+9. Close you terminal program & reopen it
+10. `rbenv install 2.5.0`
+11. `rbenv global 2.5.0`
+
+Huh, that was a lot. But now we have Ruby installed! Let's test our
+installation!
+
+Open up your text editor, create a new empty file and name it `test.rb` and
+save it on your Desktop. In it copy the following:
+
+```Ruby
+puts '+==================+'
+puts '| Ruby is amazing! |'
+puts '+==================+'
+```
+
+And save the file.
+
+Then find the file in your terminal (using `cd`). When you are in the same
+directory as the `test.rb` file run the following command `ruby test.rb`.
+
+![Expected output after the test](./images/ruby-test.png)
+
+# Assignment
+
+Clone the `ruby-homework` repository you created earlier from GitHub to your
+computer. This can be done using the `git clone` command and the remote URL that
+can be found on GitHub (when clicking on the green "Clone or download" button,
+and choosing "use HTTPS" in the top right - if you see "use SSH" then just copy
+the url).
+
+When you run the command, git will ask you for your GitHub username and
+password, this is normal, comply to the request.
+
+Now you have a copy of your homework repository on your computer.
+
+Open up your text editor and create an empty file in the directory where you
+cloned the homework repository. Name the file `hello_world.rb`.
+
+In it copy the following `puts '<message>'` and replace `<message>` with a
+heartwarming message to the world.
+
+When you are done commit your work using `git commit -m 'Hello world'` and then
+push it to the remote using `git push`.
+
+You are done when you can see the file you created through the GitHub interface.
+When done, copy the URL of your GitHub repository and email it to the
+instructor.
+
+Happy hacking!
