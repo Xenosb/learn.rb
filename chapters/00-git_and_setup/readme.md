@@ -188,7 +188,7 @@ your local to the remote repository.
 To avoid solving conflicts 33 times a day, it's a good practice to use
 **feature branches**. The idea is to separate work logically in smaller tasks.
 When you want to create a new feature or fix, you create a new branch which
-detaches you from the branch you were previously on. New commits that you now 
+detaches you from the branch you were previously on. New commits that you now
 make will be pushed in a new branch and won't conflict with work others are
 making.
 
@@ -207,7 +207,7 @@ Let's say that Bobo, Cindy and Dieter are in their spare time developing a
 mobile application for checking daily menu in local cantines which allows their
 team to vote where do they want to go for a lunch. Bobo takes a task to fetch
 menu from local cantine website, Cindy implements the voting system and Dieter
-decides to fix issue that app is not working on latest OS version. As this are 
+decides to fix issue that app is not working on latest OS version. As this are
 relatively independent features, each of them will create a new branch.
 Bobo will name his *feature/add-cantine-cassandra*, Cindy will branch to
 *feature/add-polls* while Dieter will create *fix/list-display-on-android-pie*.
@@ -250,7 +250,7 @@ initialize it.
 
 `git add` tells git to track the particular file, files or a directory.
 
-`git commit` will analyse the tracked (staged) files and create a commit in the 
+`git commit` will analyse the tracked (staged) files and create a commit in the
 local repository.
 
 `git status` shows the current branch, modified, added and removed files as well
@@ -274,7 +274,7 @@ remote repository called by default *origin*.
 
 ![git log](./images/git-log-2.png)
 
-`git checkout` allows you to switch branches and align your files with local 
+`git checkout` allows you to switch branches and align your files with local
 repository.
 
 `git push` will push changes recorded in the local repository to the remote one.
@@ -327,12 +327,12 @@ installation of Ruby may cause subtle issues.
 ![Result of running ruby -v](./images/terminal-ruby_v.png)
 
 Before installing Ruby Linux users will have to install the
-`build-essentials` packet, while Mac userh have to install XCode from the
+`build-essentials` packet, while Mac users have to install XCode from the
 AppStore, open it and accept the terms of use.
 
 ```bash
 # On Ubuntu/Debian
-sudo apt install build-essentials
+sudo apt install -y build-essentials libssl-dev libreadline-dev zlib1g-dev
 
 # On Fedora/CentOS
 sudo dnf groupinstall "Development Tools" "Development Libraries"
@@ -346,51 +346,63 @@ If you are on Linux or Mac, run the following commands in succession, following
 any and all on-screen instructions:
 
 ```bash
-# Clone and make rbenv
 git clone https://github.com/rbenv/rbenv.git ~/.rbenv
 cd ~/.rbenv && src/configure && make -C src
+```
 
-# Test which shell are you running
+To determine which step to take next run the following command
+```
 echo "$SHELL"
+```
 
-# Depending on the last word after the last `\` in the previous command
-# run the appropriate command:
-# - bash
+Depending on the last word after the last ` \ ` in the previous command
+run the appropriate command:
+
+```bash
+# /.../bash
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-# - zsh
+
+# /.../zsh
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
-# - fish
+
+# /.../fish
 set -Ux fish_user_paths $HOME/.rbenv/bin $fish_user_paths
-# end if
+```
 
-# Initialize rbenv
+The run:
+
+```bash
 ~/.rbenv/bin/rbenv init
+```
 
-# Close you terminal program & reopen it
+Close you terminal program, reopen it and run:
+
+```bash
 mkdir -p "$(rbenv root)"/plugins
 git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+```
 
-# Close you terminal program & reopen it
+Close you terminal program, reopen it and run:
+
+```bash
 rbenv install 2.5.0
 
-# If rbenv install fails, it might signal you that you are missing libraries
-# To install them on Ubuntu just run
-sudo apt install -y libssl-dev libreadline-dev zlib1g-dev
-# And now attempt to install ruby 2.5.1 once again using
-rbenv install 2.5.0
-
-# If successfull, previous command will prompt installed ruby-2.5.0
-# Now set that ruby to be default one
 rbenv global 2.5.0
 
-# The last thing before we are done with this setup is to put ruby in our path
 echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+```
 
-# Now restart the terminal and you should see that running
+Once more, close and reopen your terminal and run:
+
+```bash
 ruby --version
-# will output something like
-# ruby 2.5.0p0 (YYYY-MM-DD revision XX) [x86_64-linux]
+```
+
+You should see an output similar to the following:
+
+```text
+ruby 2.5.0p0 (YYYY-MM-DD revision XX) [x86_64-linux]
 ```
 
 Huh, that was a lot. But now we have Ruby installed! Let's test our
@@ -544,7 +556,7 @@ Now test running `git --version` to see if this is working. In case it is, in a
 web browser navigate to the repository you have just created. Click on green
 button called `Clone or download` and copy the URL.
 
-Navigate to where you want to have your repository saved. Git will automatically 
+Navigate to where you want to have your repository saved. Git will automatically
 create a folder with the same name as your repository so you don't have to be
 afraid that new files will apear in your C: or home directory. Execute clone.
 
@@ -605,7 +617,7 @@ teaching staff.
 
 ![Adding a collaborator](./images/github-add-collaborator.png)
 
-Return to your main page and you should see a yellowish bar and button with text 
+Return to your main page and you should see a yellowish bar and button with text
 *Compare & pull request*. If this is no longer visible, you can click on button
 *New pull request* and specify the branches. *base* is the branch you are
 merging your *compare* branch.
