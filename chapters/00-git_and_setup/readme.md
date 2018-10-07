@@ -139,34 +139,41 @@ switch to another one.
 ## GIT version tracker
 
 Git is a version-control system for tracking changes in computer files and
-coordinating work on those files among multiple people. It is primarily used for
-source-code management in software development, but it can be used to keep track
-of changes in any set of files. As a distributed revision-control system, it is
-aimed at speed, data integrity, and support for distributed, non-linear
-workflows. Git was created by Linus Torvalds in 2005 for development of the
-Linux kernel, with other kernel developers contributing to its initial
-development. - [Wikipedia](https://en.wikipedia.org/wiki/Git)*
+coordinating work on those files among multiple people.
 
-So it's basically git is a tool which helps developers, designers and any other
+It is primarily used for source-code management in software development, but it
+can be used to keep track of changes in any set of files. As a distributed
+revision-control system, it is aimed at speed, data integrity, and support for
+distributed, non-linear workflows. Git was created by Linus Torvalds in 2005
+for development of the Linux kernel, with other kernel developers
+contributing to its initial development.
+- [Wikipedia](https://en.wikipedia.org/wiki/Git)*
+
+Basically git is a tool which helps developers, designers and any other
 people avoid having to name their files *poster_final_final_4_final* or having
-to share their data over USB stick, network disk, cloud or punchcard stack. It's
-not the only tool for versioning and you might be familiar with others such as
-svn, mercurial or tfs. Reason we opted to use git is because it is most popular
-and there is a myriad of websites which will be more than glad to host your
-code for free. You are reding this on a GitHub but might know of GitLab,
-Bitbucket or Beanstalk.
+to share their data over USB stick, network disk, cloud or punch card stack.
+
+It's not the only tool for versioning, you might be familiar with others such as
+svn, mercurial or tfs. The reason why we opted to use git is because it's the
+most popular and there is a myriad of websites which will be more than glad to
+host your code for free. You are reading this on a GitHub but might know of
+GitLab, Bitbucket or Beanstalk.
 
 ### How does it work?
 
 Let's say that you have a file which is 10.000 lines of code and you are
 modifying it multiple times every day. Storing a complete copy on every save
 would be very inefficient regarding space. Instead, idea is to keep track of
-changes. On every commit, git will look which files you have modified and
-compare which lines were added, removed or modified. You don't even have to
-submit all files every time. When you submit modifications to the repository,
-it's called a **commit**.
+changes.
 
-A git commit consists of consists of
+Every change you make has to be committed to the repository. Hence change
+increments are called 'commits' in git.
+
+On every commit, git will look which files you have been changed and
+compare which lines were added, removed or modified.
+
+A git commit consists of consists of:
+
 * an ID *(SHA-1 hash)*
 * commit date
 * authors name and email
@@ -176,49 +183,96 @@ A git commit consists of consists of
 
 ![List of recent changes](./images/git-log.png)
 
-Git system will store all of your files in **3 different locations - filesystem,
-local repository and remote repository**. First one is a file that you can view,
-edit or delete on your file system. Once you've made some changes and tested
-that it works or you just want to make sure that you have your modifications
-saved on one aditional place, you can commit changes to the local repository.
+Git system will store all of your files in 3 different locations:
 
-When you think you are done with the feature, you'll **push** the changes from
-your local to the remote repository.
+* filesystem,
+* local repository
+* remote repository
+
+The first one is the file that you can view, edit or delete on your file system.
+Once you've made some changes and have committed the to git they are stored in
+your local repository.
+
+When you are ready to share your work with others you ask git to push it to the
+remote servers. From there other people can pull tour code and modify it or they
+can just admire your handy-work.
+
+But working with others by pushing and pulling code from remote repositories
+introduces the possibility to create conflicts.
+
+A conflict is any change in which two people edited the same code in roughly the
+same time. You can think of it this way - if you and a colleague are working
+on the same book report, you are fixing typos while your college is actually
+writing the report. If you fix a typo simultaneously as your colleague moves
+that word, you will create a conflict. Why? Because the computer can't decide
+which is the final version of the report - the one where you fixed the typo
+or the one where your colleague moved the word around. Therefore it will prompt
+you to settle this manually - hence the name conflict.
 
 To avoid solving conflicts 33 times a day, it's a good practice to use
+**branches**. Branches are different just versions of your code. In one version
+your website might be ping, in the other it might be blue. As git allows you to
+create a version from another version this starts to resemble a tree-like
+structure, hence the name branches.
+
+To explain this through our book report example. To avoid conflicts both you
+and your colleague have to create a branch. On your branch you would only
+fix typos, while your colleague would only write text on his. Then when the both
+of you are done you can merge your branches together and resolve the conflicts
+only once.
+
+A generally good practice in programming is to create so called
 **feature branches**. The idea is to separate work logically in smaller tasks.
-When you want to create a new feature or fix, you create a new branch which
-detaches you from the branch you were previously on. New commits that you now
-make will be pushed in a new branch and won't conflict with work others are
-making.
+E.g. changing the color of the website from blue to pink, or fixing typos.
+When you want to create a new feature, you create a new branch and switch to it
+Switching branches and versions is called a 'checkout' in git. This name is
+a bit confusing but the checkout command can not only switch you from branch to
+branch but also from commit to commit. Therefore you use checkout to take the
+version you want to see.
 
-The name of the deafault branch you have when you create a repository
+After you checkout a branch, new commits that you now make will be pushed to the
+new branch and won't conflict with any work that others are committing to their
+branches.
+
+The name of the default branch you have when you create a repository
 is **master**. In many cases code in this branch is actually the code in
-production so you don't really want to push the changes that you are not sure
-that they work together. For this you use **develop** branch where you will
-integrate your features.
+that is currently being used so you don't really want to push the changes
+directly to it as any conflicts could break already working code.
+To avoid conflicts on master be branch from it to a branch named **develop**
+where feature get merged first and checks can be done to ensure that everything
+works as expected.
 
-When you are sure everything works, you'll **merge** the latest code to the
+When you are sure everything works, you will **merge** the latest code to the
 master branch.
+
+If you always merge new stuff to the develop branch and then merge the
+develop branch into the master branch no conflicts can appear as the master
+branch will always be behind the develop branch, in terms of changes made.
+This is similar to copying homework. One person writes the homework first and
+checks that all answers are correct and then you copy their homework. You can't
+create a conflict as there aren't any changes being made to your homework until
+the other person is done with theirs. In this example you are the master branch
+and the other person is the develop branch.
 
 ### A typical workflow
 
-Let's say that Bobo, Cindy and Dieter are in their spare time developing a
-mobile application for checking daily menu in local cantines which allows their
-team to vote where do they want to go for a lunch. Bobo takes a task to fetch
-menu from local cantine website, Cindy implements the voting system and Dieter
-decides to fix issue that app is not working on latest OS version. As this are
-relatively independent features, each of them will create a new branch.
-Bobo will name his *feature/add-cantine-cassandra*, Cindy will branch to
-*feature/add-polls* while Dieter will create *fix/list-display-on-android-pie*.
+Let's say that Bobo, Cindy and Dieter are developing in their spare time a
+mobile application for checking the daily menu in a local canteen which allows
+their team to vote where would they like to go for lunch.
+Bobo will implement a system to fetch the menu from the local canteen's website,
+Cindy will implement the voting system and Dieter decides to do the design.
+As this are independent features, each of them will create a new branch.
+Bobo will name his *feature/add-cantine-cassandra*,
+Cindy will branch to *feature/implement-polls*
+while Dieter will create *feature/design*.
 
 Dieter does his task first and merges his work into develop branch. When done
 with her work, Cindy will first **fetch** data from remote server to see if some
 of here colleagues modified the develop branch in the meantime. If Dieters
-modification didn't affect her work git will be able to **fast-forward** and
-automatically merge her changes.
+modification didn't affect her work git will be able to **fast-forward** meaning
+her changes are automatically merged.
 
-Bobo finally finishes his feature last and
+Bobo finishes his feature last and
 tries to merge but both him and Cindy modified the same function in one file. He
 will now have the task to solve the **merge conflict**. He modifies the file so
 that both features work but wants Cindy to inspect and approve the change. This
@@ -235,26 +289,29 @@ release.
 ## Working with git
 
 Although there are some popular graphical tools and integrations for git,
-command line is still most preferred by large number of people and it better
-demonstrates how git works. You can learn more about these commands if you add
+command line is still most preferred by large number of people.
+You can learn more about these commands if you add
 `--help` - eg. `git branch --help`.
 
-`git clone` makes a clon of the remote repository on your machine. It's usually
+`git clone` makes a clone of the remote repository on your machine. It's usually
 the first step you will do when continuing the work on already existing
 repository.
 
-`git init` if remote repositoy is empty (repo with readme is not empty) it will
+`git init` if remote repository is empty (repo with readme is not empty) it will
 initialize it.
 
 `git branch` allows you to list, create or delete branches
 
-`git add` tells git to track the particular file, files or a directory.
+`git add` tells git to add the particular file, files or directory to the next
+commit.
 
-`git commit` will analyse the tracked (staged) files and create a commit in the
+`git commit` will analyse the added (staged) files and create a commit in the
 local repository.
 
 `git status` shows the current branch, modified, added and removed files as well
 as new files which are not tracked by git.
+
+![git status](./images/git-status.png)
 
 In this example, we first created a new branch called example. Then we have
 created files file1 and file2. We have added file1 to git and commited our
@@ -262,33 +319,34 @@ changes. After that we modified file1 and added file2. Status now shows that
 file1 was modified and file2 added, just as we expected. Commit will now save
 these changes to the local repository.
 
-![git status](./images/git-status.png)
-
 `git log` lists the latest commits in the current branch. It will also indicate
-where other branches are. To exit the view you need to press q.
+where other branches are. To exit the view you need to press `q`.
 
-In this example, you'll see that we are curently 2 modifications ahead of our
+In this example, you'll see that we are currently 2 modifications ahead of our
 local master branch (green). Our current state is referred to *HEAD*. You'll also
 notice 2 additional references colored in red. Those are references to the
 remote repository called by default *origin*.
 
 ![git log](./images/git-log-2.png)
 
-`git checkout` allows you to switch branches and align your files with local
-repository.
+`git checkout` allows you to switch branches or to go to individual commits
+and updates your file system to reflect the state of the repository you checked
+out.
 
 `git push` will push changes recorded in the local repository to the remote one.
 
-In this case you can notice that running default push failed as branch called
-example does not exist on our remote repository. By running `git push --set-upstream origin example` we tell that we want git to create one for us.
-
 ![git push](./images/git-push.png)
+
+In this case you can notice that running default push failed as branch called
+example does not exist on our remote repository. By running
+`git push --set-upstream origin example` we tell that we want git to create
+one for us.
+
+![GitHub after push](./images/github-after-push.png)
 
 By following the link GitHub has provided in response to your push you will be
 able to create a pull request from branch example to master branch or to any
 other branch on the remote.
-
-![GitHub after push](./images/github-after-push.png)
 
 ## Ruby runtime
 
@@ -426,7 +484,7 @@ directory as the `test.rb` file run the following command `ruby test.rb`.
 
 ## Assignment
 
-This chapters homework includes creating your own repository on GitHub,
+This chapter's homework includes creating your own repository on GitHub,
 modifying the readme and creating a pull request. This workflow will be used
 in the future for homework review as you will be adding members of teaching
 staff as approvers/reviewers to your pull requests.
@@ -541,7 +599,7 @@ with user interface, it has come time to clone it to your PC.
 Open up the terminal emulator. Make sure you have git and it is in the
 path by running `git --version`. If it gives you current version of git, it
 works and if it doesn't know what git is, you'll have to install it. On MacOS
-you should be propted to install git if last commaind fails. On Linux you need
+you should be prompted to install git if last command fails. On Linux you need
 to run one of these commands to install git.
 
 ```bash
@@ -552,17 +610,20 @@ sudo apt install git
 sudo dnf install git
 ```
 
-Now test running `git --version` to see if this is working. In case it is, in a
-web browser navigate to the repository you have just created. Click on green
-button called `Clone or download` and copy the URL.
+Now test it by running `git --version` to see if this is working.
+In case it is, open a web browser and navigate to the repository you have just
+created. Click on green button called `Clone or download` and copy the URL.
 
-Navigate to where you want to have your repository saved. Git will automatically
-create a folder with the same name as your repository so you don't have to be
-afraid that new files will apear in your C: or home directory. Execute clone.
+In the terminal, navigate to where you want to have your repository saved. Git
+will automatically create a directory with the same name as your
+repository so you don't have to be afraid that new files will appear in
+your `C:` drive or home directory.
+
+Now execute clone:
 
 ```bash
 # Command should look something like this
-git clone https://github.com/Xenosb/ruby-homework.git
+git clone https://github.com/princesspeach98/ruby-homework.git
 ```
 
 ### Create your first branch
@@ -581,18 +642,22 @@ git checkout feature/first-assignment
 
 ### Modify the readme
 
-Using your preferred text editor, open file called `README.md`. This file will
-by default be shown on GitHub website when you show the source code. Code
+Using your preferred text editor, open the file called `README.md`.
+This file will, by default, be shown on your GitHub project's website. Code
 formating and styling is achieved using markdown. Take look at [GitHub post
 explaining markdown](https://guides.github.com/features/mastering-markdown/).
 
+Markdown is a markup language, meaning it's used to style text in a way that
+most program understand, but display the result differently.
+
 Do the following tasks:
-- [ ] Modify readme title annotated by 1st level header `#`
+- [ ] Modify readme title annotated by 1st level header (`#`)
 - [ ] Mention that you are following Ruby course
       `https://github.com/monorkin/learn.rb` and add a link using `[text](URL)`
-- [ ] Add a 2nd level header with title *My favorite programming languages*
-- [ ] Add unsorted list of your favorite programming languages
-- [ ] Italic ones you have used learned at university, bold ones you haven't
+- [ ] Add a 2nd level header (`##`) with title *My favorite programming
+      languages*
+- [ ] Add unsorted list of your favorite programming languages or books
+- [ ] Italic ones you have used learned/read at university, bold ones you haven't
 - [ ] Add image of your favorite dog breed `[Breed name](URL.png)`
 
 ### Print in Ruby
@@ -603,17 +668,21 @@ cloned the homework repository. Name the file `hello_world.rb`.
 In it copy the following `puts '<message>'` and replace `<message>` with a
 heartwarming message to the world.
 
+### Share your work
+
+Run the following command to publish your work to the remote repository:
+
 ```bash
 git push --set-upstream origin feature/first-assignment
 ```
-Check if output reported any errors
+Check if any errors were reported. If so, contact your lecturer.
 
 ### Create your first pull request
 
-First you will have to add collaborators to your project. You can do that in
-GitHub project settings on the web site of your repository. Navigate to the page
-and add `monorkin` and `Xenosb`. In future you will add other members of
-teaching staff.
+First you will have to add collaborators to your project. You can do that in the
+GitHub project's settings. Navigate to the page
+and add your lecturers as colaborators (in this case `monorkin` and `Xenosb`).
+In the future you will add other members of the teaching staff.
 
 ![Adding a collaborator](./images/github-add-collaborator.png)
 
@@ -623,9 +692,9 @@ Return to your main page and you should see a yellowish bar and button with text
 merging your *compare* branch.
 
 Add members of teaching staff as reviewers, write a title and explanation that
-make some sense - eg what have you modifed. Scroll down and see what has changed
-in the files. Removed files will be marked with red, added with green. Click
-*Create pull request*.
+make some sense - e.g. what have you modified. Scroll down and see what has
+changed in the files. Removed files will be marked with red, added with green.
+Click *Create pull request*.
 
 ![Creating a pull request](./images/github-create-pr.png)
 
