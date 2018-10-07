@@ -673,6 +673,8 @@ heartwarming message to the world.
 Run the following command to publish your work to the remote repository:
 
 ```bash
+git add README.md hello_world.rb
+git commit
 git push --set-upstream origin feature/first-assignment
 ```
 Check if any errors were reported. If so, contact your lecturer.
