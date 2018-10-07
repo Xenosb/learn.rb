@@ -356,7 +356,8 @@ echo "$SHELL"
 # Depending on the last word after the last `\` in the previous command
 # run the appropriate command:
 # - bash
-echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile &&  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 # - zsh
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
 # - fish
@@ -372,7 +373,24 @@ git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-b
 
 # Close you terminal program & reopen it
 rbenv install 2.5.0
+
+# If rbenv install fails, it might signal you that you are missing libraries
+# To install them on Ubuntu just run
+sudo apt install -y libssl-dev libreadline-dev zlib1g-dev
+# And now attempt to install ruby 2.5.1 once again using
+rbenv install 2.5.0
+
+# If successfull, previous command will prompt installed ruby-2.5.0
+# Now set that ruby to be default one
 rbenv global 2.5.0
+
+# The last thing before we are done with this setup is to put ruby in our path
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+
+# Now restart the terminal and you should see that running
+ruby --version
+# will output something like
+# ruby 2.5.0p0 (YYYY-MM-DD revision XX) [x86_64-linux]
 ```
 
 Huh, that was a lot. But now we have Ruby installed! Let's test our
