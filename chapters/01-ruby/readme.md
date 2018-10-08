@@ -365,7 +365,7 @@ There is also a negative version of `if` called `unless` that is often used
 to give semantic meaning to the code. E.g. the following
 
 ```ruby
-puts 'Weolcome to the vote-o-mat 3000!'
+puts 'Welcome to the vote-o-mat 3000!'
 print 'What is your age? '
 age = gets.to_i
 
@@ -380,7 +380,7 @@ print 'There are no candidates to vote for at the moment, try again later.'
 this is the same as
 
 ```ruby
-puts 'Weolcome to the vote-o-mat 3000!'
+puts 'Welcome to the vote-o-mat 3000!'
 print 'What is your age? '
 answer = gets.to_i
 
