@@ -194,7 +194,7 @@ Once you've made some changes and have committed the to git they are stored in
 your local repository.
 
 When you are ready to share your work with others you ask git to push it to the
-remote servers. From there other people can pull tour code and modify it or they
+remote servers. From there other people can pull your code and modify it or they
 can just admire your handy-work.
 
 But working with others by pushing and pulling code from remote repositories
