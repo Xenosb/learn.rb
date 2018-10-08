@@ -86,7 +86,12 @@ the screen.
 
 We can see where we are in the file system using the `pwd` (Print Working
 Directory) command and list all files in the working directory using the `ls`
-command (LiSt).
+command (LiSt). In some cases you might want to add some flags to the list
+command. For example `-a` will also show the hidden files, `-h` will display
+file sizes in humanly readable format (1,0K instead of 1024B) and `-l` will
+output a list with some additional infos. So most of us will use `ls -lah` for
+displaying the contents of a folder. You can check the manual for most of the
+commands by running `man <command>` or `<command> --help`.
 
 ![terminal - using pwd and ls](./images/terminal-pwd_ls.png)
 
@@ -147,7 +152,7 @@ workflows. Git was created by Linus Torvalds in 2005 for development of the
 Linux kernel, with other kernel developers contributing to its initial
 development. - [Wikipedia](https://en.wikipedia.org/wiki/Git)*
 
-So it's basically git is a tool which helps developers, designers and any other
+Basically git is a tool which helps developers, designers and any other
 people avoid having to name their files *poster_final_final_4_final* or having
 to share their data over USB stick, network disk, cloud or punchcard stack. It's
 not the only tool for versioning and you might be familiar with others such as
@@ -327,12 +332,12 @@ installation of Ruby may cause subtle issues.
 ![Result of running ruby -v](./images/terminal-ruby_v.png)
 
 Before installing Ruby Linux users will have to install the
-`build-essentials` packet, while Mac userh have to install XCode from the
+`build-essential` packet, while Mac userh have to install XCode from the
 AppStore, open it and accept the terms of use.
 
 ```bash
 # On Ubuntu/Debian
-sudo apt install build-essentials
+sudo apt install build-essential
 
 # On Fedora/CentOS
 sudo dnf groupinstall "Development Tools" "Development Libraries"
