@@ -1,7 +1,7 @@
 # Git gud
 
 This is the first chapter in a series of 10 of the
-[learn.rb project](https://github.com/monorkin/learn.rb) who's goal is to teach
+[learn.rb project](https://github.com/monorkin/learn.rb) whose goal is to teach
 people Ruby with a focus on Ruby on Rails.
 
 ## Chapters
@@ -101,7 +101,7 @@ paths. While `cd ..` moves you one directory up (to the parent directory).
 
 ![terminal - navigation using dots](./images/terminal-dots.png)
 
-This are the basics you will need to know to get started. Later we will
+These are the basics you will need to know to get started. Later we will
 introduce a few more concepts, but we'll use the above mentioned commands all
 the time.
 
