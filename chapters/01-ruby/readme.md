@@ -237,7 +237,7 @@ If we open the
 we can see that all `gets` does is it returns a value the user enters into the
 terminal (note that the user has to hit enter before the value is registered).
 
-[The official Ruby documentation] (https://ruby-doc.org/) is a great resource
+[The official Ruby documentation](https://ruby-doc.org/) is a great resource
 for learning and/or looking up unknown methods. You should reference it often
 as it will teach you more than any other resource about how Ruby works and
 what exists.
