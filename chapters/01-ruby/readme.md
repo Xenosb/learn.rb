@@ -391,3 +391,350 @@ end
 
 print 'There are no candidates to vote for at the moment, try again later.'
 ```
+
+![Output of the voting program](./images/voting.png)
+
+Finally there is `print "\n"`. We already know about `print` so what is `"\n"`?
+`"\n"` is a special character sequence that instructs the terminal to move to a
+new line - therefore `\n` is known as a 'new line' or 'carriage return'
+(here referring to the old typewriter carriages or heads). We have to use
+double quotes `"` when working with special characters such as `\n` because,
+as we learned earlier, single quotes `'` prevent interpolation and would
+interpret `\n` as ` \ ` and `n`.
+
+## Working with data
+
+Suppose now that another friend calls you and asks you to help him out with his
+job. They work at an HR department and have to work with lots of personal data
+which is quite laborious to look up on paper. They ask you to make them a
+program to keep track of all employees and their IDs. They have to be able to
+input employees into the system, and be able to print all entered employees
+sorted by surname. Let's help them out.
+
+We know, we can gather user inputs with `gets` and that we can print data using
+`puts` and `print`, but how can we store data?
+
+To store lists of data Ruby has a type called an
+[Array](https://ruby-doc.org/core-2.5.1/Array.html). Arrays can store large
+amounts of values, be it strings or numbers or other things (to which we will
+come in a minute).
+
+You can create an array using square brackets `[]` and just put values between
+them. E.g.:
+
+```ruby
+name = 'Hagrid'
+age = 47
+
+array = [name, age, 3.14, "And his name is #{name}", 3 + 3]
+
+puts array
+```
+
+![Output of printing an array](./images/array_intor.png)
+
+Arrays can also be expanded! You can add an element to an array by using the
+shovel operator `<<`. E.g.:
+
+```ruby
+array = [1, 2, 3]
+
+array << 5
+array << 42
+array << "ANYTHING!"
+
+puts array
+```
+
+![Appending to an array](./images/array_append.png)
+
+We can read any element of an array by accessing it. Accessing an array looks
+something like this `array[0]` - this would return the first element of an
+array. In Ruby, as in most other languages, indexes start at 0. So if we were
+to count up we would start at `0` and then go `1`, `2`, `3`, ...
+
+Ruby also supports negative indexes! So `array[-1]` would return the last
+element of an array.
+
+```ruby
+array = ['Alice', 'Bob', 'Clay', 'Dudley', 'Eli', 'Fran', 'George']
+
+puts array.inspect # `inspect` returns a sting representation of the array
+
+size = array.count # Returns the number of elements in an array
+i = 0
+
+while i < size do
+  puts "array[#{i}] = #{array[i]}"
+  puts "array[#{-i}] = #{array[-i]}"
+
+  i += 1
+end
+```
+
+![Accessing an array with different indecies](./images/array_index.png)
+
+We could solve our friend's problem just by using arrays! We could
+represent a single employee with an array consisting of a name and an id.
+And we could store that array within another array that contains all employees.
+E.g.:
+
+```ruby
+employees = [
+  ['Alice Doe', '1234567890'],
+  ['Bob John', '2345678901']
+]
+
+employees << ['Clay Chen', '3456789012']
+
+puts employees[0][0] # => Alice Doe
+puts employees[1][0] # => Bob John
+puts employees[2][0] # => Clay Chen
+```
+
+While this is a possibility it's already confusing to access data in the
+employees array. It would be much better if we could name an employee's
+attributes. For that reason Ruby has
+[hashes](https://ruby-doc.org/core-2.5.1/Hash.html). Hashes can be created with
+curly braces `{}`. Hashes contain pairs of values, consisting of a name or
+key and a value. E.g.:
+
+```ruby
+employees = []
+
+alice = {
+  full_name: 'Alice Doe',
+  id: '1234567890'
+}
+
+employees << alice
+
+puts employees.inspect
+```
+
+![Example of a hash](./images/hash.png)
+
+The cool thing about hashes is that they can be accessed just like arrays
+e.g. `alice[:full_name]` will return Alice's full name. This is a big
+improvement to readability compared to `alice[0]`. We can also set individual
+values of a hash as if they were variables e.g. `alice[:id] = '42424242424242'`.
+
+You might have noticed that we used `:full_name` and `:id` here. But what is
+that string that starts with a colon `:`? It's called a symbol. Symbols are
+quite similar to strings from the practical standpoint, but they don't have the
+same methods as strings. Their primary purpose is to be used as keys or
+labels. So don't be confused by them, they are just a nicer way to write hashes.
+Without symbols our hash would look like this:
+
+```ruby
+employees = []
+
+alice = {
+  'full_name' => 'Alice Doe',
+  'id' => '1234567890'
+}
+
+employees << alice
+
+puts employees.inspect
+```
+
+![A Hash of strings](./images/string_hash.png)
+
+This also shows another property of Hashes - anything can be a key, but then
+we have to use a hash-rocket `=>` instead of a colon `:` to separate the key
+from the value.
+
+```ruby
+some_hash = {
+  1 => "Foo #{rand()}",
+  bar: 'bar',
+  :baz => :BAZ,
+  [1,2,3] => 4,
+  { a: 7 } => 8
+}
+
+puts some_hash[1]
+puts some_hash[:bar]
+puts some_hash[:baz]
+puts some_hash[[1, 2, 3]]
+puts some_hash[{ a: 7 }]
+```
+
+![Hash containing anything as a key](./images/any_hash.png)
+
+We can finally tackle our friend's problem!
+
+Let's first implement the interface. Our program needs to ask the user if they
+want to add a new employee or if they want to list all existing employees. Let's
+implement that.
+
+```ruby
+puts 'Employee-o-matic 4000'
+
+loop do
+  print 'What do you want to do? '
+  action = gets
+
+  if action == 'a'
+    puts 'add'
+  elsif action == 'v'
+    puts 'view'
+  elseif action == 'q'
+    puts 'quit'
+  else
+    puts 'help'
+  end
+end
+```
+
+This was simple enough. This example is a good use-case for a `loop` loop, as
+we want our program to loop until the user specifies it should quit. Though,
+if we decide to add more actions in the future our `if` clause could get
+out-of-hand. For situations like these, when we are comparing a single value to
+multiple possibilities, Ruby provides the `case` statement. Using it we can
+rewrite the above as:
+
+```ruby
+puts 'Employee-o-matic 4000'
+
+loop do
+  print 'What do you want to do? '
+  action = gets
+
+  case action
+  when 'a' then puts 'add'
+  when 'v' then puts 'view'
+  when 'q' then puts 'quit'
+  else
+    puts 'help'
+  end
+end
+```
+
+Let's implement the help action first. It's the easiest out of the four actions
+we have.
+
+```ruby
+puts 'Employee-o-matic 4000'
+
+loop do
+  print 'What do you want to do? '
+  action = gets
+
+  case action
+  when 'a' then puts 'add'
+  when 'v' then puts 'view'
+  when 'q' then puts 'quit'
+  else
+    puts '[HELP]'
+    puts 'Enter one of the following:'
+    puts 'a - to add a new employee'
+    puts 'v - to view existing employees'
+    puts 'q - to quit the program'
+  end
+end
+```
+
+Ok. Now lets implement the quit action. For this we will need to know about the
+`exit` method which quits the current program.
+
+```ruby
+puts 'Employee-o-matic 4000'
+
+loop do
+  print 'What do you want to do? '
+  action = gets
+
+  case action
+  when 'a' then puts 'add'
+  when 'v' then puts 'view'
+  when 'q' then exit
+  else
+    puts '[HELP]'
+    puts 'Enter one of the following:'
+    puts 'a - to add a new employee'
+    puts 'v - to view existing employees'
+    puts 'q - to quit the program'
+  end
+end
+```
+
+After we implement the add and view methods this program will become unreadable.
+We need a way to to split our program into smaller pieces. We need to implement
+our own methods. Our ideal program would look something like this:
+
+```ruby
+puts 'Employee-o-matic 4000'
+
+loop do
+  print 'What do you want to do? '
+  action = gets
+
+  case action
+  when 'a' then add_employee
+  when 'v' then view_employees
+  when 'q' then quit
+  else
+    print_help
+  end
+end
+```
+
+In Ruby, we can define our own methods with the `def` keyword like this:
+
+```ruby
+def add_employee
+  puts 'add'
+end
+
+def view_employees
+  puts 'view'
+end
+
+def quit
+  puts 'Goodbye!'
+  exit
+end
+
+def print_help
+  puts '[HELP]'
+  puts 'Enter one of the following:'
+  puts 'a - to add a new employee'
+  puts 'v - to view existing employees'
+  puts 'q - to quit the program'
+end
+
+puts 'Employee-o-matic 4000'
+
+loop do
+  print 'What do you want to do? '
+  action = gets.downcase[0]
+
+  case action
+  when 'a' then add_employee
+  when 'v' then view_employees
+  when 'q' then quit
+  else
+    print_help
+  end
+end
+```
+The strange line here is `gets.downcase[0]`, we already know of `gets` so
+what does the rest do? Let's imagine that our user entered 'A' and replace
+`gets` with that. Now we have `"A\n".downcase[0]`, but where did the `\n` come
+from? Well, the `\n` is inserted when the user hits the enter key co confirm
+his input. Now lets look ad `downcase`. If you open up the string documentation
+of Ruby, you can see that `downcase` converts all uppercase letters to lowercase
+ones. If we apply this method to our input we get `"a\n"[0]`. Now we only have
+the `[0]` to deal with. Strings, in some ways, act very much like Arrays. You
+can access a String and get the letter at any position as if it were an Array.
+So our `[0]` turns `"a\n"` into `"a"`.
+
+Why can't we define our own methods after the loop? We can't. Ruby has to know
+those methods exist when it enters the loop, else our program will error. This
+isn't the case always, as we will see later.
+
+Here's how our program looks so far:
+
+![First stage our employee program](./images/emp_1.png)
