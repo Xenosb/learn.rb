@@ -1114,3 +1114,455 @@ returns the last member of the array.
 Though, this looks kind of messy. Let's take a look how we can improve this.
 
 ## Everything is an object.
+
+Ruby is a multi paradigm language, meaning it follows many schools of thought
+regarding how one should write code. This paragraph will cover the
+object-oriented paradigm, and how to implement it in Ruby.
+
+Let's start from our previous employee list example. To get the surname of each
+employee we had to do the following:
+
+```ruby
+employee[:full_name].split(' ').last
+```
+
+This isn't terribly complicated, but let's say that we write a bigger program
+where we use this code three times, once to sort the list, once to print the
+employee's name in the format 'surname, first name' and once to search for all
+users with that surname. Then our friend calls us and tell us that the entered
+`Tim Berners Lee` into our program and that it returned him at the bottom
+of the list instead of the top. The program used 'Lee' as the surname, when
+actually the surname is 'Berners Lee'. Now we have to go about our code and fix
+all three implementations of the surname extraction code. What options do we
+have to avoid this scenario?
+
+We could create a method! This would work, but could get cumbersome if we start
+extracting all shared code this way, as we would run out of names pretty soon,
+and would have to resort to long descriptive names such as
+`the_method_that_paints_all_links_pink_if_the_user_clicks_the_second_button_from_the_left_on_the_login_screen`.
+This would be problematic to remember.
+
+In the objective-oriented paradigm we solve this issue using objects. The cool
+thing is that you have already used objects! In Ruby, literally everything is
+an object. Strings, Numbers, Arrays, Hashes, all are objects. Anything that
+looks like `something.foo` is an object. Here `something` is an object and
+`foo` is a method of that object.
+
+How can we create our own objects? First we need to learn what a `class` is.
+A class is a blueprint for making objects. This all sounds confusing so lets
+give a practical example.
+
+```ruby
+class Employee
+  def name
+    'Alice'
+  end
+end
+```
+
+Here we have created a class named `Employee` which has an instance method
+named `name` which always returns `Alice`. Let's test it out! To create an
+object from that class we have to use it's `new` method.
+
+```ruby
+class Employee
+  def name
+    'Alice'
+  end
+end
+
+employee = Employee.new
+puts employee.name
+```
+
+![Output of the class example](./images/simple_class.png)
+
+As explained earlier `class Employee` defines the class, then
+`employee = Employee.new` creates a new object of type Employee - a new
+instance of the Employee class. `employee.name` calls the name method we defined
+in the class, which returns 'Alice'. Therefore the `puts` statement prints
+'Alice'. Neat!
+
+Inside classes we can use a special type of variable! It's named an instance
+variable. Instance variables look and act just like normal variables but their
+name starts with an `@` and they can only be accessed inside an instance of
+a class.
+
+```ruby
+class Employee
+  def set_name(name)
+    @name = name
+  end
+
+  def name
+    @name
+  end
+end
+
+employee = Employee.new
+employee.set_name('Bob')
+puts employee.name
+```
+
+![Example of using an instance variable](./images/instance_var.png)
+
+The `set_name` method is called a setter, as it's only used to set a value. The
+`name` method is named a getter, as it's only used to get a value. In Ruby we
+can create beautiful setters by suffixing the name of the getter method with
+an equals sign `=`. E.g.
+
+```ruby
+class Employee
+  def name=(name)
+    @name = name
+  end
+
+  def name
+    @name
+  end
+end
+
+employee = Employee.new
+employee.name = 'Bob'
+puts employee.name
+```
+
+![Example of using an instance variable](./images/instance_var.png)
+
+Not to repeat our selfs constantly, Ruby provides two special keywords that only
+work inside a class definition - `attr_accessor` and `attr_reader`.
+`attr_accessor` automatically creates a beautiful setter, getter and veriable
+with a given name. While `attr_reader` only creates a getter.
+
+```ruby
+class Employee
+  attr_accessor :name
+end
+
+employee = Employee.new
+employee.name = 'Bob'
+puts employee.name
+```
+
+![Example of using an instance variable](./images/instance_var.png)
+
+But what if we want to create a 'Bob' object right away, instead of creating
+an empty object and then setting it's name to 'Bob'? For this purpose we can
+implement a special method called the `initialize` method. The initializer is
+the first method that gets called when a new object is passed. All arguments
+given to the `new` method are passed to the `initialize` method also.
+
+```ruby
+class Employee
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+employee = Employee.new('Bob')
+puts employee.name
+
+employee.name = 'Alice'
+puts employee.name
+```
+
+![Using an initializer](./images/instance_var_2.png)
+
+Let's try to model our employee using a class! the implementation would look
+like this.
+
+```ruby
+class Employee
+  attr_accessor :full_name
+  attr_accessor :id
+
+  def initialize(full_name, id)
+    @full_name = full_name
+    @id = id
+  end
+end
+```
+
+Now, let's add our surname method to the class.
+
+```ruby
+class Employee
+  attr_accessor :full_name
+  attr_accessor :id
+
+  def initialize(full_name, id)
+    @full_name = full_name
+    @id = id
+  end
+
+  def surname
+    @full_name.split(' ').last
+  end
+end
+```
+
+Let's try it out.
+
+```ruby
+class Employee
+  attr_accessor :full_name
+  attr_accessor :id
+
+  def initialize(full_name, id)
+    @full_name = full_name
+    @id = id
+  end
+
+  def surname
+    @full_name.split(' ').last
+  end
+end
+
+employee = Employee.new('Alice Doe', '1234567890')
+puts employee.full_name
+puts employee.id
+puts employee.surname
+```
+
+![Employee object with surname](./images/object-surname.png)
+
+Now, let's try and fix the problem experienced with 'Tim Berners Lee'.
+
+```ruby
+class Employee
+  attr_accessor :full_name
+  attr_accessor :id
+
+  def initialize(full_name, id)
+    @full_name = full_name
+    @id = id
+  end
+
+  def surname
+    @full_name.split(' ', 2).last
+  end
+end
+
+employee = Employee.new('Alice Doe', '1234567890')
+puts employee.full_name
+puts employee.id
+puts employee.surname
+```
+
+The only line we needed to change was `split(' ')` by giving it a second
+argument. `split(' ', 2)` means split the string into exactly two string on a
+space ` ` charactere. So `'Tim Berners Lee'` becomes `['Tim', 'Berners Lee']`.
+Hazaa! Our issue is fixed! Let's see it all together now.
+
+```ruby
+class Employee
+  attr_accessor :full_name
+  attr_accessor :id
+
+  def initialize(full_name, id)
+    @full_name = full_name
+    @id = id
+  end
+
+  def surname
+    @full_name.split(' ', 2).last
+  end
+end
+
+def add_employee(employees)
+  puts '[Add an employee]'
+  print 'Full name: '
+  full_name = gets.chomp
+  print 'ID: '
+  id = gets.chomp
+
+  employee = Employee.new(full_name, id)
+
+  employees << employee
+end
+
+def view_employees(employees)
+  sorted_employees(employees).each do |employee|
+    puts "#{employee.full_name}, #{employee.id}"
+  end
+end
+
+def sorted_employees(employees)
+  employees.sort_by do |employee|
+    employee.surname
+  end
+end
+
+def quit
+  puts 'Goodbye!'
+  exit
+end
+
+def print_help
+  puts '[HELP]'
+  puts 'Enter one of the following:'
+  puts 'a - to add a new employee'
+  puts 'v - to view existing employees'
+  puts 'q - to quit the program'
+end
+
+def get_action
+   gets.downcase[0]
+end
+
+puts 'Employee-o-matic 4000'
+
+employees = []
+
+loop do
+  print 'What do you want to do? '
+  action = get_action
+
+  case action
+  when 'a' then add_employee(employees)
+  when 'v' then view_employees(employees)
+  when 'q' then quit
+  else
+    print_help
+  end
+end
+```
+
+![Employees list using an object](./images/emp_5.png)
+
+## Inheritance
+
+We have gotten quite popular among our friends with our programming skills!
+Every day somebody rings us up and asks for help. This time a veterinarian.
+They are building an index of all animals they know how to cure but have trouble
+identifying. With our knowledge of objects and arrays we spring to work and
+implement our first version of the program.
+
+```
+class Cat
+  def sound
+    'miaaaaauuuu'
+  end
+end
+
+class Dog
+  def sound
+    'wooof'
+  end
+end
+
+class Duck
+  def sound
+    'quack'
+  end
+end
+
+class Snail
+end
+
+animals = [Cat.new, Dog.new, Duck.new, Snail.new]
+
+puts animals[0].sound
+puts animals[1].sound
+puts animals[2].sound
+puts animals[3].sound
+```
+
+![Erroring program](./images/vet_1-error.png)
+
+Oh oh, our program is throwing an error! The snail doesn't know how to make a
+sound! But all animals make a sound! How can we solve this? We can solve this
+using inheritance. Inheritance allows one class to get all methods from
+their parent as if they were it's own. Inheritance is done using the less than
+sign `<` after a class's name - like so `class Child < Parent`. The child can
+have it's own implementation of the method, it will get executed instead of
+the parent's version.
+
+```
+class Animal
+  def sound
+    nil
+  end
+end
+
+class Cat < Animal
+  def sound
+    'miaaaaauuuu'
+  end
+end
+
+class Dog < Animal
+  def sound
+    'wooof'
+  end
+end
+
+class Duck < Animal
+  def sound
+    'quack'
+  end
+end
+
+class Snail < Animal
+end
+
+animals = [Cat.new, Dog.new, Duck.new, Snail.new]
+
+puts animals[0].sound
+puts animals[1].sound
+puts animals[2].sound
+puts animals[3].sound
+```
+
+![Working initial vet program](./images/evet_1.png)
+
+What if we want to access the parent's implementation form the child? For those
+situations there is the `super` keyword - it calls the parent's implementation.
+Oddly enough, if the method you are overriding accepts any arguments, you don't
+need to pass them to the `super`, they will get passed automatically.
+
+```
+class Dog
+  def bark
+    'woof'
+  end
+end
+
+class ShibaInu < Dog
+  def bark
+    "#{super} wo #{super} wooooo"
+  end
+end
+
+shiba = ShibaInu.new
+puts shiba.bark
+```
+
+![Overriding a parent's method](./images/evet_2.png)
+
+# Assignments
+
+1. Implement the ability to edit an employee in our employees program.
+  - [ ] the edit actions should be `e`
+  - [ ] editing a user is the same as adding, ask for their full name and id
+  - [ ] print the current value for the full name and id before editing
+2. Implement the ability to sort either by first or last name to our employee
+program
+  - [ ] ask the user if they want to sort by first `f` or last `l` name
+  - [ ] print the sorted list depending on the user's action
+3. Create a game of tic-tac-toe
+  - [ ] at the beginning of each round the full game board has to be drawn
+  - [ ] mark fields with `X` and `O`
+  - [ ] mark empty fields with numbers from 1 to 9, starting in the top left
+  field
+  - [ ] ask the user in which field they want to put their symbol
+  - the computer is always `X`
+  - the user is always `O`
+  - the user always goes first
+
+Crate three separate files for each assignment and put them in your
+`ruby-homework` directory, add, commit, and push the files to the
+`feature/second-homework` branch. Assign your teachers as the reviewers of the
+branch.
