@@ -731,9 +731,9 @@ the `[0]` to deal with. Strings, in some ways, act very much like Arrays. You
 can access a String and get the letter at any position as if it were an Array.
 So our `[0]` turns `"a\n"` into `"a"`.
 
-Why can't we define our own methods after the loop? We can't. Ruby has to know
-those methods exist when it enters the loop, else our program will error. This
-isn't the case always, as we will see later.
+Can we define our methods after the loop? We can, but we can't use them in the
+loop then. Ruby has to know those methods exist when it enters the loop, else
+our program will error. This isn't the case always, as we will see later.
 
 Here's how our program looks so far:
 
