@@ -738,3 +738,379 @@ our program will error. This isn't the case always, as we will see later.
 Here's how our program looks so far:
 
 ![First stage our employee program](./images/emp_1.png)
+
+Now let's focus on our `add_employee` method. To add an employee to the list
+we need their full name and id. We can get those using the `gets` method and a
+little code. Let's get to it:
+
+```ruby
+def add_employee
+  puts '[Add an employee]'
+  print 'Full name: '
+  full_name = gets.chomp
+  print 'ID: '
+  id = gets.chomp
+
+  employee = {
+    full_name: full_name,
+    id: id
+  }
+
+  puts employee
+end
+
+def view_employees
+  puts 'view'
+end
+
+def quit
+  puts 'Goodbye!'
+  exit
+end
+
+def print_help
+  puts '[HELP]'
+  puts 'Enter one of the following:'
+  puts 'a - to add a new employee'
+  puts 'v - to view existing employees'
+  puts 'q - to quit the program'
+end
+
+puts 'Employee-o-matic 4000'
+
+loop do
+  print 'What do you want to do? '
+  action = gets.downcase[0]
+
+  case action
+  when 'a' then add_employee
+  when 'v' then view_employees
+  when 'q' then quit
+  else
+    print_help
+  end
+end
+```
+
+Oh oh, we have a problem! Where do we put our newly created employee? We need
+to create an array that stores all employees and pass it to our method, but how?
+The `def` keyword allows us to define a method with a given name, if we want to
+pass arguments to it we can just open a pair of brackets and write a name for
+the argument. Here `def foo(bar)` we create a method named `foo` and it accepts
+an argument named `bar`, now we can use `bar` as a variable in our method.
+Let's apply this knowledge:
+
+```ruby
+def add_employee(employees)
+  puts '[Add an employee]'
+  print 'Full name: '
+  full_name = gets.chomp
+  print 'ID: '
+  id = gets.chomp
+
+  employee = {
+    full_name: full_name,
+    id: id
+  }
+
+  employees << employee
+end
+
+def view_employees(employees)
+  puts employees
+end
+
+def quit
+  puts 'Goodbye!'
+  exit
+end
+
+def print_help
+  puts '[HELP]'
+  puts 'Enter one of the following:'
+  puts 'a - to add a new employee'
+  puts 'v - to view existing employees'
+  puts 'q - to quit the program'
+end
+
+puts 'Employee-o-matic 4000'
+
+employees = []
+
+loop do
+  print 'What do you want to do? '
+  action = gets.downcase[0]
+
+  case action
+  when 'a' then add_employee(employees)
+  when 'v' then view_employees(employees)
+  when 'q' then quit
+  else
+    print_help
+  end
+end
+```
+
+![Employee entry program - add](./images/emp_2.png)
+
+What!? How does the array from the loop suddenly have Alice in it!? What is
+this? The trick here is simple. In Ruby, when you pass a variable to a method
+it's as if you handed that variable over to the other method. Any changes it
+does to the variable will apply to your variable as well - if you want to read
+more about this you can research 'Ruby pass by reference' which is a technical
+term for the behaviour described above.
+
+In the code above, we used a method called `chomp`, all it does is it removes
+all whitespaces before the first and after the last charactere.
+
+This is one way how we can return a value from a method, by modifying the
+input. Another way is to return a value. In Ruby there are two explicit ways
+how to return a value which are actually the same. The first is an explicit call
+to the `return` keyword. The other is implicit, any value on the last line
+of the method is implicitly returned. E.g. let's extract the `gets.downcase[0]`
+into it's own method.
+
+```ruby
+def get_action
+   return gets.downcase[0]
+end
+
+def get_action
+   gets.downcase[0]
+end
+```
+
+These two methods are exactly the same. The `return` keyword is a bit more
+powerful though. Let's take a look at this method which greets all
+employees except for Bob, nobody in the office likes Bob.
+
+```ruby
+def greet_employee(employee)
+  return if employee[:name] == 'Bob'
+
+  puts "Hi, #{employee[:name]}"
+end
+```
+
+The above is called an 'early return' or 'guard case', it stops the method
+if some condition isn't met. Note that it's possible to just wrap everything in
+in `if` statement, but it's considered bad style as it often times gets messy
+if you have multiple conditions.
+
+Now our code looks like this:
+
+```ruby
+def add_employee(employees)
+  puts '[Add an employee]'
+  print 'Full name: '
+  full_name = gets.chomp
+  print 'ID: '
+  id = gets.chomp
+
+  employee = {
+    full_name: full_name,
+    id: id
+  }
+
+  employees << employee
+end
+
+def view_employees(employees)
+  puts employees
+end
+
+def quit
+  puts 'Goodbye!'
+  exit
+end
+
+def print_help
+  puts '[HELP]'
+  puts 'Enter one of the following:'
+  puts 'a - to add a new employee'
+  puts 'v - to view existing employees'
+  puts 'q - to quit the program'
+end
+
+def get_action
+   gets.downcase[0]
+end
+
+puts 'Employee-o-matic 4000'
+
+employees = []
+
+loop do
+  print 'What do you want to do? '
+  action = get_action
+
+  case action
+  when 'a' then add_employee(employees)
+  when 'v' then view_employees(employees)
+  when 'q' then quit
+  else
+    print_help
+  end
+end
+```
+
+Let's implement the view method now. For this, we will finally introduce the
+`each` loop! The `each` loop work only with values that are enumerable, we will
+cover this characteristic later. But for now suffice to say that it only works
+with values that can be interpreted as an array. `each` takes a block, as all
+loops do, and will input a member of the enumerable one-by-one until it
+reaches the end of the enumerable.
+
+Let's look at the implementation.
+
+```ruby
+def add_employee(employees)
+  puts '[Add an employee]'
+  print 'Full name: '
+  full_name = gets.chomp
+  print 'ID: '
+  id = gets.chomp
+
+  employee = {
+    full_name: full_name,
+    id: id
+  }
+
+  employees << employee
+end
+
+def view_employees(employees)
+  employees.each do |employee|
+    puts "#{employee[:full_name]}, #{employee[:id]}"
+  end
+end
+
+def quit
+  puts 'Goodbye!'
+  exit
+end
+
+def print_help
+  puts '[HELP]'
+  puts 'Enter one of the following:'
+  puts 'a - to add a new employee'
+  puts 'v - to view existing employees'
+  puts 'q - to quit the program'
+end
+
+def get_action
+   gets.downcase[0]
+end
+
+puts 'Employee-o-matic 4000'
+
+employees = []
+
+loop do
+  print 'What do you want to do? '
+  action = get_action
+
+  case action
+  when 'a' then add_employee(employees)
+  when 'v' then view_employees(employees)
+  when 'q' then quit
+  else
+    print_help
+  end
+end
+```
+
+![Add and view employees](./images/emp_3.png)
+
+Now we only need to sort the array of employees. This is fairly simple to do
+using the `sort_by` method. It accepts a block in which wee have to specify the
+key by which it will sort an array in ascending order.
+
+```ruby
+def add_employee(employees)
+  puts '[Add an employee]'
+  print 'Full name: '
+  full_name = gets.chomp
+  print 'ID: '
+  id = gets.chomp
+
+  employee = {
+    full_name: full_name,
+    id: id
+  }
+
+  employees << employee
+end
+
+def view_employees(employees)
+  sorted_employees(employees).each do |employee|
+    puts "#{employee[:full_name]}, #{employee[:id]}"
+  end
+end
+
+def sorted_employees(employees)
+  employees.sort_by do |employee|
+    employee[:full_name].split(' ').last
+  end
+end
+
+def quit
+  puts 'Goodbye!'
+  exit
+end
+
+def print_help
+  puts '[HELP]'
+  puts 'Enter one of the following:'
+  puts 'a - to add a new employee'
+  puts 'v - to view existing employees'
+  puts 'q - to quit the program'
+end
+
+def get_action
+   gets.downcase[0]
+end
+
+puts 'Employee-o-matic 4000'
+
+employees = []
+
+loop do
+  print 'What do you want to do? '
+  action = get_action
+
+  case action
+  when 'a' then add_employee(employees)
+  when 'v' then view_employees(employees)
+  when 'q' then quit
+  else
+    print_help
+  end
+end
+```
+
+![Sorted output of employees](./images/emp_4.png)
+
+So... What does this do?
+
+```ruby
+def sorted_employees(employees)
+  employees.sort_by do |employee|
+    employee[:full_name].split(' ').last
+  end
+end
+```
+
+We already know how the method works, so we can ignore it. And we know that
+`employees` is an array, and that `sort_by` will order it in an ascending order
+depending on the value return in it's block. We also know what
+`employee[:full_name]` returns the employee's name. So let's look at a simpler
+example - `'Alice Doe'.split(' ').last`. `split`, as the name implies, splits
+the string into an array of smaller strings. We give it the charactere on which
+we want to split the string, in our case a space ` `. Let's expand this -
+`['Alice', 'Doe'].last`. Now we only have to explain the `last` method - it
+returns the last member of the array.
+
+Though, this looks kind of messy. Let's take a look how we can improve this.
+
+## Everything is an object.
