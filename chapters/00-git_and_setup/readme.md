@@ -86,7 +86,12 @@ the screen.
 
 We can see where we are in the file system using the `pwd` (Print Working
 Directory) command and list all files in the working directory using the `ls`
-command (LiSt).
+command (LiSt). In some cases you might want to add some flags to the list
+command. For example `-a` will also show the hidden files, `-h` will display
+file sizes in humanly readable format (1,0K instead of 1024B) and `-l` will
+output a list with some additional infos. So most of us will use `ls -lah` for
+displaying the contents of a folder. You can check the manual for most of the
+commands by running `man <command>` or `<command> --help`.
 
 ![terminal - using pwd and ls](./images/terminal-pwd_ls.png)
 
@@ -385,12 +390,12 @@ installation of Ruby may cause subtle issues.
 ![Result of running ruby -v](./images/terminal-ruby_v.png)
 
 Before installing Ruby Linux users will have to install the
-`build-essentials` packet, while Mac users have to install XCode from the
+`build-essential` packet, while Mac userh have to install XCode from the
 AppStore, open it and accept the terms of use.
 
 ```bash
 # On Ubuntu/Debian
-sudo apt install -y build-essentials libssl-dev libreadline-dev zlib1g-dev
+sudo apt install build-essential
 
 # On Fedora/CentOS
 sudo dnf groupinstall "Development Tools" "Development Libraries"
