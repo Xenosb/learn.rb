@@ -1499,7 +1499,7 @@ They are building an index of all animals they know how to cure but have trouble
 identifying. With our knowledge of objects and arrays we spring to work and
 implement our first version of the program.
 
-```
+```ruby
 class Cat
   def sound
     'miaaaaauuuu'
@@ -1539,7 +1539,7 @@ sign `<` after a class's name - like so `class Child < Parent`. The child can
 have it's own implementation of the method, it will get executed instead of
 the parent's version.
 
-```
+```ruby
 class Animal
   def sound
     nil
@@ -1601,6 +1601,85 @@ puts shiba.bark
 
 ![Overriding a parent's method](./images/evet_2.png)
 
+How can we practically apply this to our employee list application? Let's
+suppose we have different types of employees - programmers and office managers.
+For a programmer we would like to know what programming languages they know,
+while for an office manager we would like to know the office they work at.
+
+```ruby
+class Employee
+  attr_accessor :full_name
+  attr_accessor :id
+
+  def initialize(full_name, id)
+    @full_name = full_name
+    @id = id
+  end
+
+  def surname
+    @full_name.split(' ', 2).last
+  end
+end
+
+class Programmer < Employee
+  attr_accessor :languages
+
+  def initialize(full_name, id, languages)
+    super(full_name, id)
+    @languages = languages
+  end
+end
+
+class OfficeManager < Employee
+  attr_accessor :office
+
+  def initialize(full_name, id, office)
+    super(full_name, id)
+    @office = office
+  end
+end
+
+employee = Employee.new('Alice Doe', '1234567890')
+programmer = Programmer.new('Bob Smith', '2345678901', ['Ruby', 'Elixir'])
+office_manager = OfficeManager.new('Clay Bush', '3456789012', '37 Main street')
+
+puts employee.surname
+puts programmer.surname
+puts office_manager.surname
+puts
+puts programmer.languages.inspect
+puts office_manager.office
+```
+
+![Inheritance on our Employee class](./images/employee_inheritance.png)
+
+This is really cool! Using inheritance we don't have to re-implement the
+surname method for programmers and office managers, and each can have their
+own additional methods.
+
+We will often need to know what kind of object we are dealing with. Is it an
+`Employee`, or a `Programmer` or an `OfficeManager`. We have three ways to
+figure that out. The first is using the `class` method on an object like this
+`Programmer.new.class` which returns `Programmer`. This could work but what
+if we want to check if something is a sub-class of `Employee`? Well the `class`
+method wouldn't work. But we can use the `is_a?` method! It works like this
+`Programmer.new.is_a?(Employee)` which would return `true` if the object is
+of class `Employee` or a sub-class of it. But this would get cumbersome if we
+would have to check against multiple classes, therefore the `case` clause does
+class matching automatically! E.g.:
+
+```ruby
+employee = Programmer.new
+
+case employee
+when OfficeManager then puts 'Office Manager'
+when Employee then puts 'Employee'
+when Programmer then puts 'Programmer'
+end
+```
+
+![Using case clause to match on class and inheritance](./images/case_class_match.png)
+
 # Assignments
 
 - Implement the ability to edit an employee in our employees program.
@@ -1616,6 +1695,17 @@ program
   * [ ] print the sorted list depending on the user's action
 
 ![Working assignemnt #2](./images/assignment_2.png)
+
+- Implement the ability to insert programmers and office managers in our
+employee program.
+  * [ ] on the add action the user should be able to choose between adding a
+  regular employee `e`, a programmer `p` or an office manager `o`.
+  * [ ] on the view action next to programmers print the programming
+  languages they know, next to office managers print their office.
+  * [ ] assume that it's not possible to change an employee's role when editing
+  * [ ] enable editing of programming language / office fields
+
+![Working assignemnt #4](./images/assignment_4.png)
 
 - Create a game of tic-tac-toe
   * [ ] at the beginning of each round the full game board has to be drawn
