@@ -158,6 +158,7 @@ print 'Ruby'
 
 ![Output of multiple prints](./images/rrr.png)
 
+
 ## Input required
 
 With loops and print statements we can do a lot, but we can't interact with
@@ -401,6 +402,64 @@ new line - therefore `\n` is known as a 'new line' or 'carriage return'
 double quotes `"` when working with special characters such as `\n` because,
 as we learned earlier, single quotes `'` prevent interpolation and would
 interpret `\n` as ` \ ` and `n`.
+
+A tidbit I forgot to mention in the last loops chapter! Inside loops you
+can use the `next` keyword to skip an iteration! E.g. let's print all even
+numbers between 1 and 100. To figure out if a number is odd or even we need
+the modulo operator `%`. The modulo operator returns the remainder of whole
+number division e.g. `5 % 3` is `2` because `5 / 3` is `1` and the rest up to
+five is `2`. So to figure out if a number is even we can write something
+like this `number % 2 == 0` because if we divide the number by two, and there
+is no remainder it must be a multiple of two and therefor even, else it's odd.
+
+```ruby
+i = 0
+while i < 100 do
+  i += 1
+  next unless i % 2 == 0
+  puts i
+end
+```
+
+![Printing all even numbers](./images/even_odd.png)
+
+You will often have to check if two values for a condition and you will
+need them both to satisfy a constraint, or just one. For that reason Ruby
+implements the 'or' `||` and 'and' `&&` operators.
+
+```ruby
+true && true # => true
+false && true # => false
+true && false # => false
+false && false # => false
+
+true || true # => true
+true || false # => true
+false || true # => true
+false || false # => false
+
+if (3 * 3 == 13) || (3 * 3 == 9)
+  puts '3 * 3 is either 13 or 9'
+end
+
+if (4 * 4 == 16) && (3 * 3 == 9)
+  puts '3 * 3 is 9 and 4 * 4 is 16'
+end
+```
+
+The 'and' and 'or' operators have an interesting side effect. 'and' returns
+the last truthy value or `false`, while 'or' returns the first truthy value or
+`false`. This is called lazy evaluation. Let's take a look.
+
+```ruby
+name = nil || false || 'Alex' || 'Ross'
+surname = 'Smith' && 'Ross'
+
+puts name
+puts surname
+```
+
+![Lazy evaluation in action](./images/lazy_eval.png)
 
 ## Working with data
 
@@ -1544,23 +1603,34 @@ puts shiba.bark
 
 # Assignments
 
-1. Implement the ability to edit an employee in our employees program.
-  - [ ] the edit actions should be `e`
-  - [ ] editing a user is the same as adding, ask for their full name and id
-  - [ ] print the current value for the full name and id before editing
-2. Implement the ability to sort either by first or last name to our employee
+- Implement the ability to edit an employee in our employees program.
+  * [ ] the edit actions should be `e`
+  * [ ] editing a user is the same as adding, ask for their full name and id
+  * [ ] print the current value for the full name and id before editing
+
+![Working assignemnt #1](./images/assignment_1.png)
+
+- Implement the ability to sort either by first or last name to our employee
 program
-  - [ ] ask the user if they want to sort by first `f` or last `l` name
-  - [ ] print the sorted list depending on the user's action
-3. Create a game of tic-tac-toe
-  - [ ] at the beginning of each round the full game board has to be drawn
-  - [ ] mark fields with `X` and `O`
-  - [ ] mark empty fields with numbers from 1 to 9, starting in the top left
+  * [ ] ask the user if they want to sort by first `f` or last `l` name
+  * [ ] print the sorted list depending on the user's action
+
+![Working assignemnt #2](./images/assignment_2.png)
+
+- Create a game of tic-tac-toe
+  * [ ] at the beginning of each round the full game board has to be drawn
+  * [ ] indicate which player's turn it is
+  * [ ] mark fields with `X` and `O`
+  * [ ] mark empty fields with numbers from 0 to 8, starting in the top left
   field
-  - [ ] ask the user in which field they want to put their symbol
-  - the computer is always `X`
-  - the user is always `O`
-  - the user always goes first
+  * [ ] ask the user in which field they want to put their symbol
+  * [ ] don't allow users to override a previously set `X` or `O`
+  * the user `O` always goes first
+  * the user `X` always goes second
+  * you don't need to detect when somebody won
+  * you don't need to put in a quit condition (use `Ctrl` + `C`)
+
+![Working assignemnt #3](./images/assignment_3.png)
 
 Crate three separate files for each assignment and put them in your
 `ruby-homework` directory, add, commit, and push the files to the
