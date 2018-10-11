@@ -11,6 +11,14 @@ In this chapter we will teach you the basics of Ruby. We will start with loops
 and ourself work up to objects and classes (if you didn't understand any of
 these words, don't worry), mentioning important resources along the way.
 
+## Chapters
+
+1. [Syntax, loops and wizard hats](#syntax-loops-and-wizard-hats)
+2. [Input required](#input-required)
+3. [Working with data](#working-with-data)
+4. [Everything is an object](#everything-is-an-object)
+5. [Assignments](#assignments)
+
 ## Syntax, loops and wizard hats
 
 [Ruby](https://en.wikipedia.org/wiki/Ruby_(programming_language))
@@ -20,7 +28,7 @@ primary goal with Ruby was developer happiness. Therefore, you will notice,
 that most Ruby code looks like
 [pseudo-code](https://en.wikipedia.org/wiki/Pseudocode) (iterative text
 describing an algorithm), there are many methods built-in into Ruby that
-you won't fund in most other languages and they will have more intuitive names
+you won't found in most other languages and they will have more intuitive names
 than in most other languages.
 
 In the last chapter we created a `hello_world.rb` file containing a program that
@@ -66,6 +74,8 @@ problem!
 Ruby supports many different kinds of loops - `while`, `each`, `times` and
 `loop` each serving a different purpose. Let's inspect some of them.
 
+### While loops
+
 A `while` loops until a given condition is met. Let's try to print all numbers
 from 0 to 100 using it:
 
@@ -95,6 +105,8 @@ the block will be executed on each iteration of the loop. In the above example,
 the lock contains a call to the `puts` method and `i += 1`, this code will be
 run as long as `i` is less than 100.
 
+### Loop
+
 Now, lets take a look at `loop`. It loops indefinitely or until the program
 stops (you can stop most terminal programs by pressing `Ctrl` and `C`).
 There are only a few use-cases for this kind of loop and you will rarely see
@@ -117,6 +129,8 @@ end
 ```
 
 The output of the while statement is the same as of the loop statement.
+
+### Times
 
 We will cover `each` later, so let's take a look at `times`. It loops exactly
 the specified number of times - in that respect it's identical to our
