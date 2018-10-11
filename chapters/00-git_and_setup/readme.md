@@ -144,13 +144,15 @@ switch to another one.
 ## GIT version tracker
 
 Git is a version-control system for tracking changes in computer files and
-coordinating work on those files among multiple people. It is primarily used for
-source-code management in software development, but it can be used to keep track
-of changes in any set of files. As a distributed revision-control system, it is
-aimed at speed, data integrity, and support for distributed, non-linear
-workflows. Git was created by Linus Torvalds in 2005 for development of the
-Linux kernel, with other kernel developers contributing to its initial
-development. - [Wikipedia](https://en.wikipedia.org/wiki/Git)*
+coordinating work on those files among multiple people.
+
+It is primarily used for source-code management in software development, but it
+can be used to keep track of changes in any set of files. As a distributed
+revision-control system, it is aimed at speed, data integrity, and support for
+distributed, non-linear workflows. Git was created by Linus Torvalds in 2005
+for development of the Linux kernel, with other kernel developers
+contributing to its initial development.
+- [Wikipedia](https://en.wikipedia.org/wiki/Git)*
 
 Basically git is a tool which helps developers, designers and any other
 people avoid having to name their files *poster_final_final_4_final* or having
@@ -415,7 +417,6 @@ To determine which step to take next run the following command
 ```
 echo "$SHELL"
 ```
-
 Depending on the last word after the last ` \ ` in the previous command
 run the appropriate command:
 
@@ -430,7 +431,6 @@ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
 # /.../fish
 set -Ux fish_user_paths $HOME/.rbenv/bin $fish_user_paths
 ```
-
 The run:
 
 ```bash
