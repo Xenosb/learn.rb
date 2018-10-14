@@ -53,6 +53,8 @@ these words, don't worry), mentioning important resources along the way.
    * [Checking classes and getting class names](#checking-classes-and-getting-class-names)
 
 5. [Assignments](#assignments)
+   * [Employee-o-matic 4000](#employee-o-matic-4000)
+   * [Tic-tac-toe](#tic-tac-toe)
 
 ## Syntax, loops and wizard hats
 
@@ -1799,7 +1801,9 @@ end
 
 ![Using case clause to match on class and inheritance](./images/case_class_match.png)
 
-# Assignment
+# Assignments
+
+## Employee-o-matic 4000
 
 - Implement the ability to edit an employee in our employees program.
   * [ ] the edit actions should be `e`
@@ -1809,14 +1813,14 @@ end
 ![Working assignemnt #1](./images/assignment_1.png)
 
 - Implement the ability to sort either by first or last name to our employee
-program
+  program
   * [ ] ask the user if they want to sort by first `f` or last `l` name
   * [ ] print the sorted list depending on the user's action
 
 ![Working assignemnt #2](./images/assignment_2.png)
 
 - Implement the ability to insert programmers and office managers in our
-employee program.
+  employee program.
   * [ ] on the add action the user should be able to choose between adding a
   regular employee `e`, a programmer `p` or an office manager `o`.
   * [ ] on the view action next to programmers print the programming
@@ -1824,7 +1828,9 @@ employee program.
   * [ ] assume that it's not possible to change an employee's role when editing
   * [ ] enable editing of programming language / office fields
 
-![Working assignemnt #4](./images/assignment_4.png)
+![Working assignemnt #3](./images/assignment_3.png)
+
+## Tic-tac-toe
 
 - Create a game of tic-tac-toe
   * [ ] at the beginning of each round the full game board has to be drawn
@@ -1839,9 +1845,11 @@ employee program.
   * you don't need to detect when somebody won
   * you don't need to put in a quit condition (use `Ctrl` + `C`)
 
-![Working assignemnt #3](./images/assignment_3.png)
+![Working assignemnt #4](./images/assignment_4.png)
 
 Crate three separate files for each assignment and put them in your
 `ruby-homework` directory, add, commit, and push the files to the
 `feature/second-homework` branch. Assign your teachers as the reviewers of the
 branch.
+
+**Happy hacking!**
