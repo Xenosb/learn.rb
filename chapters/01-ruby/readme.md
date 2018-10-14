@@ -1847,7 +1847,7 @@ end
 
 ![Working assignemnt #4](./images/assignment_4.png)
 
-Crate three separate files for each assignment and put them in your
+Crate two separate files for each assignment and put them in your
 `ruby-homework` directory, add, commit, and push the files to the
 `feature/second-homework` branch. Assign your teachers as the reviewers of the
 branch.
