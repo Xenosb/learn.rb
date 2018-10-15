@@ -417,7 +417,6 @@ To determine which step to take next run the following command
 ```
 echo "$SHELL"
 ```
-
 Depending on the last word after the last ` \ ` in the previous command
 run the appropriate command:
 
@@ -432,7 +431,6 @@ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
 # /.../fish
 set -Ux fish_user_paths $HOME/.rbenv/bin $fish_user_paths
 ```
-
 The run:
 
 ```bash

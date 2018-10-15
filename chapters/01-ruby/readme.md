@@ -11,6 +11,51 @@ In this chapter we will teach you the basics of Ruby. We will start with loops
 and ourself work up to objects and classes (if you didn't understand any of
 these words, don't worry), mentioning important resources along the way.
 
+## Table of contents
+
+1. [Syntax, loops and wizard hats](#syntax-loops-and-wizard-hats)
+   * [While loop](#while-loop)
+   * [Loop do](#loop-do)
+   * [Times loop](#times-loop)
+
+2. [Input required](#input-required)
+   * [Random](#random)
+   * [Nil](#nil)
+   * [Console input](#console-input)
+   * [Conversion to integer](#conversion-to-integer)
+   * [Conversion to float](#conversion-to-float)
+   * [Formatting output](#formatting-output)
+   * [If elsif else](#if-elsif-else)
+   * [Next](#next)
+   * [And and Or](#and-and-or)
+
+3. [Working with data](#working-with-data)
+   * [Arrays](#arrays)
+   * [Hashes](#hashes)
+   * [Switch case](#switch-case)
+   * [Exiting the program](#exiting-the-program)
+   * [Writing methods](#writing-methods)
+   * [Lower and upper case](#lower-and-upper-case)
+   * [Order of methods](#order-of-methods)
+   * [Passing attributes](#passing-attributes)
+   * [Chomping spaces](#chomping-spaces)
+   * [Default return](#default-return)
+   * [Sorting data](#sorting-data)
+   * [Split, first and last](#split-first-and-last)
+
+4. [Everything is an object](#everything-is-an-object)
+   * [Writing classes](#writing-classes)
+   * [Instance variables](#instance-variables)
+   * [Getters and setters](#getters-and-setters) 
+   * [Accessors and readers](#accessors-and-readers)
+   * [Initializers](#initializers)
+   * [Super method](#super-method)
+   * [Checking classes and getting class names](#checking-classes-and-getting-class-names)
+
+5. [Assignments](#assignments)
+   * [Employee-o-matic 4000](#employee-o-matic-4000)
+   * [Tic-tac-toe](#tic-tac-toe)
+
 ## Syntax, loops and wizard hats
 
 [Ruby](https://en.wikipedia.org/wiki/Ruby_(programming_language))
@@ -20,7 +65,7 @@ primary goal with Ruby was developer happiness. Therefore, you will notice,
 that most Ruby code looks like
 [pseudo-code](https://en.wikipedia.org/wiki/Pseudocode) (iterative text
 describing an algorithm), there are many methods built-in into Ruby that
-you won't fund in most other languages and they will have more intuitive names
+you won't found in most other languages and they will have more intuitive names
 than in most other languages.
 
 In the last chapter we created a `hello_world.rb` file containing a program that
@@ -66,6 +111,8 @@ problem!
 Ruby supports many different kinds of loops - `while`, `each`, `times` and
 `loop` each serving a different purpose. Let's inspect some of them.
 
+### While loop
+
 A `while` loops until a given condition is met. Let's try to print all numbers
 from 0 to 100 using it:
 
@@ -95,6 +142,8 @@ the block will be executed on each iteration of the loop. In the above example,
 the lock contains a call to the `puts` method and `i += 1`, this code will be
 run as long as `i` is less than 100.
 
+### Loop do
+
 Now, lets take a look at `loop`. It loops indefinitely or until the program
 stops (you can stop most terminal programs by pressing `Ctrl` and `C`).
 There are only a few use-cases for this kind of loop and you will rarely see
@@ -117,6 +166,8 @@ end
 ```
 
 The output of the while statement is the same as of the loop statement.
+
+### Times loop
 
 We will cover `each` later, so let's take a look at `times`. It loops exactly
 the specified number of times - in that respect it's identical to our
@@ -186,7 +237,7 @@ while guess != number do
   print "Your guess of #{guess} "
 
   if guess > number
-    print 'is too hight'
+    print 'is too high'
   elsif guess < number
     print 'is too low'
   else
@@ -201,12 +252,17 @@ end
 
 There are quite a few new things here. Let's go through them one-by-one.
 
-Firs there's `number = rand(100)`, we already know that `number` is a variable,
-but what is the `rand(100)`? `rand` is a method built-in into Ruby that
-returns a random number between `0` and the number you give it. If you don't
-give it a number it will return a random decimal number between `0` and `1`.
+### Random
+
+First, there's `number = rand(100)`, we already know that `number` is a
+variable, but what is the `rand(100)`? `rand` is a method built-in into Ruby
+that returns a random number between `0` and the number you give it. If you
+don't give it a number it will return a random decimal number between `0` and
+`1`.
 
 ![Different ways of calling `rand`](./images/rand.png)
+
+### Nil
 
 Ok, but what's going on here `guess = nil`? Again, we know that `guess` is a
 variable, but what is `nil`. `nil`, otherwise known as `null` in other
@@ -227,7 +283,9 @@ you can research for your self). So even though Ramesses entered an ID number
 our program would think he didn't, this is a problem. Therefore `nil` was
 introduced to unambiguously represent no data.
 
-Let's inspect our game further. What is `guess = gets.to_it`, again we know
+### Console input
+
+Let's inspect our game further. What is `guess = gets.to_i`, again we know
 that `guess` is a variable. That means that we are assigning `guess` the value
 of `gets.to_i`, but what is that? `gets.to_i` are actually two methods!
 In Ruby most method calls are done by putting a dot (`.`) between a value and
@@ -243,6 +301,8 @@ for learning and/or looking up unknown methods. You should reference it often
 as it will teach you more than any other resource about how Ruby works and
 what exists.
 
+### Conversion to integer
+
 So `gets` returns the user's input, but what does `to_i` do? `to_i` converts the
 user's input to a number. By default a user's input is a string of letters, or a
 string for short. While strings can be compared for equality e.g.
@@ -251,6 +311,8 @@ as strings can't be compared with real numbers. So we wouldn't be able to
 compare `guess` with `number` because `guess` would be a string and `number` is
 a number. Therefore we convert `guess` to a number using `to_i`. The name `to_i`
 comes from the name 'integer', `to_i` converts a string to a whole number.
+
+### Conversion to float
 
 An analogous method for decimal number would be `to_f` which would convert a
 string to a decimal number. Why is it `to_f` and not `to_d`? This has a
@@ -278,14 +340,16 @@ What is the `!=`? `!=` is the opposite of `==` which means equals, so
 programming languages putting a bang `!` before any operator inverts it's
 function, so `!=` is different and `!true` is `false`, etc.
 
+### Formatting output
+
 Now, what is the `#{guess}` in the `print` statement
 `print "Your guess of #{guess} "`? In Ruby, `#{}` is used to interpolate a
 variable into a string. Basically instead of `#{guess}` the value of `guess`
 gets printed into the string. But what if I want to write `#{guess}` and not
-have it interpolated? Roby has you covered there, it differentiates two kinds
+have it interpolated? Ruby has you covered there, it differentiates two kinds
 of strings. Strings quoted with `'` don't get interpolated and are taken "as is"
 while strings quoted with `"` get interpolated. But what if you want to have
-bot interpolated and non-interpolated values in the same string? You can
+both interpolated and non-interpolated values in the same string? You can
 state that you don't want interpolation to happen by "escaping" the hashtag `#`
 with a slash ` \ ` before it. E.g.
 
@@ -300,11 +364,13 @@ puts "number: #{number} | guess: \#{guess}"
 
 ![Example of interpolated stings](./images/interpolation.png)
 
+### If elsif else
+
 Let's look at the `if` statement now.
 
 ```ruby
 if guess > number
-  print 'is too hight'
+  print 'is too high'
 elsif guess < number
   print 'is too low'
 else
@@ -318,8 +384,8 @@ end
 executed only if the `if` statement didn't get executed and the condition
 given to it is true. You can have as many `elsif` statements as you like, the
 first one that's truthy (truthy means "it evaluates to true") will be executed
-an no other. Finally there is `else`. It gets executed only if all previous `if`
-and `elsif` statements were falsy.
+and no other. Finally there is `else`. It gets executed only if all previous
+`if` and `elsif` statements were falsy.
 
 Here `<` means that the left number is smaller than the right one, while `>`
 means that the left number is larger than the right one. There are two
@@ -351,7 +417,7 @@ end
 This will only print two `<3` and no `</3` as both `nil` and `false` are falsy.
 In Ruby only those values are falsy, everything else is truethy.
 
-Ruby also provides a shorthand way to writ in-line `if` statements like this:
+Ruby also provides a shorthand way to write in-line `if` statements like this:
 
 ```ruby
 print 'How much is 3 + 3? '
@@ -403,6 +469,8 @@ double quotes `"` when working with special characters such as `\n` because,
 as we learned earlier, single quotes `'` prevent interpolation and would
 interpret `\n` as ` \ ` and `n`.
 
+### Next
+
 A tidbit I forgot to mention in the last loops chapter! Inside loops you
 can use the `next` keyword to skip an iteration! E.g. let's print all even
 numbers between 1 and 100. To figure out if a number is odd or even we need
@@ -410,7 +478,7 @@ the modulo operator `%`. The modulo operator returns the remainder of whole
 number division e.g. `5 % 3` is `2` because `5 / 3` is `1` and the rest up to
 five is `2`. So to figure out if a number is even we can write something
 like this `number % 2 == 0` because if we divide the number by two, and there
-is no remainder it must be a multiple of two and therefor even, else it's odd.
+is no remainder it must be a multiple of two and therefore even, else it's odd.
 
 ```ruby
 i = 0
@@ -423,9 +491,11 @@ end
 
 ![Printing all even numbers](./images/even_odd.png)
 
+### And and Or
+
 You will often have to check if two values for a condition and you will
 need them both to satisfy a constraint, or just one. For that reason Ruby
-implements the 'or' `||` and 'and' `&&` operators.
+implements 'or' `||` and 'and' `&&` operators.
 
 ```ruby
 true && true # => true
@@ -472,6 +542,8 @@ sorted by surname. Let's help them out.
 
 We know, we can gather user inputs with `gets` and that we can print data using
 `puts` and `print`, but how can we store data?
+
+### Arrays
 
 To store lists of data Ruby has a type called an
 [Array](https://ruby-doc.org/core-2.5.1/Array.html). Arrays can store large
@@ -550,6 +622,8 @@ puts employees[0][0] # => Alice Doe
 puts employees[1][0] # => Bob John
 puts employees[2][0] # => Clay Chen
 ```
+
+### Hashes
 
 While this is a possibility it's already confusing to access data in the
 employees array. It would be much better if we could name an employee's
@@ -639,13 +713,15 @@ loop do
     puts 'add'
   elsif action == 'v'
     puts 'view'
-  elseif action == 'q'
+  elsif action == 'q'
     puts 'quit'
   else
     puts 'help'
   end
 end
 ```
+
+### Switch case
 
 This was simple enough. This example is a good use-case for a `loop` loop, as
 we want our program to loop until the user specifies it should quit. Though,
@@ -695,6 +771,8 @@ loop do
 end
 ```
 
+### Exiting the program
+
 Ok. Now lets implement the quit action. For this we will need to know about the
 `exit` method which quits the current program.
 
@@ -740,9 +818,13 @@ loop do
 end
 ```
 
+### Writing methods
+
 In Ruby, we can define our own methods with the `def` keyword like this:
 
 ```ruby
+# Here we are declaring methods
+
 def add_employee
   puts 'add'
 end
@@ -764,6 +846,9 @@ def print_help
   puts 'q - to quit the program'
 end
 
+
+# Main program starts here
+
 puts 'Employee-o-matic 4000'
 
 loop do
@@ -779,16 +864,24 @@ loop do
   end
 end
 ```
+
+### Lower and upper case
+
 The strange line here is `gets.downcase[0]`, we already know of `gets` so
 what does the rest do? Let's imagine that our user entered 'A' and replace
 `gets` with that. Now we have `"A\n".downcase[0]`, but where did the `\n` come
-from? Well, the `\n` is inserted when the user hits the enter key co confirm
-his input. Now lets look ad `downcase`. If you open up the string documentation
+from? Well, the `\n` is inserted when the user hits the enter key to confirm
+his input. Now lets look at `downcase`. If you open up the string documentation
 of Ruby, you can see that `downcase` converts all uppercase letters to lowercase
 ones. If we apply this method to our input we get `"a\n"[0]`. Now we only have
 the `[0]` to deal with. Strings, in some ways, act very much like Arrays. You
 can access a String and get the letter at any position as if it were an Array.
 So our `[0]` turns `"a\n"` into `"a"`.
+
+Opposite command of `downcase` is `upcase`. Running `'This is A test 1'.upcase`
+results in output `"THIS IS A TEST 1"` as an example.
+
+### Order of methods
 
 Can we define our methods after the loop? We can, but we can't use them in the
 loop then. Ruby has to know those methods exist when it enters the loop, else
@@ -850,6 +943,8 @@ loop do
   end
 end
 ```
+
+### Passing attributes
 
 Oh oh, we have a problem! Where do we put our newly created employee? We need
 to create an array that stores all employees and pass it to our method, but how?
@@ -919,8 +1014,12 @@ does to the variable will apply to your variable as well - if you want to read
 more about this you can research 'Ruby pass by reference' which is a technical
 term for the behaviour described above.
 
+### Chomping spaces
+
 In the code above, we used a method called `chomp`, all it does is it removes
-all whitespaces before the first and after the last charactere.
+all whitespaces before the first and after the last character.
+
+### Default return
 
 This is one way how we can return a value from a method, by modifying the
 input. Another way is to return a value. In Ruby there are two explicit ways
@@ -1081,6 +1180,8 @@ end
 
 ![Add and view employees](./images/emp_3.png)
 
+### Sorting data
+
 Now we only need to sort the array of employees. This is fairly simple to do
 using the `sort_by` method. It accepts a block in which wee have to specify the
 key by which it will sort an array in ascending order.
@@ -1150,6 +1251,8 @@ end
 
 ![Sorted output of employees](./images/emp_4.png)
 
+### Split, first and last
+
 So... What does this do?
 
 ```ruby
@@ -1170,7 +1273,11 @@ we want to split the string, in our case a space ` `. Let's expand this -
 `['Alice', 'Doe'].last`. Now we only have to explain the `last` method - it
 returns the last member of the array.
 
-Though, this looks kind of messy. Let's take a look how we can improve this.
+Just like `last`, `first` will return the first element of the array. You might
+use the old school way of writing `[0]` but this notation is more easily
+readable and is more semantic.
+
+A this looks kind of messy. Let's take a look how we can improve this.
 
 ## Everything is an object.
 
@@ -1207,6 +1314,8 @@ an object. Strings, Numbers, Arrays, Hashes, all are objects. Anything that
 looks like `something.foo` is an object. Here `something` is an object and
 `foo` is a method of that object.
 
+### Writing classes
+
 How can we create our own objects? First we need to learn what a `class` is.
 A class is a blueprint for making objects. This all sounds confusing so lets
 give a practical example.
@@ -1242,6 +1351,8 @@ instance of the Employee class. `employee.name` calls the name method we defined
 in the class, which returns 'Alice'. Therefore the `puts` statement prints
 'Alice'. Neat!
 
+### Instance variables
+
 Inside classes we can use a special type of variable! It's named an instance
 variable. Instance variables look and act just like normal variables but their
 name starts with an `@` and they can only be accessed inside an instance of
@@ -1264,6 +1375,8 @@ puts employee.name
 ```
 
 ![Example of using an instance variable](./images/instance_var.png)
+
+### Getters and setters
 
 The `set_name` method is called a setter, as it's only used to set a value. The
 `name` method is named a getter, as it's only used to get a value. In Ruby we
@@ -1288,9 +1401,11 @@ puts employee.name
 
 ![Example of using an instance variable](./images/instance_var.png)
 
-Not to repeat our selfs constantly, Ruby provides two special keywords that only
-work inside a class definition - `attr_accessor` and `attr_reader`.
-`attr_accessor` automatically creates a beautiful setter, getter and veriable
+### Accessors and readers
+
+Not to repeat our selves constantly, Ruby provides two special keywords that
+only work inside a class definition - `attr_accessor` and `attr_reader`.
+`attr_accessor` automatically creates a beautiful setter, getter and variable
 with a given name. While `attr_reader` only creates a getter.
 
 ```ruby
@@ -1304,6 +1419,8 @@ puts employee.name
 ```
 
 ![Example of using an instance variable](./images/instance_var.png)
+
+### Initializers
 
 But what if we want to create a 'Bob' object right away, instead of creating
 an empty object and then setting it's name to 'Bob'? For this purpose we can
@@ -1329,7 +1446,7 @@ puts employee.name
 
 ![Using an initializer](./images/instance_var_2.png)
 
-Let's try to model our employee using a class! the implementation would look
+Let's try to model our employee using a class! The implementation would look
 like this.
 
 ```ruby
@@ -1577,12 +1694,14 @@ puts animals[3].sound
 
 ![Working initial vet program](./images/evet_1.png)
 
+### Super method
+
 What if we want to access the parent's implementation form the child? For those
 situations there is the `super` keyword - it calls the parent's implementation.
 Oddly enough, if the method you are overriding accepts any arguments, you don't
 need to pass them to the `super`, they will get passed automatically.
 
-```
+```ruby
 class Dog
   def bark
     'woof'
@@ -1657,6 +1776,8 @@ This is really cool! Using inheritance we don't have to re-implement the
 surname method for programmers and office managers, and each can have their
 own additional methods.
 
+### Checking classes and getting class names
+
 We will often need to know what kind of object we are dealing with. Is it an
 `Employee`, or a `Programmer` or an `OfficeManager`. We have three ways to
 figure that out. The first is using the `class` method on an object like this
@@ -1682,6 +1803,8 @@ end
 
 # Assignments
 
+## Employee-o-matic 4000
+
 - Implement the ability to edit an employee in our employees program.
   * [ ] the edit actions should be `e`
   * [ ] editing a user is the same as adding, ask for their full name and id
@@ -1690,14 +1813,14 @@ end
 ![Working assignemnt #1](./images/assignment_1.png)
 
 - Implement the ability to sort either by first or last name to our employee
-program
+  program
   * [ ] ask the user if they want to sort by first `f` or last `l` name
   * [ ] print the sorted list depending on the user's action
 
 ![Working assignemnt #2](./images/assignment_2.png)
 
 - Implement the ability to insert programmers and office managers in our
-employee program.
+  employee program.
   * [ ] on the add action the user should be able to choose between adding a
   regular employee `e`, a programmer `p` or an office manager `o`.
   * [ ] on the view action next to programmers print the programming
@@ -1705,7 +1828,9 @@ employee program.
   * [ ] assume that it's not possible to change an employee's role when editing
   * [ ] enable editing of programming language / office fields
 
-![Working assignemnt #4](./images/assignment_4.png)
+![Working assignemnt #3](./images/assignment_3.png)
+
+## Tic-tac-toe
 
 - Create a game of tic-tac-toe
   * [ ] at the beginning of each round the full game board has to be drawn
@@ -1720,9 +1845,11 @@ employee program.
   * you don't need to detect when somebody won
   * you don't need to put in a quit condition (use `Ctrl` + `C`)
 
-![Working assignemnt #3](./images/assignment_3.png)
+![Working assignemnt #4](./images/assignment_4.png)
 
-Crate three separate files for each assignment and put them in your
+Crate two separate files for each assignment and put them in your
 `ruby-homework` directory, add, commit, and push the files to the
 `feature/second-homework` branch. Assign your teachers as the reviewers of the
 branch.
+
+**Happy hacking!**
