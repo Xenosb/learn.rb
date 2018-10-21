@@ -185,8 +185,8 @@ rails new ruby-homework
 # add missing lines eg. .idea or .vscode
 ```
 
-This will automagically create a backbone of your first Rails web application.
-You will also see that it created a Gemfile and run bundler to install a few
+This will auto-magically create a backbone of your first Rails web application.
+You will also see that it created a *Gemfile* and run bundler to install a few
 gems you might need at the start. We will take a more detailed look at how our
 project is organized later but first let's see how our website looks!
 
@@ -240,9 +240,9 @@ rails generate controller Landing index
 
 What happened here is that rails created a new controller called
 *landing_controller.rb*, view *landing/index.html.erb* and some additional and
-useful files like controller test, helper, javascript/coffeescript and css
-stylesheet. We'll cover exact locations and purpose of these files later but now
-let's take a look at our route, controller and view.
+useful files like controller test, helper, javascript and css stylesheet. We'll
+cover exact locations and purpose of these files later but now let's take a look
+at our route, controller and view.
 
 ### Adding the default route
 
@@ -373,6 +373,10 @@ You will again have to refresh the page to show the new results.
 Using controllers and views you can display many thing and control how the
 application works. But as you can see this web doesn't really look that nice.
 Maybe we could fix that a bit?
+
+In this chapter we will use a few of these front-end technologies but they will
+be more thoroughly explained in chapter 5. So use resources and guides regarding
+css and javascript as is.
 
 [Bootstrap](http://getbootstrap.com) is an easy to use framework which will help
 us make pretty web pages without much effort! To install it we can use gem. Open
@@ -697,8 +701,8 @@ As with landing controller, Rails automatically generated a controller which now
 has multiple methods - *index*, *show*, *new* and *edit* which
 correspond to the views found in `app/views/authors` So if you wish to change
 how they look, you can do it there. To be able to access all of these resources,
-Rails added a line in your route file. New CSS and Javascript/Coffescript files
-were also generated so you could modify the look of the web application further.
+Rails added a line in your route file. New CSS and Javascript files were also 
+generated so you could modify the look of the web application further.
 
 ### Links in the menu
 
