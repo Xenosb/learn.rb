@@ -46,11 +46,11 @@ stored in database and many many more.
 
 ### Good documentation
 
-To give you a better perspective what are the basic prinicples on which Rails
+To give you a better perspective what are the basic principles on which Rails
 was designed, take a look on article written by one of its creators -
 [The Rails Doctrine by David Heinemeier Hansson](https://rubyonrails.org/doctrine/).
 And when you find yourself in a need of a guide or documentation, you can check
-out [official guides](https://guides.rubyonrails.org/) which unlike many others 
+out [official guides](https://guides.rubyonrails.org/) which unlike many others
 don't focus on explaining all the components like classes and methods but focus
 on solving problems you will encounter on day-to-day basis. And if you are then
 still looking for more insight in how things work there is an
@@ -67,10 +67,10 @@ development:
 * Convention over configuration or bluntly said,
   **"You're not a beautiful and unique snowflake"**. In most frameworks there is
   a million of different ways how to do even basic tasks. If you Google a Rails
-  problem you probably won't be greated with 20 comletely different solutions to
-  your problem on Stack Overflow. You won't have to check which of these
+  problem you probably won't be greeted with 20 completely different solutions
+  to your problem on Stack Overflow. You won't have to check which of these
   solutions works best with the rest of your application. There actually is a
-  most convinient way how to do a certain thing. This convention means that you
+  most convenient way how to do a certain thing. This convention means that you
   can make stuff work the way you want very quickly and without knowing how it
   works under the hood.
 
@@ -79,7 +79,7 @@ development:
 Rails is a web framework which strongly follows model-view-controller principle.
 This principle, as the name suggests, consists of three parts. **Models** are
 descriptions of your data objects (eg. post has id, author, date and content).
-**Controllers** implement business logic which controlls your application,
+**Controllers** implement business logic which controls your application,
 accesses data, and forwards stuff to the views and finally **views** are in
 charge of showing your page or API result to the users.
 
@@ -125,10 +125,10 @@ rails --version
 ### Bundling gems
 
 But it would be quite boring and against the principle of dont-repeat-yourself
-if you'd have to manually install all of the gems every time you checkout a 
-project. This is why we have agem called **bundler**. It helps us get all the
+if you'd have to manually install all of the gems every time you checkout a
+project. This is why we have a gem called **bundler**. It helps us get all the
 gems that we need easily - *One gem to rule them all and in darkness bind them.*
-It will read your **Gemfile** file and install all the gems specified in it. You 
+It will read your **Gemfile** file and install all the gems specified in it. You
 can even choose which version of the gem you want. To install the bundler just
 run following.
 
@@ -140,12 +140,12 @@ gem install bundler
 And when you want to install new gems or update existing ones you will simply
 run `bundle install` or `bundle update`.
 
-Just before we start with the cool stuff make sure that you create a new branch 
+Just before we start with the cool stuff make sure that you create a new branch
 and switch to it. You should already know how to do this but just to be sure
 here is line by line guide.
 
 ```bash
-# Navigate to your project foder
+# Navigate to your project folder
 cd ~/ruby-homework # for example
 
 # Switch back to master branch
@@ -214,13 +214,13 @@ nice graphic and message.
 That was nice! Rails took care to create everything for you and already you can
 show your first Rails page to friends. But you didn't actually decide what to
 show on this page as it was provided for you. Let's create one on our own.
-For this we will need a single controller and asociated view.
+For this we will need a single controller and associated view.
 
-A controller's purpose is to receive specific requests for the application. 
-Routing decides which controller receives which requests. Often, there is more 
+A controller's purpose is to receive specific requests for the application.
+Routing decides which controller receives which requests. Often, there is more
 than one route to each controller, and different routes can be served by
-different actions. Each action's purpose is to collect information to provide it 
-to a view. A view's purpose is to display this information in a human readable 
+different actions. Each action's purpose is to collect information to provide it
+to a view. A view's purpose is to display this information in a human readable
 format.
 
 ### Using controller generator
@@ -238,16 +238,16 @@ rails generate controller Landing index
 
 ![Generating index](images/rails-index-generate.png)
 
-What happened here is that rails created a new controller called 
-*landing_controler.rb*, view *landing/index.html.erb* and some additional and 
-usefull files like controller test, helper, javascript/coffeescript and css
-stylesheet. We'll cover exact locations and purpose of these files later but now 
+What happened here is that rails created a new controller called
+*landing_controller.rb*, view *landing/index.html.erb* and some additional and
+useful files like controller test, helper, javascript/coffeescript and css
+stylesheet. We'll cover exact locations and purpose of these files later but now
 let's take a look at our route, controller and view.
 
 ### Adding the default route
 
-Routes are paths to the resourses of your web application. The Rails application
-needs to know which resourecs you have so that it can recognize requests and
+Routes are paths to the resources of your web application. The Rails application
+needs to know which resources you have so that it can recognize requests and
 route them to the correct controllers and actions. This is done in file
 `config/routes.rb`
 
@@ -266,7 +266,7 @@ Rails allows you to specify only specific routes to be available like we
 currently have `get 'landing/index'` defined. You can also add all of the
 resources using `resource :authors`. To define which route is your home or root
 route you need to specify it like this `root 'landing#index'`. When you now
-open the website URL, you will no longer see the default Rails welecome page but
+open the website URL, you will no longer see the default Rails welcome page but
 a message that displayed by the controller.
 
 ```ruby
@@ -280,11 +280,11 @@ end
 
 ### Modifying the controller
 
-Open `app/controllers/landing_controller.rb` and you might recignize some
+Open `app/controllers/landing_controller.rb` and you might recognize some
 stuff - *LandingController* is a class extending the functionality of our
-*ApplicationController* you can find in the same folder. It has only one method 
+*ApplicationController* you can find in the same folder. It has only one method
 called index which is currently empty. We'll create two local variables. In
-first type your favorite dog breed and in the second calculate a simple 
+first type your favorite dog breed and in the second calculate a simple
 mathematical operation like this.
 
 ```ruby
@@ -300,14 +300,14 @@ end
 ### Changing the view
 
 Now open up `app/views/landing/index.html.erb` and take a look.
-If you ever encountered HTML source this will at least resemble it. But the file 
-extension has additional *.erb* which means that it contains embedded Ruby code. 
-By default Rails created a header of most significant importance `<h1>` stating 
-the controller and action and a paragraph annotated by `<p>` containing the 
-location of the file. Neat! But we want to display our favorite dog breed and 
-math solution. We will add a new content division or a `<div>` in short. In it we 
-will put some text. To display the data from the controller we will use special
-tags `<%= %>`.
+If you ever encountered HTML source this will at least resemble it. But the file
+extension has additional *.erb* which means that it contains embedded Ruby code.
+By default Rails created a header of most significant importance `<h1>` stating
+the controller and action and a paragraph annotated by `<p>` containing the
+location of the file. Neat! But we want to display our favorite dog breed and
+math solution. We will add a new content division or a `<div>` in short. In it
+we will put some text. To display the data from the controller we will use
+special tags `<%= %>`.
 
 This will render Ruby code we put inside of it. So this code should show how
 many dogs do you really want to have. Refresh your browser to see the result.
@@ -326,7 +326,7 @@ many dogs do you really want to have. Refresh your browser to see the result.
 ```
 
 Other neat trick that you will now be able to do is to display generate multiple
-page elements like in a loop. You can surround ruby controll logic with `<% %>`
+page elements like in a loop. You can surround ruby control logic with `<% %>`
 to execute it. Here, we will print what their names would be in an unordered
 list `<ul>`. For the number of times we will repeat the same block of code
 containing a single list item `<li>`. Take a not that we can also use local
@@ -345,9 +345,9 @@ variables like *i* here and execute simple operations.
 The same pattern goes for writing if then statements. You just have to annotate
 `<% if <expression> %>` for the beginning of the block. You can use
 `<% elsif <expression> %>` to match multiple criteria and `<% else %>` to catch
-the rest of the cases. Just don't forget to add `<% end %>` to the end of the 
-block. In this example dog breed is alphabetically compared to some reference 
-string. This means that Ruby will compare two strings letter by letter. For 
+the rest of the cases. Just don't forget to add `<% end %>` to the end of the
+block. In this example dog breed is alphabetically compared to some reference
+string. This means that Ruby will compare two strings letter by letter. For
 example *Irish setter* is smaller than *Labrador* and *Maltese* is larger
 because of alphabetical order of the first letter. If first two letters were the
 same next ones would be compared.
@@ -370,21 +370,21 @@ You will again have to refresh the page to show the new results.
 
 ### Making it pretty
 
-Using controllers and views you can display many thing and controll how the
+Using controllers and views you can display many thing and control how the
 application works. But as you can see this web doesn't really look that nice.
 Maybe we could fix that a bit?
 
 [Bootstrap](http://getbootstrap.com) is an easy to use framework which will help
 us make pretty web pages without much effort! To install it we can use gem. Open
 `Gemfile` in the root of your project and add `gem 'bootstrap'` to include it to
-your project. As Bootstrap depends on JQuery, we'll also add it to our Gemfile - 
+your project. As Bootstrap depends on JQuery, we'll also add it to our Gemfile -
 `gem 'jquery-rails'`. You can put both of the lines before development and test
 blocks. Now stop your rails server using Control and C in the terminal it is
 running in and bundle our new gems using `bundle install`.
 
 This has added Bootstrap to our project but we still need to include it. Change
-extension of `application.css` found in `app/assets/stylesheets` to 
-`application.scss` and open the file. Replace the current content with the 
+extension of `application.css` found in `app/assets/stylesheets` to
+`application.scss` and open the file. Replace the current content with the
 following.
 
 ```scss
@@ -415,7 +415,7 @@ adding padding to the top of our page body. Start the Rails server and refresh
 the page. You should notice the space at the top and that text now looks a bit
 different.
 
-Just like *application.scss* controlls our styling, `application.html.erb` found
+Just like *application.scss* controls our styling, `application.html.erb` found
 in `app/views/layouts/application.html.erb` is inherited by all other pages. As
 we want to add menu to our web we should add it here.
 
@@ -430,7 +430,7 @@ the width of your screen and to initially set the zoom level to 1:1 scale.
 <meta name="viewport" content="width=device-width, initial-scale=1">
 ```
 
-Bodi is where your content is. So inside of the `<body>` tags add navigation
+Body is where your content is. So inside of the `<body>` tags add navigation
 menu by pasting this snippet. This adds navigation bar to our web with
 *hamburger menu* for mobile devices and a single item in the navigation - link
 to home.
@@ -470,9 +470,9 @@ menu which is quite useful on mobile phones.
 </main>
 ```
 
-Now we are going to make a few more cosmetical modifications to our landing
+Now we are going to make a few more cosmetic modifications to our landing
 page to make it even prettier. Open up `app/views/landing/index.html.erb` and
-surround text that was autogenerated (*Landing#index and next paragraph*) with
+surround text that was auto-generated (*Landing#index and next paragraph*) with
 `<div class="jumbotron">`. This will make it centered and emphasized. Also, 
 surround the part that we did in the previous subchapter with
 `<div class="container">`. This will center your content so that it is in line
@@ -507,7 +507,7 @@ with the previous div. At the end your file should look like this. Now refresh.
 </div>
 ```
 
-Refresh the page now and you will se a quite nice webiste. If you check your
+Refresh the page now and you will se a quite nice website. If you check your
 local IP address by writing `ip addr` and put it followed by `:3000` in your
 mobile phone web browser you will see that website is also mobile friendly.
 Sweet!
@@ -515,7 +515,7 @@ Sweet!
 ![Mobile view of landing page](images/rails-mobile-view.png)
 
 If you maybe missed it, when we wrote the view for the landing page index, we
-also added an id *dog-div* to the div we added. This is a uniqe identifier for
+also added an id *dog-div* to the div we added. This is a unique identifier for
 an element of the web page. When we with CSS tell our browser to change how that
 div looks it will immediately know which div it is and change its looks. We also
 added class *grow-up* to the first paragraph. Multiple elements can be of same
@@ -553,11 +553,11 @@ transparency so that your logo can be displayed on multiple different
 backgrounds. If you are out of ideas, you can use [this logo](https://raw.githubusercontent.com/Xenosb/ruby-homework/master/app/assets/images/logos/learn-rb.png).
 
 Now that we have added logo to the project, we need to add it to the navbar
-which is found in our `application.html.erb` file. At the begining of it there
+which is found in our `application.html.erb` file. At the beginning of it there
 is an anchor `<a class="navbar-brand" href="#">` which is basically your
 brand logo and text. Before it only wrote *Navbar* if you opened up your browser
 but we will now add a logo and a new text. To do this delete the inner text and
-add an *image_tag*. Bacause of `<%= %>` you can probably guess that this is a
+add an *image_tag*. Because of `<%= %>` you can probably guess that this is a
 Rails function that gives you some output. Indeed if you write
 `image_tag('logos/learn-rb')`, Ruby will replace this with the path to your
 image. We can also add a `<span>` element with some text inside which is
@@ -576,10 +576,11 @@ the snippet below if you are unsure what to change.
 ![Logo is too big](images/assets-images-logo-too-big.png)
 
 If you refresh now you should see that we have a nice logo and text next to our
-navigation menu. But it is too big and is overlaping with our text. To make it
+navigation menu. But it is too big and is overlapping with our text. To make it
 smaller we will use the power of CSS. In `application.scss` find the body
 section and add a section which will influence of the all elements inside of
-`navbar` class. Next, do the same thing with `navbar-brand` class. Now we can tell all img elements found in navbar-brand inside of the navbar to have the
+`navbar` class. Next, do the same thing with `navbar-brand` class. Now we can
+tell all img elements found in navbar-brand inside of the navbar to have the
 size of *2rem*. We also want our text to be a bit more separated from the logo
 so we will also add `padding-left: 0.5rem` to all *span* elements of the navbar.
 Refresh the web and see how it looks on both web and mobile.
@@ -608,7 +609,7 @@ Refresh the web and see how it looks on both web and mobile.
 As we are creating a simple version of Reddit we want to have authors create
 posts on which other authors will be able to add comments. We need to add all of
 these models to our Rails application. And for each of those we need to create
-controller a fiew views where we could list all members, add new ones or edit
+controller a few views where we could list all members, add new ones or edit
 existing ones. To help you avoid writing a lot of boilerplate code, Rails has a 
 generator called *scaffold*.
 
@@ -662,10 +663,10 @@ worked and refresh our web page.
 ![Migration error](images/rails-migration-error.png)
 
 Seems that we have stumble into error. But no biggie, Rails actually tells you
-what is wrong quite literaly - `Migrations are pending. To resolve this issue,
+what is wrong quite literally - `Migrations are pending. To resolve this issue,
 run bin/rails db:migrate RAILS_ENV=development`. This means that we changed how
 our data models look in our Rails application but haven't changed that in our
-database. To avoid writing querries, Rails generated a migration script for us
+database. To avoid writing queries, Rails generated a migration script for us
 and we can just run what we were told. In this case, migration will create a new
 database table called Authors with fields we have previously declared.
 
@@ -701,7 +702,7 @@ were also generated so you could modify the look of the web application further.
 
 ### Links in the menu
 
-As this portion of the website is currently not accessable without manually
+As this portion of the website is currently not accessible without manually
 typing the URL, we'd like to add a link to the index of the posts to our
 navigation. To do this we will go back to
 `app/views/layouts/application.html.erb` and modify the
@@ -718,8 +719,9 @@ navigation. To do this we will go back to
 </ul>
 ```
 
-What we have done here is replace the existing *Home* link to point to actuall
-root of the application accessible thorugh the helper *root_url*. This points to the action we have previously declared in the routes file. This link is
+What we have done here is replace the existing *Home* link to point to actual
+root of the application accessible thorough the helper *root_url*. This points
+to the action we have previously declared in the routes file. This link is
 generated by function `link_to(<text>, <resource>, <html options>)`. In the
 second example we create a link to the page with authors index.
 
@@ -743,7 +745,7 @@ tmp/            - Temporary files
 vendor/         - Third party code you are directly serving
 config.ru       - Tells Rake how to run your application
 Gemfile         - List of gems you are using
-Gemfile.lock    - Lists current versions of gems with dependancies
+Gemfile.lock    - Lists current versions of gems with dependencies
 package.json    - Npm dependencies of your project
 Rakefile        - Allows you to load and run Rake tasks
 README.md       - Project description
