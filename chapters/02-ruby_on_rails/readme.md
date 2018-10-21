@@ -21,8 +21,8 @@ people Ruby with a focus on Ruby on Rails.
    * [Changing the view](#changing-the-view)
    * [Making it pretty](#making-it-pretty)
    * [Time for a coffee](#time-for-a-coffee)
-5. [Overview of project structure](#overview-of-project-structure)
-6. [Scaffolds](#scaffolds)
+5. [Scaffolds](#scaffolds)
+6. [Overview of project structure](#overview-of-project-structure)
 7. [Assignment](#assignment)
 
 ## Introduction
@@ -489,17 +489,17 @@ Probably you are aware of the terms front-end and back-end but let's recap that
 just in case. Back-end is in our case Rails application written in Ruby and is
 executed on server while front-end files are received by users' web browser and
 displayed. In back-end we will fetch and store data as well as control the
-application. HTML, CSS and JavaScript are front-end technologies and are
+application. HTML, CSS and Javascript are front-end technologies and are
 executed by the users' web browser. While HTML and CSS are used soley to
-describe how website should look, JavaScript is a programming language in which
+describe how website should look, Javascript is a programming language in which
 you can do a lot of different stuff - save variables, calculate mathematical
 operations, control the program flow using if-then-else or even tell web browser
 to make additional calls to the server.
 
-But we will not be writing JavaScript but CoffeeScript as it is preferred by
-Rails users. Before the server starts, CoffeeScript is compiled to JavaScript so
-that it could be run by the web browsers. Pro of using CoffeeScript over
-JavaScript is that it's less complex to write and can be even faster in runtime.
+But we will not be writing JavaScript but Coffeescript as it is preferred by
+Rails users. Before the server starts, Coffeescript is compiled to Javascript so
+that it could be run by the web browsers. Pro of using Coffeescript over
+Javascript is that it's less complex to write and can be even faster in runtime.
 
 Just to test how this works open automatically generated file for our landing
 page `app/assets/javascripts/landing.coffee`. It is currently empty except for
@@ -517,17 +517,97 @@ but in the web browsers' console. To access it and many more feature you can in
 Firefox right-click on an element you wish to view and then click on
 `Inspect element` or just `Inspect` on Chrome.
 
-This will show you the console as well as many more tools. With Inspector you can for example see all the elements of the page with their attributes. There is
+This will show you the console as well as many more tools. With Inspector you
+can for example see all the elements of the page with their attributes. There is
 also a simple console you can open and you should see text *Hi console*. This
 approach is often used for debugging.
 
 ![Web browser console](images/browser-console.png)
 
-With this we will finish the overview of the basic elements of our application.
+### Adding some pictures
 
-## Overview of project structure
+Except for *javascript* and *stylesheets* you also have a folder called
+`images` in your `app/assets/` folder. You can place some image assets here.
+This will for example be your website logo, header image and other graphical
+content.
 
-Now let's look at the rest of the project structure. Open up project folder with an editor of your choice and take look at the folders that were created for you.
+[//]: # (Add png logo path)
+
+For example we will add an icon to the navigation bar so that users know that
+they are looking at our webpage. First we will create a folder 
+`app/assets/images/logos` and then copy select an image you want and drop it
+there. It might not be a bad idea to use a `.png` file as they can have 
+transparency so that your logo can be displayed on multiple different
+backgrounds. If you are out of ideas, you can use [this logo](https://TODO).
+
+Now that we have added logo to the project, we need to add it to the navbar
+which is found in our `application.html.erb` file. At the begining of it there
+is an anchor `<a class="navbar-brand" href="#">` which is basically your
+brand logo and text. Before it only wrote *Navbar* if you opened up your browser
+but we will now add a logo and a new text. To do this delete the inner text and
+add an *image_tag*. Bacause of `<%= %>` you can probably guess that this is a
+Rails function that gives you some output. Indeed if you write
+`image_tag('logos/learn-rb')`, Ruby will replace this with the path to your
+image. We can also add a `<span>` element with some text inside which is
+basically an inline text which will be displayed next to our logo. Take look at
+the snippet below if you are unsure what to change.
+
+```html
+<!-- app/views/layouts/application.html.erb -->
+<!-- <nav> Put at the beginning of navigation bar </nav> -->
+<a class="navbar-brand" href="#">
+    <%= image_tag('logos/learn-rb') %>
+    <span>Ruby Homework</span>
+</a>
+```
+
+![Logo is too big](images/assets-images-logo-too-big.png)
+
+If you refresh now you should see that we have a nice logo and text next to our
+navigation menu. But it is too big and is overlaping with our text. To make it
+smaller we will use the power of CSS. In `application.scss` find the body
+section and add a section which will influence of the all elements inside of
+`navbar` class. Next, do the same thing with `navbar-brand` class. Now we can tell all img elements found in navbar-brand inside of the navbar to have the
+size of *2rem*. We also want our text to be a bit more separated from the logo
+so we will also add `padding-left: 0.5rem` to all *span* elements of the navbar.
+Refresh the web and see how it looks on both web and mobile.
+
+```scss
+// app/assets/stylesheets/application.scss
+// Inside of body
+.navbar {
+    .navbar-brand {
+        img {
+            height: 2rem;
+            width: auto;
+        }
+
+        span {
+            padding-left: 0.5rem;
+        }
+    }
+}
+```
+
+![Logo is perfectly sized](images/assets-images-logo-perfect.png)
+
+## Scaffolds
+
+As we are creating a simple version of Reddit we want to have authors create
+posts on which other authors will be able to add comments. We need to add of
+these models to our Rails application. And for each of those we need to create
+a controller and views where we could list all members, add new ones or edit
+existing ones. To help you avoid writing a lot of code which is at the end
+identical from project to project, Rails has a generator called *scaffold*.
+
+
+
+## Overview of the rest of the project structure
+
+Now let's look at the rest of the project structure. Open up project folder with
+an editor of your choice and take look at the folders that were created for you
+when you first run `rails new <projectname>`.
+
 
 ```
 app/            - Where your code is
@@ -550,31 +630,84 @@ README.md       - Project description
 .ruby-version   - Current ruby version
 ```
 
+Some of them have already some basic files in them while others are empty except
+for the file called `.keep`. Since git doesn't care about folders but only files
+it is the only way to tell it to create a folder is to place a file in it. So if
+you add some files to your folder `storage`, you can feel free to also delete
+the keep file.
+
 ### Where your code is - app/
 
 This is most important folder in your project and you'll spend most of your time working in it as it contains models, views and controllers as well as jobs and other assets.
+
+* [Assets](#assets)
+* [Channels](#channels)
+* [Controllers](#controllers)
+* [Helpers](#helpers)
+* [Jobs](#jobs)
+* [Mailers](#mailers)
+* [Models](#models)
+* [Views](#views)
 
 #### Assets
 
 This is where you'll put images, javascript files and CSS stylesheets. Basically what makes your web application look good.
 
-At the beggining Rails created for us `javascripts/application.js` which includes other javascript scripts. If you open the file you  should see that it already links a few of external javascript  files. These are annotated like this `//= require turbolinks`. If you search for this file you will not find it any of other folders as this is provided by a gem called the same. Also you'll see line `//= require_tree .`. This includes all of the other files in the same folder. When server starts this file will be compiled into one file called `aplication.js`.
+We've already mentioned and modified the contents of *javascript* and 
+*stylesheets* subfolders. In *Javascript* folder you keep Javascript and/or
+Coffeescript files which will be excuted on clients web browser while in 
+*Stylesheets* folder you keep your CSS and/or SCSS files which will enhance the
+looks of your website.
 
-What was also created was file `stylesheets/application.css`. Much like it's javascript counterpart, it combines multiple stylesheets and serves them in one file called `application.css`.
-
-You can also place some image assets here. This will for example be your website logo, header image and other content that is not
-dynamic. Bear in mind that you should organizethese folders well if your project is to grow as separating global assets from ones used only in particular pages is key for helping you navigate the project.
+As you have seen both javascript and stylesheets have a 'main' file which 
+includes all of the others and is called *application.js* or *application.scss*.
+When server is started or a change in any of the assets files was discovered, 
+Rails will automatically compile the assets. This means that user will receive 
+only one javascript file called *application.js* and only one stylesheet file
+called *application.css*. This is done to optimize the performance of your web.
 
 #### Channels
 
-Channels are used with Action Cable which provides Rails with means to create real time applications like chats. Although this component sounds like a great fun, we'll not be digging into it.
+Channels are used with *Action Cable* component which provides Rails with the
+means to create real time applications like chats. Although this component
+sounds like a great fun, we'll not be digging into it as it is a bit out of our
+scope.
 
 #### Controllers
 
-Bread and butter of your application. They execute most of the logic behind your application. Say that 
+Bread and butter of your application. They execute most of the logic behind your 
+application. You have already created one and you will have another one by the
+end of this chapter.
+
+#### Helpers
+
+Sometimes you will need to implement methods which will be often used by many
+elements of your view or by multiple different pages. Example of this would be
+checking if the students can apply to the course depending on the date. To avoid 
+repeating yourself in multiple instances where you will use this function, you
+can write a helper method which will do it for you so that you can just write
+`if students_can_apply?`.
+
+#### Jobs
+
+Jobs are one-time or a repetitive task which you can manage through Rails. It
+uses Active Jobs component. Example of a job would be a function that would go 
+through all subscribed users and call a mailer to send a newsletter to each
+user.
+
+#### Mailers
+
+Mailers are components which will take a care of sending emails for you and
+implemented with Action Mailer component. Using them you can specify name and
+email of sender of the email, email to which it will be sent to and layout of
+how the email will look.
+
+#### Models
 
 
 
-## Scaffolds
+#### Views
+
+
 
 ## Assignment
