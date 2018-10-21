@@ -594,13 +594,110 @@ Refresh the web and see how it looks on both web and mobile.
 ## Scaffolds
 
 As we are creating a simple version of Reddit we want to have authors create
-posts on which other authors will be able to add comments. We need to add of
+posts on which other authors will be able to add comments. We need to add all of
 these models to our Rails application. And for each of those we need to create
-a controller and views where we could list all members, add new ones or edit
-existing ones. To help you avoid writing a lot of code which is at the end
-identical from project to project, Rails has a generator called *scaffold*.
+controller a fiew views where we could list all members, add new ones or edit
+existing ones. To help you avoid writing a lot of boilerplate code, Rails has a 
+generator called *scaffold*.
+
+Since we want to have nice user interface without much work we can once again
+utilise power of Bootstrap and a little bit of magic from the gem *simple_form*.
+To our *Gemfile* we will add `gem 'simple_form'`. To show validation errors when
+user for example writes an email that already exist we will also add
+`gem 'toastr_rails'`. After this run bundle and additional command to integrate
+simple_form with Bootstrap. 
+
+```bash
+# Install added gems
+bundle install
+
+# Integrate simple_form with bootstrap
+rails generate simple_form:install --bootstrap
+```
+
+To integrate *toastr* we need to add following lines to our CSS, Javascript and
+main application layout.
+
+```bash
+# app/assets/stylesheets/application.scss
+@import 'toastr_rails';
+
+# app/assets/javascripts/application.js
+//= require toastr_rails
+
+# app/views/layouts/application.html.erb
+# At the beginning of the <body> section add
+<%= render 'toastr_rails/flash'%>
+```
+
+Author will have an email, alias and a date of birth. To create the scaffold
+first stop the server and then run following command.
+
+```bash
+rails generate scaffold Author email:string alias:string date_of_birth:datetime
+```
+
+This has generated many thing, many of which we have already seen when
+generating the landing page controller. So let's try to see if this actually
+worked and refresh our web page.
+
+![Migration error](images/rails-migration-error.png)
+
+Seems that we have stumble into error. But no biggie, Rails actually tells you
+what is wrong quite literaly - *Migrations are pending. To resolve this issue,
+run bin/rails db:migrate RAILS_ENV=development*. This means that we changed how
+our data models look in our Rails application but haven't changed that in our
+database. To avoid writing querries, Rails generated a migration script for us
+and we can just run what we were told. In this case, migration will create a new
+database table called Authors with fields we have previously declared.
+
+```bash
+rails db:migrate
+
+# == 20181021125009 CreateAuthors: migrating ====================================
+# -- create_table(:authors)
+#   -> 0.0005s
+# == 20181021125009 CreateAuthors: migrated (0.0006s) ===========================
+```
 
 
+
+```
+    invoke  active_record
+    create    db/migrate/20181021123409_create_authors.rb
+    create    app/models/author.rb
+    invoke    test_unit
+    create      test/models/author_test.rb
+    create      test/fixtures/authors.yml
+    invoke  resource_route
+    route    resources :authors
+    invoke  scaffold_controller
+    create    app/controllers/authors_controller.rb
+    invoke    erb
+    create      app/views/authors
+    create      app/views/authors/index.html.erb
+    create      app/views/authors/edit.html.erb
+    create      app/views/authors/show.html.erb
+    create      app/views/authors/new.html.erb
+    create      app/views/authors/_form.html.erb
+    invoke    test_unit
+    create      test/controllers/authors_controller_test.rb
+    create      test/system/authors_test.rb
+    invoke    helper
+    create      app/helpers/authors_helper.rb
+    invoke      test_unit
+    invoke    jbuilder
+    create      app/views/authors/index.json.jbuilder
+    create      app/views/authors/show.json.jbuilder
+    create      app/views/authors/_author.json.jbuilder
+    invoke  assets
+    invoke    coffee
+    create      app/assets/javascripts/authors.coffee
+    invoke    scss
+    create      app/assets/stylesheets/authors.scss
+    invoke  scss
+    create    app/assets/stylesheets/scaffolds.scss
+```
 
 ## Overview of the rest of the project structure
 
