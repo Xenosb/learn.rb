@@ -17,11 +17,15 @@ people Ruby with a focus on Ruby on Rails.
    * [See it work](#see-it-work)
 4. [Adding index controller](#adding-index-controller)
    * [Using controller generator](#using-controller-generator)
+   * [Adding the default route](#adding-the-default-route)
    * [Modifying the controller](#modifying-the-controller)
    * [Changing the view](#changing-the-view)
    * [Making it pretty](#making-it-pretty)
-   * [Time for a coffee](#time-for-a-coffee)
 5. [Scaffolds](#scaffolds)
+   * [Some more gems to help us out](#some-more-gems-to-help-us-out)
+   * [Scaffold away](#scaffold-away)
+   * [The first migration](#the-first-migration)
+   * [Taking a look what happened](#taking-a-look-what-happened)
 6. [Overview of project structure](#overview-of-project-structure)
 7. [Assignment](#assignment)
 
@@ -236,6 +240,40 @@ usefull files like controller test, helper, javascript/coffeescript and css
 stylesheet. We'll cover exact locations and purpose of these files later but now 
 let's take a look at our route, controller and view.
 
+### Adding the default route
+
+Routes are paths to the resourses of your web application. The Rails application
+needs to know which resourecs you have so that it can recognize requests and
+route them to the correct controllers and actions. This is done in file
+`config/routes.rb`
+
+For example later in this chapter we will create resources
+for authors of the not-a-reddit website. To list all of the authors, we will
+have route called **index** and the URL will look like `localhost:3000/authors`.
+New author will be created with route **new** which will be accessed on
+`localhost:3000/authors/new`. **Show** will display a single author with example
+route `localhost:3000/authors/1` for the first registered author. To **edit**
+the same user we will have route `localhost:3000/authors/1/edit`. And the
+default route to **delete** a particular author will be
+`localhost:3000/authors/1` but this call won't be using HTTP GET method but
+DELETE.
+
+Rails allows you to specify only specific routes to be available like we
+currently have `get 'landing/index'` defined. You can also add all of the
+resources using `resource :authors`. To define which route is your home or root
+route you need to specify it like this `root 'landing#index'`. When you now
+open the website URL, you will no longer see the default Rails welecome page but
+a message that displayed by the controller.
+
+```ruby
+# config/routes.rb
+Rails.application.routes.draw do
+  get 'landing/index'
+
+  root 'landing#index' # Add this line
+end
+```
+
 ### Modifying the controller
 
 Open `app/controllers/landing_controller.rb` and you might recignize some
@@ -335,7 +373,7 @@ Maybe we could fix that a bit?
 [Bootstrap](http://getbootstrap.com) is an easy to use framework which will help
 us make pretty web pages without much effort! To install it we can use gem. Open
 `Gemfile` in the root of your project and add `gem 'bootstrap'` to include it to
-your project. As Bootstrap depends on jquery, we'll also add it to our Gemfile - 
+your project. As Bootstrap depends on JQuery, we'll also add it to our Gemfile - 
 `gem 'jquery-rails'`. You can put both of the lines before development and test
 blocks. Now stop your rails server using Control and C in the terminal it is
 running in and bundle our new gems using `bundle install`.
@@ -353,6 +391,17 @@ following.
 body {
     padding-top: 3.5rem;
 }
+```
+
+To enable the bootstrap and jquery in Javascript, also add these lines to the
+file `app/assets/javascript/application.js`.
+
+```js
+/* app/assets/javascript/application.js */
+
+//= require jquery3
+//= require popper
+//= require bootstrap-sprockets
 ```
 
 Styles from this file are included in all of the pages on your website. This is
@@ -428,8 +477,10 @@ with the previous div. At the end your file should look like this. Now refresh.
 ```html
 <!-- app/views/landing/index.html.erb -->
 <div class="jumbotron">
-    <h1>Landing#index</h1>
-    <p>Find me in app/views/landing/index.html.erb</p>
+    <div class="container">
+        <h1>Landing#index</h1>
+        <p>Find me in app/views/landing/index.html.erb</p>
+    </div>
 </div>
 
 <div id="dog-div" class="container">
@@ -483,47 +534,6 @@ term of looks but it demonstrates how things work.
 }
 ```
 
-### Time for a coffee
-
-Probably you are aware of the terms front-end and back-end but let's recap that
-just in case. Back-end is in our case Rails application written in Ruby and is
-executed on server while front-end files are received by users' web browser and
-displayed. In back-end we will fetch and store data as well as control the
-application. HTML, CSS and Javascript are front-end technologies and are
-executed by the users' web browser. While HTML and CSS are used soley to
-describe how website should look, Javascript is a programming language in which
-you can do a lot of different stuff - save variables, calculate mathematical
-operations, control the program flow using if-then-else or even tell web browser
-to make additional calls to the server.
-
-But we will not be writing JavaScript but Coffeescript as it is preferred by
-Rails users. Before the server starts, Coffeescript is compiled to Javascript so
-that it could be run by the web browsers. Pro of using Coffeescript over
-Javascript is that it's less complex to write and can be even faster in runtime.
-
-Just to test how this works open automatically generated file for our landing
-page `app/assets/javascripts/landing.coffee`. It is currently empty except for
-some comments and we will just for the test add one linee which will write 
-a simple message into debug console.
-
-```coffee
-# app/assets/javascripts/landing.coffee
-console.log "Hi console"
-```
-
-Save the file and refresh the browser. You will see oyur web page but there will
-be no sign of the log to te console. This output will not show on your terminal
-but in the web browsers' console. To access it and many more feature you can in
-Firefox right-click on an element you wish to view and then click on
-`Inspect element` or just `Inspect` on Chrome.
-
-This will show you the console as well as many more tools. With Inspector you
-can for example see all the elements of the page with their attributes. There is
-also a simple console you can open and you should see text *Hi console*. This
-approach is often used for debugging.
-
-![Web browser console](images/browser-console.png)
-
 ### Adding some pictures
 
 Except for *javascript* and *stylesheets* you also have a folder called
@@ -531,14 +541,12 @@ Except for *javascript* and *stylesheets* you also have a folder called
 This will for example be your website logo, header image and other graphical
 content.
 
-[//]: # (Add png logo path)
-
 For example we will add an icon to the navigation bar so that users know that
 they are looking at our webpage. First we will create a folder 
 `app/assets/images/logos` and then copy select an image you want and drop it
 there. It might not be a bad idea to use a `.png` file as they can have 
 transparency so that your logo can be displayed on multiple different
-backgrounds. If you are out of ideas, you can use [this logo](https://TODO).
+backgrounds. If you are out of ideas, you can use [this logo](https://raw.githubusercontent.com/Xenosb/ruby-homework/master/app/assets/images/logos/learn-rb.png).
 
 Now that we have added logo to the project, we need to add it to the navbar
 which is found in our `application.html.erb` file. At the begining of it there
@@ -600,6 +608,8 @@ controller a fiew views where we could list all members, add new ones or edit
 existing ones. To help you avoid writing a lot of boilerplate code, Rails has a 
 generator called *scaffold*.
 
+### Some more gems to help us out
+
 Since we want to have nice user interface without much work we can once again
 utilise power of Bootstrap and a little bit of magic from the gem *simple_form*.
 To our *Gemfile* we will add `gem 'simple_form'`. To show validation errors when
@@ -630,6 +640,8 @@ main application layout.
 <%= render 'toastr_rails/flash'%>
 ```
 
+### Scaffold away
+
 Author will have an email, alias and a date of birth. To create the scaffold
 first stop the server and then run following command.
 
@@ -641,11 +653,13 @@ This has generated many thing, many of which we have already seen when
 generating the landing page controller. So let's try to see if this actually
 worked and refresh our web page.
 
+### The first migration
+
 ![Migration error](images/rails-migration-error.png)
 
 Seems that we have stumble into error. But no biggie, Rails actually tells you
-what is wrong quite literaly - *Migrations are pending. To resolve this issue,
-run bin/rails db:migrate RAILS_ENV=development*. This means that we changed how
+what is wrong quite literaly - `Migrations are pending. To resolve this issue,
+run bin/rails db:migrate RAILS_ENV=development`. This means that we changed how
 our data models look in our Rails application but haven't changed that in our
 database. To avoid writing querries, Rails generated a migration script for us
 and we can just run what we were told. In this case, migration will create a new
@@ -654,50 +668,32 @@ database table called Authors with fields we have previously declared.
 ```bash
 rails db:migrate
 
-# == 20181021125009 CreateAuthors: migrating ====================================
+# == 20181021125009 CreateAuthors: migrating ===================================
 # -- create_table(:authors)
 #   -> 0.0005s
-# == 20181021125009 CreateAuthors: migrated (0.0006s) ===========================
+# == 20181021125009 CreateAuthors: migrated (0.0006s) ==========================
 ```
 
+### Taking a look what happened
 
+Now take a look at
+[http://localhost:3000/authors](http://localhost:3000/authors). You should see
+the list of current authors. Unfortunately it is currently empty as we haven't
+added any authors. Let's do so - just click `New Author` and fill in the fields.
 
-```
-    invoke  active_record
-    create    db/migrate/20181021123409_create_authors.rb
-    create    app/models/author.rb
-    invoke    test_unit
-    create      test/models/author_test.rb
-    create      test/fixtures/authors.yml
-    invoke  resource_route
-    route    resources :authors
-    invoke  scaffold_controller
-    create    app/controllers/authors_controller.rb
-    invoke    erb
-    create      app/views/authors
-    create      app/views/authors/index.html.erb
-    create      app/views/authors/edit.html.erb
-    create      app/views/authors/show.html.erb
-    create      app/views/authors/new.html.erb
-    create      app/views/authors/_form.html.erb
-    invoke    test_unit
-    create      test/controllers/authors_controller_test.rb
-    create      test/system/authors_test.rb
-    invoke    helper
-    create      app/helpers/authors_helper.rb
-    invoke      test_unit
-    invoke    jbuilder
-    create      app/views/authors/index.json.jbuilder
-    create      app/views/authors/show.json.jbuilder
-    create      app/views/authors/_author.json.jbuilder
-    invoke  assets
-    invoke    coffee
-    create      app/assets/javascripts/authors.coffee
-    invoke    scss
-    create      app/assets/stylesheets/authors.scss
-    invoke  scss
-    create    app/assets/stylesheets/scaffolds.scss
-```
+![Index of authors](images/rails-scaffold-authors-index.png)
+
+You should see that a new author was added and you will see all his or her
+attributes. You can now also try to edit the author by pressing `Edit` or go
+back to the index which will now show a new author. There you will also see an
+option to `Delete` it. Play around and see how far just a single line got you.
+
+As with landing controller, Rails automatically generated a controller which now
+has multiple methods - *index*, *show*, *new* and *edit* which
+correspond to the views found in `app/views/authors` So if you wish to change
+how they look, you can do it there. To be able to access all of these resources,
+Rails added a line in your route file. New CSS and Javascript/Coffescript files
+were also generated so you could modify the look of the web application further.
 
 ## Overview of the rest of the project structure
 
@@ -733,78 +729,5 @@ it is the only way to tell it to create a folder is to place a file in it. So if
 you add some files to your folder `storage`, you can feel free to also delete
 the keep file.
 
-### Where your code is - app/
-
-This is most important folder in your project and you'll spend most of your time working in it as it contains models, views and controllers as well as jobs and other assets.
-
-* [Assets](#assets)
-* [Channels](#channels)
-* [Controllers](#controllers)
-* [Helpers](#helpers)
-* [Jobs](#jobs)
-* [Mailers](#mailers)
-* [Models](#models)
-* [Views](#views)
-
-#### Assets
-
-This is where you'll put images, javascript files and CSS stylesheets. Basically what makes your web application look good.
-
-We've already mentioned and modified the contents of *javascript* and 
-*stylesheets* subfolders. In *Javascript* folder you keep Javascript and/or
-Coffeescript files which will be excuted on clients web browser while in 
-*Stylesheets* folder you keep your CSS and/or SCSS files which will enhance the
-looks of your website.
-
-As you have seen both javascript and stylesheets have a 'main' file which 
-includes all of the others and is called *application.js* or *application.scss*.
-When server is started or a change in any of the assets files was discovered, 
-Rails will automatically compile the assets. This means that user will receive 
-only one javascript file called *application.js* and only one stylesheet file
-called *application.css*. This is done to optimize the performance of your web.
-
-#### Channels
-
-Channels are used with *Action Cable* component which provides Rails with the
-means to create real time applications like chats. Although this component
-sounds like a great fun, we'll not be digging into it as it is a bit out of our
-scope.
-
-#### Controllers
-
-Bread and butter of your application. They execute most of the logic behind your 
-application. You have already created one and you will have another one by the
-end of this chapter.
-
-#### Helpers
-
-Sometimes you will need to implement methods which will be often used by many
-elements of your view or by multiple different pages. Example of this would be
-checking if the students can apply to the course depending on the date. To avoid 
-repeating yourself in multiple instances where you will use this function, you
-can write a helper method which will do it for you so that you can just write
-`if students_can_apply?`.
-
-#### Jobs
-
-Jobs are one-time or a repetitive task which you can manage through Rails. It
-uses Active Jobs component. Example of a job would be a function that would go 
-through all subscribed users and call a mailer to send a newsletter to each
-user.
-
-#### Mailers
-
-Mailers are components which will take a care of sending emails for you and
-implemented with Action Mailer component. Using them you can specify name and
-email of sender of the email, email to which it will be sent to and layout of
-how the email will look.
-
-#### Models
-
-
-
-#### Views
-
-
-
 ## Assignment
+
