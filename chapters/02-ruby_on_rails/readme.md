@@ -127,6 +127,18 @@ gem install bundler
 And when you want to install new gems or update existing ones you will simply
 run `bundle install` or `bundle update`.
 
+As Rails will be using database to store data we will also install the simplest
+of them - sqlite. For now you don't have to know anything about databases as
+this topic will be discussed in further topics.
+
+```bash
+# On Ubuntu/Debian
+sudo apt install libsqlite3-dev
+
+# On Fedora/Centos
+sudo dnf install sqlite-libs
+```
+
 Just before we start with the cool stuff make sure that you create a new branch
 and switch to it. You should already know how to do this but just to be sure
 here is line by line guide.
