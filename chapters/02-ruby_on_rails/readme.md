@@ -42,7 +42,7 @@ applications...* - [rubyonrails.org](https://rubyonrails.org)
 Rails is a web framework written for Ruby. This means that when you create a
 Rails project like we will today, you will have at your disposal all tools to
 display web pages, route users from one page to another, show data you have
-stored in database and many many more. 
+stored in database and many many more.
 
 ### Good documentation
 
@@ -89,19 +89,6 @@ If you have some experience with Python, PHP or Node, you might know of pip,
 composer or npm. All of these tools are package managers for their respective
 programming languages. They help you get all the tools that you need without
 copying source code to your project. Package manager for Ruby is called **gem**.
-
-```bash
-# Ubuntu/Debian
-sudo apt install rubygems
-
-# Fedora/Centos
-sudo dnf install rubygems
-
-# On MacOS gem package should be provided with ruby package
-
-# Test your gem package version
-gem --version
-```
 
 ### Installing gems
 
@@ -232,7 +219,7 @@ your website in a way as on landing page user will have list of other pages
 he or she can access.
 
 ```bash
-# Run this 
+# Run this
 rails generate controller Landing index
 ```
 
@@ -460,7 +447,7 @@ to home.
 ```
 
 Inside of the body tags you will also find `<%= yield %>` which inserts the
-specific view like *landing/index.html.rb* in our case. Encapsulate yield like 
+specific view like *landing/index.html.rb* in our case. Encapsulate yield like
 this to tells your browser that main content of the website is located here.
 After this refresh the page and take a look how the navigation look. If you
 make the browser window smaller you should also see that you get a hamburger
@@ -477,7 +464,7 @@ menu which is quite useful on mobile phones.
 Now we are going to make a few more cosmetic modifications to our landing
 page to make it even prettier. Open up `app/views/landing/index.html.erb` and
 surround text that was auto-generated (*Landing#index and next paragraph*) with
-`<div class="jumbotron">`. This will make it centered and emphasized. Also, 
+`<div class="jumbotron">`. This will make it centered and emphasized. Also,
 surround the part that we did in the previous subchapter with
 `<div class="container">`. This will center your content so that it is in line
 with the previous div. At the end your file should look like this. Now refresh.
@@ -550,9 +537,9 @@ This will for example be your website logo, header image and other graphical
 content.
 
 For example we will add an icon to the navigation bar so that users know that
-they are looking at our webpage. First we will create a folder 
+they are looking at our webpage. First we will create a folder
 `app/assets/images/logos` and then copy select an image you want and drop it
-there. It might not be a bad idea to use a `.png` file as they can have 
+there. It might not be a bad idea to use a `.png` file as they can have
 transparency so that your logo can be displayed on multiple different
 backgrounds. If you are out of ideas, you can use [this logo](https://raw.githubusercontent.com/Xenosb/ruby-homework/master/app/assets/images/logos/learn-rb.png).
 
@@ -614,7 +601,7 @@ As we are creating a simple version of Reddit we want to have authors create
 posts on which other authors will be able to add comments. We need to add all of
 these models to our Rails application. And for each of those we need to create
 controller a few views where we could list all members, add new ones or edit
-existing ones. To help you avoid writing a lot of boilerplate code, Rails has a 
+existing ones. To help you avoid writing a lot of boilerplate code, Rails has a
 generator called *scaffold*.
 
 ### Some more gems to help us out
@@ -624,7 +611,7 @@ utilise power of Bootstrap and a little bit of magic from the gem *simple_form*.
 To our *Gemfile* we will add `gem 'simple_form'`. To show validation errors when
 user for example writes an email that already exist we will also add
 `gem 'toastr_rails'`. After this run bundle and additional command to integrate
-simple_form with Bootstrap. 
+simple_form with Bootstrap.
 
 ```bash
 # Install added gems
@@ -701,7 +688,7 @@ As with landing controller, Rails automatically generated a controller which now
 has multiple methods - *index*, *show*, *new* and *edit* which
 correspond to the views found in `app/views/authors` So if you wish to change
 how they look, you can do it there. To be able to access all of these resources,
-Rails added a line in your route file. New CSS and Javascript files were also 
+Rails added a line in your route file. New CSS and Javascript files were also
 generated so you could modify the look of the web application further.
 
 ### Links in the menu
@@ -767,14 +754,14 @@ the keep file.
 
 ### Posts
 
-- Create a scaffold called *Post* 
+- Create a scaffold called *Post*
     * [ ] Post has a field author_id of type int
     * [ ] Post has a field content of type text
     * [ ] Post has a field published of type boolean
 
 ### Comments
 
-- Create a scaffold called *Comment* 
+- Create a scaffold called *Comment*
     * [ ] Comment has a field post_id of type int
     * [ ] Comment has a field author_id of type int
     * [ ] Comment has a field content of type text
