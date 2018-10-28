@@ -1,9 +1,5 @@
 # Ruby on Rails
 
-This is the third chapter in a series of 10 of the
-[learn.rb project](https://github.com/monorkin/learn.rb) whose goal is to teach
-people Ruby with a focus on Ruby on Rails.
-
 ## Chapters
 
 1. [Introduction](#introduction)
@@ -127,6 +123,18 @@ gem install bundler
 And when you want to install new gems or update existing ones you will simply
 run `bundle install` or `bundle update`.
 
+As Rails will be using database to store data we will also install the simplest
+of them - sqlite. For now you don't have to know anything about databases as
+this topic will be discussed in further topics.
+
+```bash
+# On Ubuntu/Debian
+sudo apt install libsqlite3-dev
+
+# On Fedora/Centos
+sudo dnf install sqlite-libs
+```
+
 Just before we start with the cool stuff make sure that you create a new branch
 and switch to it. You should already know how to do this but just to be sure
 here is line by line guide.
@@ -247,7 +255,8 @@ route `localhost:3000/authors/1` for the first registered author. To **edit**
 the same user we will have route `localhost:3000/authors/1/edit`. And the
 default route to **delete** a particular author will be
 `localhost:3000/authors/1` but this call won't be using HTTP GET method but
-DELETE.
+DELETE. This URL structure is known as REpresentional State Transfer or REST
+for short.
 
 Rails allows you to specify only specific routes to be available like we
 currently have `get 'landing/index'` defined. You can also add all of the
@@ -541,7 +550,8 @@ they are looking at our webpage. First we will create a folder
 `app/assets/images/logos` and then copy select an image you want and drop it
 there. It might not be a bad idea to use a `.png` file as they can have
 transparency so that your logo can be displayed on multiple different
-backgrounds. If you are out of ideas, you can use [this logo](https://raw.githubusercontent.com/Xenosb/ruby-homework/master/app/assets/images/logos/learn-rb.png).
+backgrounds. If you are out of ideas, you can use
+[this logo](images/learn-rb.png).
 
 Now that we have added logo to the project, we need to add it to the navbar
 which is found in our `application.html.erb` file. At the beginning of it there
@@ -755,15 +765,15 @@ the keep file.
 ### Posts
 
 - Create a scaffold called *Post*
-    * [ ] Post has a field author_id of type int
+    * [ ] Post has a field author_id of type integer
     * [ ] Post has a field content of type text
     * [ ] Post has a field published of type boolean
 
 ### Comments
 
 - Create a scaffold called *Comment*
-    * [ ] Comment has a field post_id of type int
-    * [ ] Comment has a field author_id of type int
+    * [ ] Comment has a field post_id of type integer
+    * [ ] Comment has a field author_id of type integer
     * [ ] Comment has a field content of type text
 
 ### Add links to the navbar
