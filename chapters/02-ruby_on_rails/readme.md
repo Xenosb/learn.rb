@@ -1,9 +1,5 @@
 # Ruby on Rails
 
-This is the third chapter in a series of 10 of the
-[learn.rb project](https://github.com/monorkin/learn.rb) whose goal is to teach
-people Ruby with a focus on Ruby on Rails.
-
 ## Chapters
 
 1. [Introduction](#introduction)
@@ -259,7 +255,8 @@ route `localhost:3000/authors/1` for the first registered author. To **edit**
 the same user we will have route `localhost:3000/authors/1/edit`. And the
 default route to **delete** a particular author will be
 `localhost:3000/authors/1` but this call won't be using HTTP GET method but
-DELETE.
+DELETE. This URL structure is known as REpresentional State Transfer or REST
+for short.
 
 Rails allows you to specify only specific routes to be available like we
 currently have `get 'landing/index'` defined. You can also add all of the
@@ -553,7 +550,8 @@ they are looking at our webpage. First we will create a folder
 `app/assets/images/logos` and then copy select an image you want and drop it
 there. It might not be a bad idea to use a `.png` file as they can have
 transparency so that your logo can be displayed on multiple different
-backgrounds. If you are out of ideas, you can use [this logo](https://raw.githubusercontent.com/Xenosb/ruby-homework/master/app/assets/images/logos/learn-rb.png).
+backgrounds. If you are out of ideas, you can use
+[this logo](images/learn-rb.png).
 
 Now that we have added logo to the project, we need to add it to the navbar
 which is found in our `application.html.erb` file. At the beginning of it there
@@ -767,15 +765,15 @@ the keep file.
 ### Posts
 
 - Create a scaffold called *Post*
-    * [ ] Post has a field author_id of type int
+    * [ ] Post has a field author_id of type integer
     * [ ] Post has a field content of type text
     * [ ] Post has a field published of type boolean
 
 ### Comments
 
 - Create a scaffold called *Comment*
-    * [ ] Comment has a field post_id of type int
-    * [ ] Comment has a field author_id of type int
+    * [ ] Comment has a field post_id of type integer
+    * [ ] Comment has a field author_id of type integer
     * [ ] Comment has a field content of type text
 
 ### Add links to the navbar

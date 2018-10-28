@@ -1,0 +1,26 @@
+<!-- app/views/landing/index.html.erb -->
+<div class="jumbotron">
+  <div class="container">
+      <h1>Landing#index</h1>
+      <p>Find me in app/views/landing/index.html.erb</p>
+  </div>
+</div>
+
+<div id="dog-div">
+  <p class="grow-up">
+    When I grow up I'd like to have at least <%= @result %>
+    <%= @dog_breed %>s
+
+    <ul>
+      <% @result.times do |i| %>
+        <li>Vilko <%= i + 1 %>.</li>
+      <% end %>
+    </ul>
+
+    <% if @dog_breed > 'Labrador' %>
+      <p><%= @dog_breed %> is alphabetically a large dog</p>
+    <% else %>
+      <p><%= @dog_breed %> is alphabetically a small dog</p>
+    <% end %>
+  </p>
+</div>
