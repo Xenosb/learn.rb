@@ -242,7 +242,9 @@ just add it it wouldn't solve our problem as rails expects it to be set to
 a predetermined random value, we simply don't know. But! We can use Rails to
 add it to our form auto-magically by calling `<%= form_authenticity_token %>`.
 So we can add `<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" \>`
-to our form to solve this issue.
+to our form to solve this issue. Here we used the `hidden` field type as we
+don't want the user to see it or to interact with it. We used the `value`
+attribute to pre-set the input's value to our authenticity token.
 
 ```erb
 <h1>Solve a polynomial!</h1>
@@ -395,7 +397,7 @@ Would give us the following `params` object:
     phone: "+112345678"
   },
   building: {
-    address: "Somewhere 1",
+    address: "1 Somewhere St., 00000 Somewheresville, Somewhere",
     name: "ACME Corp Headquaters"
   }
 }
@@ -427,7 +429,7 @@ last will be used.
 </form>
 ```
 
-Give us the following `params` object:
+Gives us the following `params` object:
 
 ```ruby
 {
