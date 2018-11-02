@@ -442,3 +442,237 @@ Gives us the following `params` object:
   }
 }
 ```
+
+Arrays in params are most useful when working with multiple images, say in an
+application that has a gallery. Instead of forcing the user to upload an image
+one-by-one, we can allow the user to select all the images they want and upload
+them all at once.
+
+But creating forms by hand is tedious, therefore Rails provides helper methods
+for them. Let's now rewrite our form using Rails' form helpers.
+
+First, let's create a form. To do that we have to replace our `<form>` tag with
+a Rails `<%= form_tag %>`. For our polynomial example the form tag would be
+`<%= form_tag "/polynomials", method: :post %>`. This looks quite similar to our
+previous solution, but the `form_tag` gets expanded to
+`<form accept-charset="UTF-8" action="/polynomials" method="post">`. We could
+do our whole form inside that tag. E.g.:
+
+```html
+<h1>Solve a polynomial!</h1>
+
+<%= form_tag "/polynomials", method: :post do %>
+  <p><b>a</b> * X<sup>2</sup> + <b>b</b> * X + <b>c</b> = <b>d</b></p>
+
+  <p>
+    <label for="a">a:</label>
+    <input type="number" name="a" \>
+  </p>
+  <p>
+    <label for="b">b:</label>
+    <input type="number" name="b" \>
+  </p>
+  <p>
+    <label for="c">c:</label>
+    <input type="number" name="c" \>
+  </p>
+  <p>
+    <label for="d">d:</label>
+    <input type="number" name="d" \>
+  </p>
+
+  <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" \>
+
+  <button type="submit">Solve!</button>
+<% end %>
+```
+
+But that wouldn't solve any problem or make things easier. Next, we will use the
+`label_tag` and `number_field` to replace out HTML `label` and `input` tags.
+Here we start to see some usefulness in using Rails helpers as they start to
+provide more context and semantic value to what we are doing.
+
+When we use a `form_tag` we don't have to add an `authenticity_token` input
+manually, Rails does that for us.
+
+```html
+<h1>Solve a polynomial!</h1>
+
+<%= form_tag "/polynomials", method: :post do %>
+  <p><b>a</b> * X<sup>2</sup> + <b>b</b> * X + <b>c</b> = <b>d</b></p>
+
+  <p>
+    <%= label_tag(:a, 'a:') %>
+    <%= number_field :a %>
+  </p>
+  <p>
+    <%= label_tag(:b, 'b:') %>
+    <%= number_field :b %>
+  </p>
+  <p>
+    <%= label_tag(:c, 'c:') %>
+    <%= number_field :c %>
+  </p>
+  <p>
+    <%= label_tag(:d, 'd:') %>
+    <%= number_field :d %>
+  </p>
+
+  <button type="submit">Solve!</button>
+<% end %>
+```
+
+Now we can combine these helpers with our knowledge from previous lectures and
+use a loop! That way we don't have to repeat our selfs four times to create this
+form.
+
+```html
+<h1>Solve a polynomial!</h1>
+
+<%= form_tag "/polynomials", method: :post do %>
+  <p><b>a</b> * X<sup>2</sup> + <b>b</b> * X + <b>c</b> = <b>d</b></p>
+
+  <% [:a, :b, :c, :d].each do |param| %>
+    <p>
+      <%= label_tag(param, "#{param}:") %>
+      <%= number_field nil, param %>
+    </p>
+  <% end %>
+
+  <button type="submit">Solve!</button>
+<% end %>
+```
+
+This is now much cleaner! and it still works!
+But we have ways of creating forms in an even easier manner!
+
+Now, let's add the ability to add comments to our posts! We could do use
+Rails' form tags and  helpers to accomplish this:
+
+```html
+<h1>Solve a polynomial!</h1>
+
+<%= form_tag "/comments", method: :post do %>
+  <%= hidden_tag(param, "#{param}:") %>
+
+  <p>
+    <%= label_tag(:content, "Comment:") %>
+    <%= text_area_tag(:content) %>
+  </p>
+
+  <button type="submit">Solve!</button>
+<% end %>
+```
+
+But there is a better way. When working with models, something that will be
+covered in the next chapter, we can use additional helpers which respect the
+context of the model. Meaning, if we want a `text_area` for the Comment's
+`content` attribute we could just ask the form for a `text_area` and it would
+infer that it's for our Comment.
+
+To tap into this we need to change our form a little bit, instead of a
+`form_tag` we are going to use `form_for`. Instead of an URL it accepts an
+instance of a model and outputs a form builder,
+like so `<%= form_for Comment.new do |form_builder| %>`. Now our form is
+aware of the `Comment.new` context and all tags created with it will
+automatically be in the context of and bear attribute names of the `Comment`.
+E.g.:
+
+```html
+<%= form_for Comment.new do |f| %>
+  <%= f.text_area :content, size: '60x10' %>
+  <%= f.submit 'Post' %>
+<% end %>
+```
+
+If we now add this snippet at the bottom of the Post's show page, we can create
+comments from that page.
+
+```html
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Author:</strong>
+  <%= @post.author_id %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @post.content %>
+</p>
+
+<p>
+  <strong>Published:</strong>
+  <%= @post.published %>
+</p>
+
+<p>
+  <strong>Comments:</strong>
+</p>
+
+<p>
+  <br />
+  <strong>Post a comment:</strong>
+  <%= form_for Comment.new do |f| %>
+    <%= f.text_area :content, size: '60x10' %>
+    <%= f.submit 'Post' %>
+  <% end %>
+</p>
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>
+```
+
+![Comment input with form_for](./images/comment_1.png)
+
+This is petty neat! If you click on post it will really create a comment
+and show it to you. Now we have the ability to create arbitrary inputs for our
+data types. But, as said, more on that in the next chapter.
+
+![Created Comment](./images/comment_2.png)
+
+Before we go on, we need to cover an even simpler method of creating forms for
+models - through the help of a Gem called `simple_form`. You've installed this
+gem in the previous chapter and therefore don't have to do it now.
+
+With simple form we get the best of both worlds. We can use form builders to
+be aware of the Model's context while still being able to just create HTML-like
+inputs and not care about the attribute type. In other words we can just use
+one tag `input` and it will infer the attribute type and input type form the
+model we passed to it. E.g. the above example can be written like this using
+simple_form:
+
+```html
+<%= simple_form_for Comment.new do |f| %>
+  <%= f.input :content %>
+  <%= f.button :submit %>
+<% end %>
+```
+
+![Comment input with simple_form](./images/comment_3.png)
+
+Notice that we didn't specify any type at all, yet if we render this view we
+will see that not only did we get a text area but everything looks much nicer
+than the previous solution. Simple form integrates with many CSS frameworks,
+such as Bootstrap, which we installed in the last chapter. From that it
+automatically applies everything necessary for our form to seamlessly integrate
+with Bootstrap.
+
+## Assignment
+
+1. Do all the steps in the chapter by your self.
+
+2. Create a new route, view and controller for a resource named `buildings`
+  * The controller should have two actions `new` and `show`
+  * On the `new` view there should be a form that accepts:
+    - A building that has:
+      - name
+      - address
+      - owner
+    - Three occupants with the following fields
+      - name
+      - age
+      - appartment_number
+  * The `show` view should display the name of the building as a H1 tag and
+    all other information in H3 tags. It should display the occupants in a
+    list formatted however you like.
