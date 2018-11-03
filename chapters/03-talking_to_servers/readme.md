@@ -1,10 +1,35 @@
 # Talking to servers
 
-The goal of this chapter is to teach you how to send data to the server and
-how to turn that data into something useful.
+This is the fourth chapter in a series of 10 of the
+[learn.rb project](https://github.com/monorkin/learn.rb) whose goal is to teach
+people Ruby with a focus on Ruby on Rails.
 
-In the last chapter we built a web page with authors, posts and comments. In
-this chapter we will focus on creating posts and comments.
+## Chapters
+
+1. [Introduction](#introduction)
+2. [Inspecting the forms](#inspecting-the-forms)
+3. [Solving equations](#solving-equations)
+   * [Adding a controller](#adding-a-controller)
+   * [Adding the routes](#adding-the-routes)
+   * [Adding a view](#adding-a-view)
+   * [Catching the data on server](#catching-the-data-on-server)
+   * [Showing the result to user](#showing-the-result-to-user)
+4. [Rubys' little helpers](#Rubys-little-helpers)
+   * [Form tag](#form-tag)
+   * [Label and input](#label-and-input)
+   * [Loops help](#loops-help)
+5. [Adding comments to our posts](#adding-comments-to-our-posts)
+6. [Making it simpler](#making-it-simpler)
+7. [Assignment](#assignment)
+
+## Introduction
+
+The goal of this chapter is to teach you how to send data to the server and
+how to turn that data into something useful. In the last chapter we built a web
+page with authors, posts and comments. In this chapter we will focus on creating
+posts and comments.
+
+## Inspecting the forms
 
 Let's get started! Start your Rails application from last time with `rails s`,
 in the navigation, click on posts. You should see a screen like the following.
@@ -68,6 +93,8 @@ them to the server to be stored or processed. They are the most basic way to
 talk to servers. In a later chapter we will learn about more ways in which
 we can communicate with our server.
 
+## Solving equations
+
 Let's try to create our own form! We will make a form that solves second
 degree polynomials.
 
@@ -81,6 +108,8 @@ The general solution to those kinds of problems is
 Ok. To solve those polynomials we need a view to gather 4 variables from
 our user, we need a controller to process the data and another view to display
 the result.
+
+### Adding a controller
 
 We'll start with the controller. Navigate to `app/controllers` and create a new
 controller named `polynomials_controller.rb` with the following content.
@@ -109,6 +138,8 @@ This enables the controller to process three types of REST requests:
 Now, let's move to the `new` method and create it's view - in other words the
 form that will gather the user's input. Create two new empty files at
 `app/views/polynomials/new.html.erb` and `app/views/polynomials/show.html.erb`.
+
+### Adding the routes
 
 To be able to view what we did so far we need to create routes for our new
 controller. Instead of using `resources` as we did in the last chapter, this
@@ -154,6 +185,8 @@ Rails.application.routes.draw do
   post 'polynomials', to: 'polynomials#create'   # <-- LINES
 end
 ```
+
+## Adding a view
 
 Now open the following URL in your browser
 `http://localhost:3000/polynomials/new` and you should be greeted with a blank
@@ -280,6 +313,8 @@ interested as to why we need the `authenticity_token` input and why
 it has to be a specific value you can read into it by searching for
 Cross Site Request Forgery, or CSRF for short.
 
+### Catching the data on server
+
 Let's now go back to the controller and use the data that we sent via the form.
 To access data sent to the server we use the `params` object which is
 present in all Rails controllers. It looks and feels much like a regular hash
@@ -327,6 +362,8 @@ browser can't understand that, therefor we use `Marshall` and `Base64`
 to convert it to a `String` the browser understands. `Marshall` converts Ruby
 objects to a compact binary-format or in layman's terms - to ones and zeroes.
 While `Base64` converts the ones and zeroes to letters.
+
+### Showing the result to user
 
 Now we have to do the same, but in reverse, in the show method to get the
 solutions out of the id.
@@ -448,8 +485,12 @@ application that has a gallery. Instead of forcing the user to upload an image
 one-by-one, we can allow the user to select all the images they want and upload
 them all at once.
 
+## Rubys' little helpers
+
 But creating forms by hand is tedious, therefore Rails provides helper methods
 for them. Let's now rewrite our form using Rails' form helpers.
+
+### Form tag
 
 First, let's create a form. To do that we have to replace our `<form>` tag with
 a Rails `<%= form_tag %>`. For our polynomial example the form tag would be
@@ -487,6 +528,8 @@ do our whole form inside that tag. E.g.:
 <% end %>
 ```
 
+### Label and input
+
 But that wouldn't solve any problem or make things easier. Next, we will use the
 `label_tag` and `number_field` to replace out HTML `label` and `input` tags.
 Here we start to see some usefulness in using Rails helpers as they start to
@@ -522,6 +565,8 @@ manually, Rails does that for us.
 <% end %>
 ```
 
+### Loops help
+
 Now we can combine these helpers with our knowledge from previous lectures and
 use a loop! That way we don't have to repeat our selfs four times to create this
 form.
@@ -545,6 +590,8 @@ form.
 
 This is now much cleaner! and it still works!
 But we have ways of creating forms in an even easier manner!
+
+## Adding comments to our posts
 
 Now, let's add the ability to add comments to our posts! We could do use
 Rails' form tags and  helpers to accomplish this:
@@ -631,6 +678,8 @@ data types. But, as said, more on that in the next chapter.
 
 ![Created Comment](./images/comment_2.png)
 
+## Making it simpler
+
 Before we go on, we need to cover an even simpler method of creating forms for
 models - through the help of a Gem called `simple_form`. You've installed this
 gem in the previous chapter and therefore don't have to do it now.
@@ -660,7 +709,7 @@ with Bootstrap.
 
 ## Assignment
 
-1. Do all the steps in the chapter by your self.
+1. Do all the steps in the chapter by yourself.
 
 2. Create a new route, view and controller for a resource named `buildings`
   * The controller should have two actions `new` and `show`
@@ -672,7 +721,7 @@ with Bootstrap.
     - Three occupants with the following fields
       - name
       - age
-      - appartment_number
+      - apartment_number
   * The `show` view should display the name of the building as a H1 tag and
     all other information in H3 tags. It should display the occupants in a
     list formatted however you like.
