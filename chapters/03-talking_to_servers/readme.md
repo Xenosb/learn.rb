@@ -712,18 +712,17 @@ with Bootstrap.
 ## Assignment
 
 1. Do all the steps in the chapter by yourself.
-
-2. Create a new route, view and controller for a resource named `buildings`
-  * The controller should have two actions `new` and `show`
-  * On the `new` view there should be a form that accepts:
-    - A building that has:
-      - name
-      - address
-      - owner
-    - Three occupants with the following fields
-      - name
-      - age
-      - apartment_number
-  * The `show` view should display the name of the building as a H1 tag and
-    all other information in H3 tags. It should display the occupants in a
-    list formatted however you like.
+2. In the comments creation form, on the posts show page, add a captcha.
+  - The captcha should consist of a simple equation with the form
+    `x + y - z = n`, where n is randomly chosen between 100 and 999.
+  - All fields of the captcha should be sent to the server as a sub-hash named
+    `captcha`
+  - The server chooses the value of `n` and stores it in a hidden field in the
+    form
+  - All parameters should be positive integers different from zero
+  - If the `x + y - z` aren't equal to `n` or if any parameter doesn't
+    conform to the specified rules, redirect the user back, using
+    `redirect_to :back` and display a validation error using a
+    [flash notice](https://api.rubyonrails.org/classes/ActionDispatch/Flash.html)
+  - If you don't know what a captcha is or why it's useful checko out
+    the [Wikipedia article](https://en.wikipedia.org/wiki/CAPTCHA)
