@@ -25,9 +25,10 @@ people Ruby with a focus on Ruby on Rails.
 ## Introduction
 
 The goal of this chapter is to teach you how to send data to the server and
-how to turn that data into something useful. In the last chapter we built a web
-page with authors, posts and comments. In this chapter we will focus on creating
-posts and comments.
+how to turn that data into something useful.
+
+In the last chapter we built a web page with authors, posts and comments. In
+this chapter we will focus on creating posts and comments.
 
 ## Inspecting the forms
 
@@ -394,6 +395,7 @@ It only prints out the first and the second solution to the problem. Nothing
 to write home about. But with this we have a fully functioning polynomial
 solution finder written completely by hand! This was a learning experience, but
 we still have open questions! Why did Rails prefix the input's names with `post`
+, in our original example all the way at the beginning,
 and put the real name in brackets?
 
 Ha! Rails does something very cool here, it builds a sub-hash. A form can
@@ -597,7 +599,7 @@ Now, let's add the ability to add comments to our posts! We could do use
 Rails' form tags and  helpers to accomplish this:
 
 ```html
-<h1>Solve a polynomial!</h1>
+<h1>Post a comment:</h1>
 
 <%= form_tag "/comments", method: :post do %>
   <%= hidden_tag(param, "#{param}:") %>
