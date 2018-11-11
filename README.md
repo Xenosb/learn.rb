@@ -15,7 +15,7 @@ The idea is to give pupils handouts which drive them through a problem and gives
 them examples and solutions. At the end of the handout the student is
 presented with a problem that incorporates all previous knowledge from the
 handout without a solution - this problem will be solved by student and
-submitted for a review by the teachnig staff.
+submitted for a review by the teaching staff.
 
 The pace at which handouts are given and assignments collected is completely
 arbitrary and can be changed to your liking. This course was designed with a
@@ -36,7 +36,7 @@ teaching staff read the [Communication page](/chapters/_communication).
 1. [Ruby, Ruby, Ruby! NaNaaNaNaaNaNaaaa](/chapters/01-ruby)
 2. [Ruby on Rails](/chapters/02-ruby_on_rails)
 3. [Talking to servers](/chapters/03-talking_to_servers)
-4. [Working with a database, or how to remeber stuff](/chapters/04-the_database)
+4. [Working with a database, or how to remember stuff](/chapters/04-the_database)
 5. [Colors and moving parts!](/chapters/05-css_and_js)
 6. [APIs](/chapters/06-apis)
 7. [Don't touch my cookies!](/chapters/07-authentication)
@@ -59,8 +59,8 @@ Sorted Alphabetically by surname:
 ## License
 
 This project's lectures are licensed under the Creative Commons license with
-the following license coditions: Attribution (by), ShareAlike (sa) and
-NonComertial (nc)
+the following license conditions: Attribution (by), ShareAlike (sa) and
+NonCommercial (nc)
 
 The code and examples of this project are licensed under the GPLv3.
 
@@ -68,5 +68,5 @@ Please reference the [LICENSE file](/LICENSE) for more information.
 
 ![creative commons](https://creativecommons.org/wp-content/themes/creativecommons.org/images/chooser_cc.png)
 ![cc - attribution](https://creativecommons.org/wp-content/themes/creativecommons.org/images/chooser_by.png)
-![cc - non comertial](https://creativecommons.org/wp-content/themes/creativecommons.org/images/chooser_nc.png)
+![cc - non commercial](https://creativecommons.org/wp-content/themes/creativecommons.org/images/chooser_nc.png)
 ![cc - share alike](https://creativecommons.org/wp-content/themes/creativecommons.org/images/chooser_sa.png)
