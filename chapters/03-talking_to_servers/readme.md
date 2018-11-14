@@ -548,19 +548,19 @@ manually, Rails does that for us.
 
   <p>
     <%= label_tag(:a, 'a:') %>
-    <%= number_field :a %>
+    <%= number_field nil, :a %>
   </p>
   <p>
     <%= label_tag(:b, 'b:') %>
-    <%= number_field :b %>
+    <%= number_field nil, :b %>
   </p>
   <p>
     <%= label_tag(:c, 'c:') %>
-    <%= number_field :c %>
+    <%= number_field nil, :c %>
   </p>
   <p>
     <%= label_tag(:d, 'd:') %>
-    <%= number_field :d %>
+    <%= number_field nil, :d %>
   </p>
 
   <button type="submit">Solve!</button>
