@@ -24,6 +24,14 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
+    captcha = params[:captcha] || {}
+
+    if captcha[:n].nil? || captcha[:n] != captcha[:answer]
+      flash[:notice] = 'Invalid captcha!'
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
     @comment = Comment.new(comment_params)
 
     respond_to do |format|

@@ -722,7 +722,7 @@ with Bootstrap.
   - All parameters should be positive integers different from zero
   - If the `x + y - z` aren't equal to `n` or if any parameter doesn't
     conform to the specified rules, redirect the user back, using
-    `redirect_to :back` and display a validation error using a
+    `redirect_back(fallback_location: root_path)` and display a validation error using a
     [flash notice](https://api.rubyonrails.org/classes/ActionDispatch/Flash.html)
   - If you don't know what a captcha is or why it's useful checko out
     the [Wikipedia article](https://en.wikipedia.org/wiki/CAPTCHA)
