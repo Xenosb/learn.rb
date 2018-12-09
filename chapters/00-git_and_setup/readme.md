@@ -1,9 +1,5 @@
 # Git gud
 
-This is the first chapter in a series of 10 of the
-[learn.rb project](https://github.com/monorkin/learn.rb) whose goal is to teach
-people Ruby with a focus on Ruby on Rails.
-
 ## Chapters
 
 1. [Introduction](#introduction)
