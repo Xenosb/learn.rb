@@ -25,11 +25,6 @@ If you want to go through the course on your own, without a teacher, then you
 can reference the assignment solutions, but that is less useful than working
 through a problem with somebody more experienced.
 
-## Class communication
-
-To follow the latest assignments, discuss problems or get in touch with
-teaching staff read the [Communication page](/chapters/_communication).
-
 ## Chapters
 
 0. [Git gud](/chapters/00-git_and_setup)
