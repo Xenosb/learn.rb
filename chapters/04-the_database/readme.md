@@ -1184,3 +1184,46 @@ validates :email, uniqueness: { scope: :username }, presence: true
 ```
 
 ## Assignment
+
+1. Create a SubReddit model
+    * it has a unique title, no matter the capitalization, that can't be `nil`
+    * it has an owner, which is a reference to the user, which can't be `nil`
+    * it has a description which can't be `nil`
+    * create appropriate validations on the model
+2. Drop the Author model
+3. Create the User model
+    * it has an email that's unique and can't be `nil`
+    * it has a username that's unique and can't be `nil`
+    * create appropriate validations on the model
+4. Add a title column to the Post model
+    * it has to be unique
+    * it can't be `nil`
+    * it's default value is `''` (empty string)
+    * create appropriate validations on the model
+5. Change an `author_id` column on the Post model that's a reference to an User
+    * it can't be `nil`
+    * create appropriate validations on the model
+6. Create an `sub_reddit_id` column on the Post model that's a reference to a
+  SubReddit
+    * it can't be `nil`
+    * create appropriate validations on the model
+6. Create an Upvote model
+    * it has a `creator` reference to an User, that can't be `nil`
+    * it has a `post` reference to a Post, that can't be `nil`
+    * each Upvote has to be unique for each post regarding a user
+    (e.g. each user can have only one upvote for a post)
+    * create appropriate validations on the model
+7. Create associations on the User model
+    * For Upvotes
+    * For Posts
+    * For SubReddits
+8. Create associations on Post
+    * For SubReddit
+    * For User
+9. Create associations on SubReddit
+    * For User
+10. Create associations on Upvote
+    * For Post
+    * For User
+11. Migrate all changes
+12. Run Annotate
