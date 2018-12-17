@@ -16,6 +16,7 @@
     * [Create](#create)
     * [Update](#update)
     * [Destroy](#destroy)
+    * [Reversibility](#reversibility)
 4. [Associations](#associations)
 5. [Querying](#querying)
 6. [Assignment](#assignment)
@@ -705,7 +706,7 @@ In the case of our `drop_authors` migration we would need to recreate the whole
 authors table. Else we would get the following error while trying to rollback
 the last migration.
 
-```
+```text
 $ rake db:rollback
 == 20181217081752 DropAuthors: reverting ======================================
 rake aborted!
