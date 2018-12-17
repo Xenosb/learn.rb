@@ -972,6 +972,113 @@ with `not` is much easier - `where.not(author_id: 3, published: false)`.
 
 ### Join
 
-### Order_by
+If we want to work with associations. Say return only records that have an
+associated record, or return records who's associated record fields have
+certain values - for that we can use `joins` and `left_joins`.
+
+Those two methods are mostly the same, the main difference being that `joins`
+removes all rows that don't have an associated row, while `left_joins` keeps
+them.
+
+If we wanted to find all posts which are published by an author with the
+email `foo@bar.com` we would use `joins` as the requirement is that a post has
+to have an author and it's email must be `foo@bar.com`.
+
+```ruby
+Post.all.joins(:author).where(published: true, author: {email: 'foo@bar.com'})
+```
+
+But, if we wanted to find all unpublished posts or posts that are published and
+are by the author with the email `foo@bar.com` then we would use `left_joins`.
+If we used `joins` for this we wouldn't get posts with no author.
+
+```ruby
+Post
+  .all
+  .where(published: true)
+  .or(Post.left_joins(:author).where(author: {email: 'foo@bar.com'}))
+```
+
+When working with `joins` you'll often see a query ending with the method
+`distinct`. The `distinct` method ensures that each record will be returned
+exactly once.
+
+This might seem odd. Why would the database return the same row multiple times?
+This is a quirk of how joins work in SQL. When you join two tables together,
+say this table
+
+```text
+                    Books
++---------------------------------+----------------+
+|               Title             | Author surname |
++---------------------------------+----------------+
+| Brave New World                 | Huxley         |
+| Evolution: The Modern Synthesis | Huxley         |
++---------------------------------+----------------+
+```
+
+In SQL we can join two table by any column we like, say we are going to join
+this `books` table with the `authors` table by the `Author surname` column on
+one and the `Surname` column on the other. We would get the following.
+
+```text
++---------------------------------+----------------+------------+---------+
+|               Title             | Author surname | First name | Surname |
++---------------------------------+----------------+------------+---------+
+| Brave New World                 | Huxley         |   Julian   |  Huxley |
+| Brave New World                 | Huxley         |   Thomas   |  Huxley |
+| Evolution: The Modern Synthesis | Huxley         |   Julian   |  Huxley |
+| Evolution: The Modern Synthesis | Huxley         |   Thomas   |  Huxley |
++---------------------------------+----------------+------------+---------+
+```
+
+This is odd, but correct. The database has no way of knowing which Huxley is
+the correct one for the given book, so it returns all books combined with all
+Huxleys.
+
+To avoid this, we can finish a query with `distinct`. Then we would get this
+
+```text
++---------------------------------+----------------+------------+---------+
+|               Title             | Author surname | First name | Surname |
++---------------------------------+----------------+------------+---------+
+| Brave New World                 | Huxley         |   Julian   |  Huxley |
+| Evolution: The Modern Synthesis | Huxley         |   Julian   |  Huxley |
++---------------------------------+----------------+------------+---------+
+```
+
+This isn't what we wanted, but we got exactly one result for each book, which
+is the point of adding the `distinct`.
+
+### Order
+
+We can also specify in which order we would want our records to be returned
+using the `order` method. It works much like the `where` method, but instead
+of passing a value for a key, we pass the sort direction.
+
+The sort direction can be ascending `:asc`, meaning that each record
+would have a greater value than the previous one. E.g. 5,2,4,3,1 would become
+1,2,3,4,5. It can also be descending `:desc`, meaning that each record would
+have a lower value than the previous one. E.g. 5,2,4,3,1 would become
+5,4,3,2,1.
+
+Say we want to sort our posts by the time they were created, newest first,
+oldest last.
+
+```ruby
+Post.all.order(created_at: :desc)
+```
+
+Multiple sort conditions can be combined.
+
+```ruby
+Post.all.order(title: :desc, created_at: :asc)
+```
+
+This would mean that the posts are sorted by title in descending alphabetical
+order (starting with `z` and ending with `a`) and if there are two posts with
+the same title then they are sorted by the `create_at` column, oldest first.
+
+## Indices
 
 ## Assignment
