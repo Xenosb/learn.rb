@@ -1,0 +1,12 @@
+# Editor files
+tags
+*.swap
+
+# OS files
+.DS_Store
+
+# Logs
+*.log
+
+# Dumps
+*.dump

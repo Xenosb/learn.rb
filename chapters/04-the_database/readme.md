@@ -13,6 +13,12 @@
     * [Deleting](#deleting)
 3. [Migrations](#migrations)
     * [A history of changes](#a-history-of-changes)
+    * [Create](#create)
+    * [Update](#update)
+    * [Destroy](#destroy)
+4. [Associations](#associations)
+5. [Querying](#querying)
+6. [Assignment](#assignment)
 
 ## Introduction
 
@@ -433,4 +439,324 @@ person.destroy # => true
 
 ## Migrations
 
+We covered how to Create, Update and Destroy records in our database tables
+through the use of models. But how do we create tables in our database? In Rails
+we create, modify and destroy tables through migrations.
+
+The word migration is an odd choice for something that manipulates your
+database. The creators of Rails thought of the database in term of it's schema.
+A database schema is much like a blueprint that contains all the plans for how
+your tables should look like. A schema is not a physical thing, it doesn't
+exist per se, but it's a concept or idea of how to describe your database. So
+a migration moves the old concept of your database to the new one.
+
+By now you have created a few migrations just by following the last
+chapters. You can view all your migrations by navigating to `app/db/migrate` you
+should have three files in this directory.
+
+All migration files follow this naming scheme:
+
+```text
+20181028160427_create_authors.rb
+```
+
+Basically it's a bunch of numbers followed by a human readable name. The numbers
+represent the time the file was created. If you look carefully you will notice
+that the format of the numbers is `YYYYMMDDHHmmSS` where `Y` is the current
+year, `M` is the current month, `D` is the current day, `H` the hour, `m` the
+minute and `S` the second. And the human readable part is just something
+descriptive about what the migration does to your database. While confusing,
+this naming convention is quite helpful when working with others.
+
+You can apply all your migrations to the database by running
+
+```bash
+rails db:migrate
+```
+
+This will go through your migrations, find any that haven't yet been applied
+yo your database and apply them.
+
 ### A history of changes
+
+Unlike any other code, we will never change or delete migration files. We will
+only ever create new ones.
+
+Your migration files represent the history of your database, or at least the
+changes it went through. And, as with any good time-travel movie, history should
+never change for it could cause unforeseen consequences.
+
+If we ever want to change something we already migrated, we would create a new
+migration that applies our desired change. This might not always be easy, but
+it will always be consistent.
+
+### Create
+
+We can create a new migration by executing one of the following commands
+in our shell.
+
+```bash
+rails g migration create_sub_reddit
+```
+
+This kind of migration creation is mostly used for updating the schema, so it
+will be covered in the next chapter.
+
+The other way to create a migration is through creating a model. As we stated
+before, a model represents a table in our database. So by creating one, Rails
+will create a migration that creates the table.
+
+```bash
+rails g model sub_reddit title:string description:text private:boolean owner_id:integer
+```
+
+The first argument is the name of the model, it can either be in singular or
+in plural, all other arguments are names of the columns the table should have
+separated from their type by a colon `:`.
+
+This command will do quite a lot. It will create a migration, a model, and a few
+other files we will cover later.
+
+Let's take a look at the generated migration.
+
+```ruby
+class CreateSubReddit < ActiveRecord::Migration[5.2]
+  def change
+    create_table :sub_reddits do |t|
+      t.integer :owner_id
+      t.text :description
+      t.text :title
+      t.boolean :private
+
+      t.timestamps
+    end
+  end
+end
+```
+
+It generated a file containing a single class with the method `change` in it.
+Inside the `change` method, the `create_table` method is called with a
+symbol `:posts` and a block of code. The symbol is the name of the table we
+want to create, while the block of code defines the table's columns.
+
+We can change the block of code to add any attributes we would like. Let's
+make the default `private` value `false` and prohibit it from being `null`.
+As it makes sense for that field to be unambiguous, it should be
+either `true` or `false` and it should be `false` be default as we want engage
+people to create public sub reddits.
+
+```ruby
+class CreateSubReddit < ActiveRecord::Migration[5.2]
+  def change
+    create_table :sub_reddits do |t|
+      t.integer :owner_id
+      t.text :description
+      t.text :title
+      t.boolean :private, null: false, default: false
+
+      t.timestamps
+    end
+  end
+end
+```
+
+We could also prohibit that the `owner_id` column is nullable as well as the
+`description` and `title` columns. Those two fields should always be entered as
+it doesn't make sense to have a sub reddit without a title, description or
+owner.
+
+```ruby
+class CreateSubReddit < ActiveRecord::Migration[5.2]
+  def change
+    create_table :sub_reddits do |t|
+      t.integer :owner_id, null: false
+      t.text :description, null: false
+      t.text :title, null: false
+      t.boolean :private, null: false, default: false
+
+      t.timestamps
+    end
+  end
+end
+```
+
+Now you can run `rails db:migrate` to apply these changes to your databse
+and enjoy your new SubReddit model.
+
+### Update
+
+Now that we have sub reddits we must update our `Post` model to belong to a
+sub reddit.
+
+As stated before, for updates (and destroys) we use the following style of
+migrations.
+
+```bash
+rails g migration change_posts
+```
+
+Running this will create a new migration with the given description, though
+it's change method would be completely empty.
+
+```ruby
+class ChangePosts < ActiveRecord::Migration[5.2]
+  def change
+  end
+end
+```
+
+This is often times useful for big changes, but for small changes Rails
+provides magic that can make this even easer.
+
+So, we want to add a `sub_reddit_id` column to our `posts` tabel. If we name
+our migration `add_sub_reddit_id_to_posts` and pass it `sub_reddit_id:integer`,
+we would get the following migration.
+
+```ruby
+class AddSubRedditIdToPosts < ActiveRecord::Migration[5.2]
+  def change
+    add_column :posts, :sub_reddit_id, :integer
+  end
+end
+```
+
+This is handy when you just want to add a couple of columns to a table.
+The magic quickly goes away when you learn that Rails is only checking if the
+migration description ends with `to_<tabel_name>` and starts with `add` to
+do this. But hey! It still works!
+
+There are many methods for manipulating your schema through migrations,
+a full list can be found
+[here](https://edgeguides.rubyonrails.org/active_record_migrations.html#writing-a-migration).
+
+We will mostly use `add_column` to add columns, `change_column` to add or remove
+attributes, and `rename_column` to rename them.
+
+### Destroy
+
+We can also destroy tables as well as columns in the same way we update them.
+
+We won't really need the `Author` model of this course any more, so let's
+destroy it.
+
+First, we need to delete the model file in `app/models/author.rb`.
+Then we must create a migration to destroy the `authors` table in the database.
+
+Before we continue, there is an oddity that we have to clear up. When working
+with the database destructive actions are often called `DROP`. E.g. instead
+"I'm going to delete the authors table" you would say "I'm going to drop the
+authors table". This stems from the keyword for deleting tables and column in
+SQL which is `DROP`. E.g. a pure SQL delete table would be
+`DROP TABEL authors;`. Why is it called drop and not delete? At the time of
+creation of the SQL standard it made sense, and the `DELETE` keyword is used
+to delete rows so perhaps a difference wanted to be made - so that you don't
+accidentally delete your table instead of a single row.
+
+Anyway, back to our migration
+
+```bash
+rails g migration drop_authors
+```
+
+produces
+
+```ruby
+class DropAuthors < ActiveRecord::Migration[5.2]
+  def change
+  end
+end
+```
+
+But it's empty! Sadly, Rails can't do all the work for us here. To drop a
+table we need to use the `drop_table` method. Oddly enough to drop a column
+we would use the `remove_column` method.
+
+```ruby
+class DropAuthors < ActiveRecord::Migration[5.2]
+  def change
+    drop_table :authors
+  end
+end
+```
+
+### Reversibility
+
+If you ever screw something up in the latest migration you did you can most of
+the times undo it with `rake db:rollback`.
+
+A rollback simply undos what was done in the previous migration. Though it might
+not always be able to do so. Most often `drop_table` and `change_column`
+migrations aren't revisable as there is no way for the program to know what
+the table looked like before the applied change. It's able to reverse
+create and rename actions because the inverse of a create is destroy so nothing
+is left, and a rename contains both the old and the new name in it's arguments.
+But destroy and change contain only the new state of the table.
+
+To avoid irreversible migrations we can define two methods instead of a
+single `change` method in our migration. Those methods are `up` and `down`.
+
+`up` will be called when the migration is being applied. So it contains all the
+changes you would like to apply to your database.
+
+While `down` will be called when the migration is rolled back. It contains all
+the changes needed to undo the change from the `up` method.
+
+In the case of our `drop_authors` migration we would need to recreate the whole
+authors table. Else we would get the following error while trying to rollback
+the last migration.
+
+```
+$ rake db:rollback
+== 20181217081752 DropAuthors: reverting ======================================
+rake aborted!
+StandardError: An error has occurred, this and all later migrations canceled:
+
+
+
+To avoid mistakes, drop_table is only reversible if given options or a block (can be empty).
+
+/Users/stanko/Documents/learn.rb/chapters/04-the_database/solutions/ruby_homework/db/migrate/20181217081752_drop_authors.rb:3:in `change'
+
+Caused by:
+ActiveRecord::IrreversibleMigration:
+
+To avoid mistakes, drop_table is only reversible if given options or a block (can be empty).
+
+/Users/stanko/Documents/learn.rb/chapters/04-the_database/solutions/ruby_homework/db/migrate/20181217081752_drop_authors.rb:3:in `change'
+Tasks: TOP => db:rollback
+(See full trace by running task with --trace)
+```
+
+But if we rename the `change` method to `up` and add the following `down` method
+
+```ruby
+class DropAuthors < ActiveRecord::Migration[5.2]
+  def up
+    drop_table :authors
+  end
+
+  def down
+    create_table :authors do |t|
+      t.string :email
+      t.string :alias
+      t.datetime :date_of_birth
+
+      t.timestamps
+    end
+  end
+end
+```
+
+Then everything works as expected. Though note that everything isn't exactly
+the same. The table may have the same schema, but it doesn't have the same
+data. In other words, the rows of the authors table are lost. This is also
+one reason why destructive actions aren't reversible.
+
+It is incredibly important to have reversible migrations. If anything goes wrong
+they enable you to simply roll back the changes you did, as if nothing happened.
+
+## Associations
+
+## Querying
+
+## Assignment

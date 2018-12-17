@@ -1,0 +1,2 @@
+class SubReddit < ApplicationRecord
+end

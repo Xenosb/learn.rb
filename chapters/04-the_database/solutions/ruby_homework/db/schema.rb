@@ -10,15 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_28_160617) do
-
-  create_table "authors", force: :cascade do |t|
-    t.string "email"
-    t.string "alias"
-    t.datetime "date_of_birth"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+ActiveRecord::Schema.define(version: 2018_12_17_081752) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "post_id"
@@ -32,6 +24,16 @@ ActiveRecord::Schema.define(version: 2018_10_28_160617) do
     t.integer "author_id"
     t.text "content"
     t.boolean "published"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "sub_reddit_id"
+  end
+
+  create_table "sub_reddits", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", null: false
+    t.boolean "private", default: false, null: false
+    t.integer "owner_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
