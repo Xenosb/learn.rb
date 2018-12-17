@@ -19,6 +19,10 @@
     * [Reversibility](#reversibility)
 4. [Associations](#associations)
 5. [Querying](#querying)
+    * [Find & find_by](#find--find_by)
+    * [All & where](#all--where)
+    * [Join](#join)
+    * [Order_by](#order_by)
 6. [Assignment](#assignment)
 
 ## Introduction
