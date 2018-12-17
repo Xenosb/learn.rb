@@ -51,10 +51,11 @@ only on so-called "relational database systems" - also known as SQL databases.
 Of all available SQL databases we will only look at two - SQLite and Postgres.
 
 SQLite is the system we used in the last couple of lectures. It's the simplest
-SQL database system there is. It stores everything in a single file. This
-simplicity causes many complications, which won't be covered here, that makes
-SQLite not suitable for real-world applications. But it's perfect for
-testing and development!
+SQL database system there is. It stores everything in a single file. If you are
+curious, data you entered during last homework is stored in file
+`db/development.sqlite3`. Feel free to take a look. This simplicity causes many
+complications, which won't be covered here, that makes SQLite not suitable for
+real-world applications. But it's perfect for testing and development!
 
 Database is a computer program which takes care of saving data for you. It
 usually runs in the background and listens to incoming requests on a given
@@ -63,9 +64,9 @@ address and port, same as your Rails server. This can for example be
 
 To access, store, update or delete data from the database, we send a query to
 that address and receive feedback when the operation is done. Queries are
-written in a Structured Query Language (SQL) which can vary  If we would for
-example try to get the data on the post author with id 1 it would look something
-like this.
+written in a Structured Query Language (SQL) which can vary slightly from one
+database to another. If we would for example try to get the data on the post
+author with id 1 it would resemble this.
 
 ```sql
 SELECT "authors".*
@@ -73,18 +74,9 @@ FROM "authors"
 WHERE "authors"."id" = 1
 ```
 
-There are many databases and for some of them you might have already heard
-of - PostgreSQL, MySQL, MongoDB and the one what we are using - **SQLite**. We
-have installed it by adding `gem 'sqlite3'` to our Gemfile. It is a bit
-different from other databases because it actually isn't a service and data is
-directly stored and retrieved from a text file which can be for example found at
-`db/development.sqlite3`.
-
- 
-
-- Shortly describe database as a computer program.
-- Short explanation of ER principles
-- Explain the pipeline: view -> controller -> model -> database
+But it would be quite impractical to write SQL every time when accessing or
+storing the data. Rails will help us with that and allow us to easily issue
+commands written in Ruby without worrying how stuff is implemented in SQL.
 
 ## The model
 
