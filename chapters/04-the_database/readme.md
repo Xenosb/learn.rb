@@ -760,4 +760,213 @@ they enable you to simply roll back the changes you did, as if nothing happened.
 
 ## Querying
 
+By now we have covered how to create, update and destroy records/rows, but
+how do we find a record?
+
+We will cover the methods we will use the most. The full list of all
+available methods can be found
+[here](https://guides.rubyonrails.org/active_record_querying.html#or-conditions).
+
+### Find & find_by
+
+If you haven't noticed by now, each record in our database has an ID that's
+unique for it's table. You can see it in the URL of the record.
+
+![Record URL](./images/record_url.png)
+
+You can get the model instance of this record by calling `find` with it's ID
+on it's model. So if we want to get the post with ID `1` we would do the
+following
+
+```ruby
+Post.find(1)
+```
+
+Which returns the following
+
+```text
+  Post Load (0.6ms)  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?  [["id", 1], ["LIMIT", 1]]
+=> #<Post id: 1, author_id: 3, content: "Bla", published: true, created_at: "2018-10-28 17:32:25", updated_at: "2018-10-28 17:32:25", sub_reddit_id: nil>
+```
+
+In reality, more often than not we won't know the ID of the record we are
+looking for, we will look for a record with a certain value in a field/column.
+For this kinds of situation there is the `find_by` method. It works much the
+same as `find` but it accepts a hash, instead of an ID, that describes what
+value should be in which column and returns the first record that satisfies the
+search criteria.
+
+Say we want to find a SubReddit with the title "Bunnies"
+
+```ruby
+SubReddit.find_by(title: 'Bunnies')
+```
+
+If there is such a record in the database it's returned, if there are multiple
+a random one is returned. If there are none `nil` is returned.
+
+### All & where
+
+Sometimes we want to find all records that match a criteria. The `find` and
+`find_by` methods can't help us here as they return only a single record.
+
+For situations like these there are the `all` and `where` methods.
+
+`all` literally returns all existing records from the table.
+
+```ruby
+Post.all
+```
+
+returns
+
+```text
+[#<Post:0x007faf01badf30
+  id: 1,
+  author_id: 3,
+  content: "Bla",
+  published: true,
+  created_at: Sun, 28 Oct 2018 17:32:25 UTC +00:00,
+  updated_at: Sun, 28 Oct 2018 17:32:25 UTC +00:00,
+  sub_reddit_id: nil>,
+ #<Post:0x007faf01baddf0
+  id: 2,
+  author_id: 1,
+  content: "Foo Bar",
+  published: true,
+  created_at: Sun, 28 Oct 2018 17:32:44 UTC +00:00,
+  updated_at: Sun, 28 Oct 2018 17:32:44 UTC +00:00,
+  sub_reddit_id: nil>,
+ #<Post:0x007faf01badcb0
+  id: 3,
+  author_id: 2,
+  content: "FUU BAAAAR",
+  published: false,
+  created_at: Sun, 28 Oct 2018 18:05:32 UTC +00:00,
+  updated_at: Sun, 28 Oct 2018 18:05:32 UTC +00:00,
+  sub_reddit_id: nil>]
+```
+
+While the `where` method functions much like the `find_by` method, but it
+returns all the records that match. Usually a `where` method follows an `all`
+method as we want to filter through all our records.
+
+```ruby
+Post.all.where(published: true)
+```
+
+returns
+
+```text
+[#<Post:0x007faf01badf30
+  id: 1,
+  author_id: 3,
+  content: "Bla",
+  published: true,
+  created_at: Sun, 28 Oct 2018 17:32:25 UTC +00:00,
+  updated_at: Sun, 28 Oct 2018 17:32:25 UTC +00:00,
+  sub_reddit_id: nil>,
+ #<Post:0x007faf01baddf0
+  id: 2,
+  author_id: 1,
+  content: "Foo Bar",
+  published: true,
+  created_at: Sun, 28 Oct 2018 17:32:44 UTC +00:00,
+  updated_at: Sun, 28 Oct 2018 17:32:44 UTC +00:00,
+  sub_reddit_id: nil>]
+```
+
+Where can accept multiple arguments by which it should filter.
+
+```ruby
+Post.all.where(published: true, author_id: 3)
+
+# [#<Post:0x007faf01badf30
+#   id: 1,
+#   author_id: 3,
+#   content: "Bla",
+#   published: true,
+#   created_at: Sun, 28 Oct 2018 17:32:25 UTC +00:00,
+#   updated_at: Sun, 28 Oct 2018 17:32:25 UTC +00:00,
+#   sub_reddit_id: nil>]
+```
+
+Multiple wheres can be chained together to narrow down search results. E.g.
+the previous where (`where(published: true, author_id: 3)`) can be
+written like the following, and it returns the exact same result.
+
+```ruby
+Post.all.where(published: true).where(author_id: 3)
+
+# [#<Post:0x007faf01badf30
+#   id: 1,
+#   author_id: 3,
+#   content: "Bla",
+#   published: true,
+#   created_at: Sun, 28 Oct 2018 17:32:25 UTC +00:00,
+#   updated_at: Sun, 28 Oct 2018 17:32:25 UTC +00:00,
+#   sub_reddit_id: nil>]
+```
+
+We can also form conditional searches by using the `or` method.
+E.g. let's search for posts that aren't published *or* the author has the
+ID `3`.
+
+```ruby
+Post.all.where(published: false).or(Post.where(author_id: 3))
+
+# [#<Post:0x007faf01badf30
+#   id: 1,
+#   author_id: 3,
+#   content: "Bla",
+#   published: true,
+#   created_at: Sun, 28 Oct 2018 17:32:25 UTC +00:00,
+#   updated_at: Sun, 28 Oct 2018 17:32:25 UTC +00:00,
+#   sub_reddit_id: nil>,
+#  #<Post:0x007faf01badcb0
+#   id: 3,
+#   author_id: 2,
+#   content: "FUU BAAAAR",
+#   published: false,
+#   created_at: Sun, 28 Oct 2018 18:05:32 UTC +00:00,
+#   updated_at: Sun, 28 Oct 2018 18:05:32 UTC +00:00,
+#   sub_reddit_id: nil>]
+```
+
+We can also search for opposite conditions using the `not` method. E.g. let's
+do the previous query but using `not` for the `published: false` condition.
+
+```ruby
+Post.all.where.not(published: true).or(Post.where(author_id: 3))
+
+# [#<Post:0x007faf01badf30
+#   id: 1,
+#   author_id: 3,
+#   content: "Bla",
+#   published: true,
+#   created_at: Sun, 28 Oct 2018 17:32:25 UTC +00:00,
+#   updated_at: Sun, 28 Oct 2018 17:32:25 UTC +00:00,
+#   sub_reddit_id: nil>,
+#  #<Post:0x007faf01badcb0
+#   id: 3,
+#   author_id: 2,
+#   content: "FUU BAAAAR",
+#   published: false,
+#   created_at: Sun, 28 Oct 2018 18:05:32 UTC +00:00,
+#   updated_at: Sun, 28 Oct 2018 18:05:32 UTC +00:00,
+#   sub_reddit_id: nil>]
+```
+
+`not` can be useful when the inverse condition is hard to figure out or write
+down. Say the following query `where(author_id: 3, published: false)`, it's
+inverse would be `where(author_id: [1, 2]).or(Post.where(published: false))`
+which assumes we only have authors with IDs `1`, `2` and `3` in our system so
+we specify that the author ID should be contained in the array we pass. This
+won't work in applications that can have arbitrary numbers of authors. But
+with `not` is much easier - `where.not(author_id: 3, published: false)`.
+
+### Join
+
+### Order_by
+
 ## Assignment
