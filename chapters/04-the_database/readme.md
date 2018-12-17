@@ -638,6 +638,22 @@ a full list can be found
 We will mostly use `add_column` to add columns, `change_column` to add or remove
 attributes, and `rename_column` to rename them.
 
+While on the topic. We can also add a title to our posts
+
+```bash
+rails g migration add_title_to_posts title:string
+```
+
+it has to be different from `nil`
+
+```ruby
+class AddTitleToPosts < ActiveRecord::Migration[5.2]
+  def change
+    add_column :posts, :title, :string, null: false, defualt: ''
+  end
+end
+```
+
 ### Destroy
 
 We can also destroy tables as well as columns in the same way we update them.
@@ -681,6 +697,25 @@ we would use the `remove_column` method.
 class DropAuthors < ActiveRecord::Migration[5.2]
   def change
     drop_table :authors
+  end
+end
+```
+
+We are going to create a new user model in it's place
+
+```bash
+rails g model user email:string username:string
+```
+
+```ruby
+class CreateUsers < ActiveRecord::Migration[5.2]
+  def change
+    create_table :users do |t|
+      t.string :email, null: false
+      t.string :username, null: false
+
+      t.timestamps
+    end
   end
 end
 ```
@@ -1080,5 +1115,72 @@ order (starting with `z` and ending with `a`) and if there are two posts with
 the same title then they are sorted by the `create_at` column, oldest first.
 
 ## Indices
+
+We won't dab too deep into indices (singular `index`), but you have to know that
+they exist and what they do.
+
+Indices, in databases, are much the same as the one in books. By creating an
+index on a column you tell the database that it should keep track of the values
+in it so that they can be found quickly.
+
+If we would transform this way of thinking onto the book example, a book has an
+index on it's chapters. If we want to find a chapter we can look it's page up
+in the index and go to it. If we didn't have the index we would have to go
+through each page of the book looking for a chapter with the name we are
+searching for.
+
+Let's create an index on the posts' table title column, as user will be able to
+search for a given post by it's title.
+
+```bash
+rails g migration add_posts_title_index
+```
+
+```ruby
+class AddPostsTitleIndex < ActiveRecord::Migration[5.2]
+  def change
+    add_index :posts, :title
+  end
+end
+```
+
+And that's it.
+
+Indices have one additional function. They can be used to validate uniqueness.
+Let's take our User model for example. It would be good if we could prohibit
+two users to share an email or username. This can be done with an unique index.
+
+```bash
+rails g migration add_users_email_and_username_unique_index
+```
+
+```ruby
+class AddUsersEmailAndUsernameUniqueIndex < ActiveRecord::Migration[5.2]
+  def change
+    add_index :users, :email, unique: true
+    add_index :users, :username, unique: true
+  end
+end
+```
+
+Don't forget to update your model accordingly.
+
+```ruby
+validates :email, uniqueness: true, presence: true
+validates :username, uniqueness: true, presence: true
+```
+
+Finally, indices allow you to create relatively unique fields. Say that multiple
+users can have the same email but must have different usernames.
+
+```
+add_index :users, [:email, :usrename], unique: true
+```
+
+The appropriate model validation would be
+
+```ruby
+validates :email, uniqueness: { scope: :username }, presence: true
+```
 
 ## Assignment
