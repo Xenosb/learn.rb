@@ -1,9 +1,5 @@
 # Git gud
 
-This is the first chapter in a series of 10 of the
-[learn.rb project](https://github.com/monorkin/learn.rb) whose goal is to teach
-people Ruby with a focus on Ruby on Rails.
-
 ## Chapters
 
 1. [Introduction](#introduction)
@@ -655,8 +651,8 @@ most program understand, but display the result differently.
 
 Do the following tasks:
 - [ ] Modify readme title annotated by 1st level header (`#`)
-- [ ] Mention that you are following Ruby course
-      `https://github.com/monorkin/learn.rb` and add a link using `[text](URL)`
+- [ ] Mention that you are following this Ruby course and add a link to it
+      using `[text](URL)`
 - [ ] Add a 2nd level header (`##`) with title *My favorite programming
       languages*
 - [ ] Add unsorted list of your favorite programming languages or books
@@ -686,7 +682,7 @@ Check if any errors were reported. If so, contact your lecturer.
 
 First you will have to add collaborators to your project. You can do that in the
 GitHub project's settings. Navigate to the page
-and add your lecturers as colaborators (in this case `monorkin` and `Xenosb`).
+and add your lecturers as collaborators.
 In the future you will add other members of the teaching staff.
 
 ![Adding a collaborator](./images/github-add-collaborator.png)

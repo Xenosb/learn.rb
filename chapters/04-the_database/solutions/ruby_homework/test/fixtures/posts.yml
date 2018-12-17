@@ -1,0 +1,25 @@
+# == Schema Information
+#
+# Table name: posts
+#
+#  id            :integer          not null, primary key
+#  author_id     :integer
+#  content       :text
+#  published     :boolean
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  sub_reddit_id :integer
+#  title         :string           default(""), not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  author_id: 
+  content: MyText
+  published: 
+
+two:
+  author_id: 
+  content: MyText
+  published: 

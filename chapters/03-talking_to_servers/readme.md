@@ -1,9 +1,5 @@
 # Talking to servers
 
-This is the fourth chapter in a series of 10 of the
-[learn.rb project](https://github.com/monorkin/learn.rb) whose goal is to teach
-people Ruby with a focus on Ruby on Rails.
-
 ## Chapters
 
 - [Talking to servers](#talking-to-servers)
@@ -550,19 +546,19 @@ manually, Rails does that for us.
 
   <p>
     <%= label_tag(:a, 'a:') %>
-    <%= number_field :a %>
+    <%= number_field nil, :a %>
   </p>
   <p>
     <%= label_tag(:b, 'b:') %>
-    <%= number_field :b %>
+    <%= number_field nil, :b %>
   </p>
   <p>
     <%= label_tag(:c, 'c:') %>
-    <%= number_field :c %>
+    <%= number_field nil, :c %>
   </p>
   <p>
     <%= label_tag(:d, 'd:') %>
-    <%= number_field :d %>
+    <%= number_field nil, :d %>
   </p>
 
   <button type="submit">Solve!</button>
@@ -724,7 +720,7 @@ with Bootstrap.
   - All parameters should be positive integers different from zero
   - If the `x + y - z` aren't equal to `n` or if any parameter doesn't
     conform to the specified rules, redirect the user back, using
-    `redirect_to :back` and display a validation error using a
+    `redirect_back(fallback_location: root_path)` and display a validation error using a
     [flash notice](https://api.rubyonrails.org/classes/ActionDispatch/Flash.html)
   - If you don't know what a captcha is or why it's useful check out
     the [Wikipedia article](https://en.wikipedia.org/wiki/CAPTCHA)
