@@ -23,7 +23,8 @@
     * [All & where](#all--where)
     * [Join](#join)
     * [Order_by](#order_by)
-6. [Assignment](#assignment)
+6. [Indices](#indices)
+7. [Assignment](#assignment)
 
 ## Introduction
 
