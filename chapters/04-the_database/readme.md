@@ -2,31 +2,42 @@
 
 ## Chapters
 
-1. [Introduction](#introduction)
-2. [The model](#the-model)
-    * [Representing state](#representing-state)
-    * [Types](#types)
-    * [Attributes](#attributes)
-    * [Validation](#validation)
-    * [Creating](#creating)
-    * [Updating](#updating)
-    * [Deleting](#deleting)
-3. [Migrations](#migrations)
-    * [A history of changes](#a-history-of-changes)
-    * [Create](#create)
-    * [Update](#update)
-    * [Destroy](#destroy)
-    * [Reversibility](#reversibility)
-4. [Associations](#associations)
-5. [Querying](#querying)
-    * [Find & find_by](#find--find_by)
-    * [All & where](#all--where)
-    * [Join](#join)
-    * [Order_by](#order_by)
-6. [Indices](#indices)
-7. [Assignment](#assignment)
+- [Working with databases, or how to remember stuff](#working-with-databases-or-how-to-remember-stuff)
+  - [Chapters](#chapters)
+  - [Introduction](#introduction)
+  - [The model](#the-model)
+    - [Representing state](#representing-state)
+    - [Types](#types)
+    - [Attributes](#attributes)
+    - [Validation](#validation)
+    - [Creating](#creating)
+    - [Updating](#updating)
+    - [Deleting](#deleting)
+  - [Migrations](#migrations)
+    - [A history of changes](#a-history-of-changes)
+    - [Create](#create)
+    - [Update](#update)
+    - [Destroy](#destroy)
+    - [Reversibility](#reversibility)
+  - [Associations](#associations)
+    - [One to one](#one-to-one)
+      - [belongs_to](#belongsto)
+      - [has_one](#hasone)
+    - [One to many](#one-to-many)
+    - [Many to may](#many-to-may)
+  - [Querying](#querying)
+    - [Find & find_by](#find--findby)
+    - [All & where](#all--where)
+    - [Join](#join)
+    - [Order](#order)
+  - [Indices](#indices)
+  - [Assignment](#assignment)
 
 ## Introduction
+
+In the last chapter we learned how to talk to send data to the server via forms.
+In this chapter we will save the received data in an organized manner and
+display it back to the user.
 
 When working with web applications, or any other application for that matter,
 we will need a way to store and retrieve data. Looking back at our first
@@ -41,10 +52,32 @@ only on so-called "relational database systems" - also known as SQL databases.
 Of all available SQL databases we will only look at two - SQLite and Postgres.
 
 SQLite is the system we used in the last couple of lectures. It's the simplest
-SQL database system there is. It stores everything in a single file. This
-simplicity causes many complications, which won't be covered here, that makes
-SQLite not suitable for real-world applications. But it's perfect for
-testing and development!
+SQL database system there is. It stores everything in a single file. If you are
+curious, data you entered during last homework is stored in file
+`db/development.sqlite3`. Feel free to take a look. This simplicity causes many
+complications, which won't be covered here, that makes SQLite not suitable for
+real-world applications. But it's perfect for testing and development!
+
+Database is a computer program which takes care of saving data for you. It
+usually runs in the background and listens to incoming requests on a given
+address and port, same as your Rails server. This can for example be
+`localhost:5432`. This form of program is also called a service.
+
+To access, store, update or delete data from the database, we send a query to
+that address and receive feedback when the operation is done. Queries are
+written in a Structured Query Language (SQL) which can vary slightly from one
+database to another. If we would for example try to get the data on the post
+author with id 1 it would resemble this.
+
+```sql
+SELECT "authors".*
+FROM "authors"
+WHERE "authors"."id" = 1
+```
+
+But it would be quite impractical to write SQL every time when accessing or
+storing the data. Rails will help us with that and allow us to easily issue
+commands written in Ruby without worrying how stuff is implemented in SQL.
 
 ## The model
 
@@ -628,7 +661,7 @@ end
 
 This is handy when you just want to add a couple of columns to a table.
 The magic quickly goes away when you learn that Rails is only checking if the
-migration description ends with `to_<tabel_name>` and starts with `add` to
+migration description ends with `to_<table_name>` and starts with `add` to
 do this. But hey! It still works!
 
 There are many methods for manipulating your schema through migrations,
@@ -649,7 +682,7 @@ it has to be different from `nil`
 ```ruby
 class AddTitleToPosts < ActiveRecord::Migration[5.2]
   def change
-    add_column :posts, :title, :string, null: false, defualt: ''
+    add_column :posts, :title, :string, null: false, default: ''
   end
 end
 ```
@@ -669,7 +702,7 @@ with the database destructive actions are often called `DROP`. E.g. instead
 "I'm going to delete the authors table" you would say "I'm going to drop the
 authors table". This stems from the keyword for deleting tables and column in
 SQL which is `DROP`. E.g. a pure SQL delete table would be
-`DROP TABEL authors;`. Why is it called drop and not delete? At the time of
+`DROP TABLE authors;`. Why is it called drop and not delete? At the time of
 creation of the SQL standard it made sense, and the `DELETE` keyword is used
 to delete rows so perhaps a difference wanted to be made - so that you don't
 accidentally delete your table instead of a single row.
@@ -725,7 +758,7 @@ end
 If you ever screw something up in the latest migration you did you can most of
 the times undo it with `rake db:rollback`.
 
-A rollback simply undos what was done in the previous migration. Though it might
+A rollback simply undoes what was done in the previous migration. Though it might
 not always be able to do so. Most often `drop_table` and `change_column`
 migrations aren't revisable as there is no way for the program to know what
 the table looked like before the applied change. It's able to reverse
@@ -797,6 +830,52 @@ It is incredibly important to have reversible migrations. If anything goes wrong
 they enable you to simply roll back the changes you did, as if nothing happened.
 
 ## Associations
+
+In Rails associations are connections between two models. They allow us to link,
+records and access data mor easily. For example if post would have reference to
+user who created it, we could easily show his/her username by running something
+like `post.author.username` then first writing query to find out user ID and
+another one to get the username of the user with that ID.
+
+### One to one
+
+The simplest of associations is one-to-one. This means that one data object
+points to only one another object. For instance, post can in our case have only
+one author. This means that this post belongs to that author so that relation is
+called *belongs_to*.
+
+#### belongs_to
+
+To create such a relation we first have to add a column to the model. If you
+remember, when we first created our Post model, it had a field *author_id* of
+type integer. From database standpoint this is same as belongs_to but to Rails
+author is now just an integer and not an object so you couldn't just run
+`post.author.username` to get authors username. To do that we will just have to
+reference that author is no longer ID but a reference. We'll do this in our
+model file `app/models/post.rb`.
+
+If we were to create post model again and with the knowledge that we now have,
+in our scaffold instead of type int we would use references like this.
+
+```bash
+rails generate scaffold Post author:references sub_reddit:references content:string published:boolean
+```
+
+#### has_one
+
+- Explain the relation has_one belongs_to
+- Rollback migrations, again
+- Link author and the post
+
+### One to many
+
+- Explain relation has_many
+- Link comments and the post
+
+### Many to may
+
+- Explain has_many through
+- Link comments to author
 
 ## Querying
 
