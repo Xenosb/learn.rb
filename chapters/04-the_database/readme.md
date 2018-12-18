@@ -20,8 +20,9 @@
     - [Destroy](#destroy)
     - [Reversibility](#reversibility)
   - [Associations](#associations)
-  - [Connecting the models](#connecting-the-models)
     - [One to one](#one-to-one)
+      - [belongs_to](#belongsto)
+      - [has_one](#hasone)
     - [One to many](#one-to-many)
     - [Many to may](#many-to-may)
   - [Querying](#querying)
@@ -611,6 +612,7 @@ class CreateSubReddit < ActiveRecord::Migration[5.2]
       t.text :description, null: false
       t.text :title, null: false
       t.boolean :private, null: false, default: false
+
       t.timestamps
     end
   end
@@ -659,7 +661,7 @@ end
 
 This is handy when you just want to add a couple of columns to a table.
 The magic quickly goes away when you learn that Rails is only checking if the
-migration description ends with `to_<tabel_name>` and starts with `add` to
+migration description ends with `to_<table_name>` and starts with `add` to
 do this. But hey! It still works!
 
 There are many methods for manipulating your schema through migrations,
@@ -680,7 +682,7 @@ it has to be different from `nil`
 ```ruby
 class AddTitleToPosts < ActiveRecord::Migration[5.2]
   def change
-    add_column :posts, :title, :string, null: false, defualt: ''
+    add_column :posts, :title, :string, null: false, default: ''
   end
 end
 ```
@@ -700,7 +702,7 @@ with the database destructive actions are often called `DROP`. E.g. instead
 "I'm going to delete the authors table" you would say "I'm going to drop the
 authors table". This stems from the keyword for deleting tables and column in
 SQL which is `DROP`. E.g. a pure SQL delete table would be
-`DROP TABEL authors;`. Why is it called drop and not delete? At the time of
+`DROP TABLE authors;`. Why is it called drop and not delete? At the time of
 creation of the SQL standard it made sense, and the `DELETE` keyword is used
 to delete rows so perhaps a difference wanted to be made - so that you don't
 accidentally delete your table instead of a single row.
@@ -756,7 +758,7 @@ end
 If you ever screw something up in the latest migration you did you can most of
 the times undo it with `rake db:rollback`.
 
-A rollback simply undos what was done in the previous migration. Though it might
+A rollback simply undoes what was done in the previous migration. Though it might
 not always be able to do so. Most often `drop_table` and `change_column`
 migrations aren't revisable as there is no way for the program to know what
 the table looked like before the applied change. It's able to reverse
@@ -829,9 +831,37 @@ they enable you to simply roll back the changes you did, as if nothing happened.
 
 ## Associations
 
-## Connecting the models
+In Rails associations are connections between two models. They allow us to link,
+records and access data mor easily. For example if post would have reference to
+user who created it, we could easily show his/her username by running something
+like `post.author.username` then first writing query to find out user ID and
+another one to get the username of the user with that ID.
 
 ### One to one
+
+The simplest of associations is one-to-one. This means that one data object
+points to only one another object. For instance, post can in our case have only
+one author. This means that this post belongs to that author so that relation is
+called *belongs_to*.
+
+#### belongs_to
+
+To create such a relation we first have to add a column to the model. If you
+remember, when we first created our Post model, it had a field *author_id* of
+type integer. From database standpoint this is same as belongs_to but to Rails
+author is now just an integer and not an object so you couldn't just run
+`post.author.username` to get authors username. To do that we will just have to
+reference that author is no longer ID but a reference. We'll do this in our
+model file `app/models/post.rb`.
+
+If we were to create post model again and with the knowledge that we now have,
+in our scaffold instead of type int we would use references like this.
+
+```bash
+rails generate scaffold Post author:references sub_reddit:references content:string published:boolean
+```
+
+#### has_one
 
 - Explain the relation has_one belongs_to
 - Rollback migrations, again
