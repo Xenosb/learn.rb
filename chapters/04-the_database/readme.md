@@ -22,6 +22,7 @@
   - [Associations](#associations)
     - [One to one](#one-to-one)
       - [belongs_to](#belongsto)
+      - [references](#references)
       - [has_one](#hasone)
     - [One to many](#one-to-many)
     - [Many to may](#many-to-may)
@@ -53,31 +54,34 @@ Of all available SQL databases we will only look at two - SQLite and Postgres.
 
 SQLite is the system we used in the last couple of lectures. It's the simplest
 SQL database system there is. It stores everything in a single file. If you are
-curious, data you entered during last homework is stored in file
+curious, the data you entered during your last homework is stored in
 `db/development.sqlite3`. Feel free to take a look. This simplicity causes many
-complications, which won't be covered here, that makes SQLite not suitable for
+complications, which won't be covered here, that make SQLite not suitable for
 real-world applications. But it's perfect for testing and development!
 
-Database is a computer program which takes care of saving data for you. It
-usually runs in the background and listens to incoming requests on a given
-address and port, same as your Rails server. This can for example be
-`localhost:5432`. This form of program is also called a service.
+The database is a computer program which takes care of storing data for you. It
+usually runs in the background and listens to incoming requests,
+same as your Rails server. This kind of program is called a service.
 
 To access, store, update or delete data from the database, we send a query to
-that address and receive feedback when the operation is done. Queries are
-written in a Structured Query Language (SQL) which can vary slightly from one
-database to another. If we would for example try to get the data on the post
-author with id 1 it would resemble this.
+it and wait for a response. Queries are
+written in a language called Structured Query Language (SQL) which can vary
+slightly from one database to another.
+
+SQL is intended to be semantically similar to human languages. In the following
+example we ask the database to return the first name for an author with the last
+name "Huxley".
 
 ```sql
-SELECT "authors".*
-FROM "authors"
-WHERE "authors"."id" = 1
+SELECT first_name
+FROM authors
+WHERE last_name = 'Huxley'
 ```
 
-But it would be quite impractical to write SQL every time when accessing or
-storing the data. Rails will help us with that and allow us to easily issue
-commands written in Ruby without worrying how stuff is implemented in SQL.
+But we don't need to know SQL to work with Rails as it provides other ways for
+us to access the data in our database - through pure Ruby. But always be aware
+that underneath all that we are going to learn today there is SQL and all
+Rails does is provide a prettier way for us to interact with the database.
 
 ## The model
 
@@ -826,56 +830,362 @@ the same. The table may have the same schema, but it doesn't have the same
 data. In other words, the rows of the authors table are lost. This is also
 one reason why destructive actions aren't reversible.
 
-It is incredibly important to have reversible migrations. If anything goes wrong
+It's incredibly important to have reversible migrations. If anything goes wrong
 they enable you to simply roll back the changes you did, as if nothing happened.
 
 ## Associations
 
-In Rails associations are connections between two models. They allow us to link,
-records and access data mor easily. For example if post would have reference to
-user who created it, we could easily show his/her username by running something
-like `post.author.username` then first writing query to find out user ID and
-another one to get the username of the user with that ID.
+In Rails, associations are connections between two (or more) models.
+They allow us to link records and access data more easily.
+
+For example if a comment would have a reference to the post it was created for,
+we could show the post's title through the comment with something like
+`comment.post.title`.
+
+This is a big quality of life improvement as otherwise we would need to fetch
+the post manually somehow, while this way the comment can access it's post.
 
 ### One to one
 
-The simplest of associations is one-to-one. This means that one data object
-points to only one another object. For instance, post can in our case have only
-one author. This means that this post belongs to that author so that relation is
-called *belongs_to*.
+The simplest association is a one-to-one association. This means that one record
+points to __only__ one other record.
+
+For instance, a post can have only one author. In other words this post belongs
+to that author, therefore this kind of relation is commonly referred to as a
+__belongs to__ relation.
 
 #### belongs_to
 
-To create such a relation we first have to add a column to the model. If you
-remember, when we first created our Post model, it had a field *author_id* of
-type integer. From database standpoint this is same as belongs_to but to Rails
-author is now just an integer and not an object so you couldn't just run
-`post.author.username` to get authors username. To do that we will just have to
-reference that author is no longer ID but a reference. We'll do this in our
-model file `app/models/post.rb`.
+To create such a relation we need to have a column on the first record
+(e.g. comment) that will store the id of the record it belongs to (e.g. a post).
 
-If we were to create post model again and with the knowledge that we now have,
-in our scaffold instead of type int we would use references like this.
+When we first created our Comment model it had a field `post_id` of type
+integer. From the database's standpoint this is same as `belongs_to`, we can
+store the posts's id in this column and we can tell the database to retrieve
+the comment's post. But Rails still thinks that the `post_id` column is just an
+integer, need to explain to it that the `post_id` column is actually an
+association that points to a record in the posts table.
+
+For this to happen we need to update our `Comment` model! We need to tell it
+that it __belongs to__ a post. And, in Rails, this is quite intuitive - we
+can simply add the following line `belongs_to :post`
+
+```ruby
+# == Schema Information
+#
+# Table name: comments
+#
+#  id         :integer          not null, primary key
+#  post_id    :integer
+#  author_id  :integer
+#  content    :text
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+class Comment < ApplicationRecord
+  belongs_to :post # <--- This line here
+
+  validates :content, presence: true, length: { minimum: 2 }
+end
+```
+
+By the way, __if you haven't noticed we broke the website with all the
+changes we made__. But don't worry __you can still check if things work through
+the console__.
+
+The following command has to be run from the root of your application, and it
+will open an interactive console to your application. That means you can write
+plain ruby and interact with your models and any other code we wrote.
 
 ```bash
-rails generate scaffold Post author:references sub_reddit:references content:string published:boolean
+rails c
 ```
+
+Let's now create a Post and a Comment for it, then try to access the comment's
+post and it's title.
+
+```ruby
+post = Post.create(title: "Foo Bar", content: "Test")
+#<Post id: 1, author_id: nil, content: "Test", published: nil, created_at: "2018-12-19 10:02:13", updated_at: "2018-12-19 10:02:13", sub_reddit_id: nil, title: "Foo Bar">
+
+comment = Comment.create(post: post, content: "Bla bla")
+#<Comment id: 1, post_id: 1, author_id: nil, content: "Bla bla", created_at: "2018-12-19 10:03:09", updated_at: "2018-12-19 10:03:09">
+
+comment.post
+#<Post id: 1, author_id: nil, content: "Test", published: nil, created_at: "2018-12-19 10:02:13", updated_at: "2018-12-19 10:02:13", sub_reddit_id: nil, title: "Foo Bar">
+
+comment.post.title
+# "Foo Bar"
+```
+
+Note that this wouldn't work if we tried to do the same with the comment's
+author.
+
+```ruby
+post = Post.create(title: "Foo Bar", content: "Test")
+#<Post id: 1, author_id: nil, content: "Test", published: nil, created_at: "2018-12-19 10:02:13", updated_at: "2018-12-19 10:02:13", sub_reddit_id: nil, title: "Foo Bar">
+
+author = User.create(email: "foo@bar.com", username: "me")
+#<User id: 1, email: "foo@bar.com", username: "me", created_at: "2018-12-19 10:48:18", updated_at: "2018-12-19 10:48:18">
+
+comment = Comment.create(author: author, post: post, content: "Bla bla")
+# Traceback (most recent call last):
+#         1: from (irb):3
+# NameError (uninitialized constant Comment::Author)
+```
+
+This happens because Rails expects that each relation has a model with the
+corresponding name. E.g. our Comment has a `belongs_to :post` so Rails looks
+for the associated record in the posts table and tries to create a Post model
+from it.
+
+But the Author model doesn't exist any more! What now? We can instruct Rails
+to use another model, by passing the `class_name: 'User'` argument to the
+`belongs_to` method.
+
+```ruby
+# == Schema Information
+#
+# Table name: comments
+#
+#  id         :integer          not null, primary key
+#  post_id    :integer
+#  author_id  :integer
+#  content    :text
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+class Comment < ApplicationRecord
+  belongs_to :post
+  belongs_to :author, class_name: 'User' # <-- This
+
+  validates :content, presence: true, length: { minimum: 2 }
+end
+```
+
+That way Rails knows that we want to work with the User model and infers the
+correct table and class from that. Just watch out that `class_name` __has to
+be a string__!
+
+#### References
+
+But there is a downside to using simple integers for associations. If we would
+delete the post, the comment would stay, that's not exactly what we want. This
+leaves our database in an inconsistent state.
+
+```ruby
+post = Post.create(title: "Foo Bar", content: "Test")
+#<Post id: 1, author_id: nil, content: "Test", published: nil, created_at: "2018-12-19 10:02:13", updated_at: "2018-12-19 10:02:13", sub_reddit_id: nil, title: "Foo Bar">
+
+comment = Comment.create(post: post, content: "Bla bla")
+#<Comment id: 1, post_id: 1, author_id: nil, content: "Bla bla", created_at: "2018-12-19 10:03:09", updated_at: "2018-12-19 10:03:09">
+
+post.destroy
+# true
+
+comment.post
+# nil
+```
+
+To solve this we have to migrate the post_id to be a type of reference.
+In the underlying SQL a Rails reference is actually a foreign key. Each table
+we have created so far has a primary key which is it's ID. If we want to tell
+the database that it has to keep track of associations for us - that is prevent
+deletion, or set the association's column value to `NULL` or delete the
+associated rows - we need to mark that column as a foreign key. A foreign key is
+a primary key of another table. In our app, a Comment's `post_id` is a
+foreign key of the posts table.
+
+Let's convert our Comment `_id` fields to references.
+
+```bash
+rails g migration convert_comment_association_fields_to_references
+```
+
+in the migration we will drop the old columns and create new 'reference' columns
+
+```ruby
+class ConvertCommentAssociationFieldsToReferences < ActiveRecord::Migration[5.2]
+  def change
+    remove_column :comments, :post_id
+    add_reference :comments, :post,
+                  foreign_key: { on_delete: :cascade }
+    remove_column :comments, :author_id
+    add_reference :comments, :author,
+                  foreign_key: { to_table: :users, on_delete: :cascade }
+  end
+end
+```
+
+notice that for the author reference we had to specify the table for the
+foreign key. Also notice the `on_delete` argument, it specifies what should
+happen if the parent is deleted. There are a few options here, `:cascade` means
+that is should the record should delete itself and all it's children. While
+`:restrict` prohibits the deletion of the parent while there are any children
+referencing it.
+
 
 #### has_one
 
-- Explain the relation has_one belongs_to
-- Rollback migrations, again
-- Link author and the post
+A different kind of one-to-one association is a one-to-one association. It
+achieves the same as a belongs to association, but the instead of the model
+with the ID of the parent having the association, the parent has it, allowing it
+(only in Rails) to have only a single child.
+
+This kind of association is hard to enforce through the database and is
+therefore generally avoided. But it's important that you know it exists as it
+is used to improve the performance of your application when things get too slow.
+
+An example where this kind of association is useful would be in an accounting
+application. There each payment can have only one receipt, and each receipt can
+have only one payment. So not to confuse people with two belongs_to
+associations that go in a circle (e.g. a receipt belongs to a payment and a
+payment belongs to a receipt, ...) we would create a belongs to association
+on either the payment or the receipt and create a has one on the other.
 
 ### One to many
 
-- Explain relation has_many
-- Link comments and the post
+A one-to-many association is required when one record can have many "child"
+records.
+
+In our application, a single post can have many comments. Intuitively Rails
+uses the `has_many` method to describe these kinds of associations.
+
+The best part of a has_many association is that we basically don't have to do
+any modification to our database if the child uses the `belongs_to` method.
+
+Let's update our post so that it can list it's comments.
+
+```ruby
+# == Schema Information
+#
+# Table name: posts
+#
+#  id            :integer          not null, primary key
+#  author_id     :integer
+#  content       :text
+#  published     :boolean
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  sub_reddit_id :integer
+#  title         :string           default(""), not null
+#
+
+class Post < ApplicationRecord
+  has_many :comments
+end
+```
+
+now if we again create an Author, a Post and a Comment
+
+```ruby
+post = Post.create(title: "Foo Bar", content: "Test")
+author = User.create(email: "foo@bar.comh", username: "meh")
+comment = Comment.create(author: author, post: post, content: "Bla bla")
+
+post.comments
+#<ActiveRecord::Associations::CollectionProxy [#<Comment id: 6, content: "Bla bla", created_at: "2018-12-19 11:38:46", updated_at: "2018-12-19 11:38:46", post_id: 7, author_id: 5>]>
+
+post.comments.first.content
+# "Bla bla"
+
+post.comments.first.author.username
+# "meh"
+```
+
+But, again, the same wouldn't work for the User model. If we added to it
+`has_many :comments` it would error. This happens because, again, Rails
+assumes that the child has a column named `<model name>_id`, and our comments
+don't have a column named `user_id` - but they have a column named `author_id`.
+Therefore we must instruct Rails to use that column. We do that with the
+`foreign_key` option, like so `has_many :comments, foreign_key: 'author_id'`
+
+```ruby
+# == Schema Information
+#
+# Table name: users
+#
+#  id         :integer          not null, primary key
+#  email      :string           not null
+#  username   :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+class User < ApplicationRecord
+  has_many :comments, foreign_key: 'author_id'
+
+  validates :email, uniqueness: true, presence: true
+  validates :username, uniqueness: true, presence: true
+end
+```
+
+and now we can access the user's comments like normal
+
+```ruby
+author.comments
+#<ActiveRecord::Associations::CollectionProxy [#<Comment id: 6, content: "Bla bla", created_at: "2018-12-19 11:38:46", updated_at: "2018-12-19 11:38:46", post_id: 7, author_id: 5>, #<Comment id: 7, content: "Bla bla", created_at: "2018-12-19 11:43:53", updated_at: "2018-12-19 11:43:53", post_id: 7, author_id: 5>]>
+```
 
 ### Many to may
 
-- Explain has_many through
-- Link comments to author
+Finally there is the many-to-many association. They are easily explained through
+real-world ownership. You own all the stuff in your house, but so do your
+parents/guardians, but you siblings don't own your stuff.
+That means that each object in your house has many owners
+and those owners own many objects. These kinds of situations are best modeled
+through a many-to-many associations.
+
+Rails provides a few ways to model many-to-many associations, but we will focus
+only on one - `has_many , through:`. You can research the other methods on your
+own, but be warned that all of them have subtle problems that are hard to solve,
+therefore in most real world applications you will only see
+`has_many , through:`
+
+How does it work? If we go back to the example of ownership and break it down
+to database terms. We would have at least two tables - objects and people. Since
+a single column can only store a single value we would ether need to add as many
+columns as there are possible combinations of the to to each table or think of
+a better solution. And here the better solution would be to introduce a third
+table - ownerships. The ownerships table has only two columns - `person_id` and
+`object_id` - and it represents the ownership of an object by a person.
+
+To recap, a Person has many Ownerships. An Object has many ownerships. An
+Ownership belongs to a Person and to an Object.
+
+Now we can say that a Person has many Objects through Ownerships. Bingo!
+And we would do that in Rails in the exact same manner
+
+```ruby
+class Person < ApplicationRecord
+  has_many :ownerships
+  has_many :objects, through: :ownerships
+end
+
+class Object < ApplicationRecord
+  has_many :ownerships
+  has_many :people, through: :ownerships
+end
+
+class Ownership < ApplicationRecord
+  belongs_to :person
+  belongs_to :object
+end
+```
+
+then we could do the following
+
+```ruby
+person = Person.create
+object = Object.create
+
+Ownership.create(person: person, object: object)
+
+person.objects.count
+# 1
+```
 
 ## Querying
 
@@ -1306,3 +1616,8 @@ validates :email, uniqueness: { scope: :username }, presence: true
     * For User
 11. Migrate all changes
 12. Run Annotate
+13. Delete the author's views, routes, and controller
+14. Create routes, views and a controller for users
+15. Update all show actions to show some field of their associated records
+
+Happy hacking!
