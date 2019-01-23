@@ -1,0 +1,14 @@
+<h1>Solve a polynomial!</h1>
+
+<%= form_tag "/polynomials", method: :post do %>
+  <p><b>a</b> * X<sup>2</sup> + <b>b</b> * X + <b>c</b> = <b>d</b></p>
+
+  <% [:a, :b, :c, :d].each do |param| %>
+    <p>
+      <%= label_tag(param, "#{param}:") %>
+      <%= number_field nil, param %>
+    </p>
+  <% end %>
+
+  <button type="submit">Solve!</button>
+<% end %>
